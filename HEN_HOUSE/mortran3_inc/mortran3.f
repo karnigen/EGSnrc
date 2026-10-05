@@ -175,7 +175,8 @@ C
          GO TO 10
       END IF
       O_M=O(32)+O(O_S)
-80    IF(O(O_M)==0)GO TO 90
+      MACRO_SCAN: DO
+      IF(O(O_M)==0)EXIT
       O_M=O(O_M)
       D=O_M+4
       MXD=O(O_M+3)
@@ -208,7 +209,7 @@ C
                      IQ=IQ+1
                      IF(IQ<=MXD)CYCLE
                      CALL MESAGE(14, 20, 0,0)
-                     GO TO 80
+                     CYCLE MACRO_SCAN
                   END DO
                   GO TO 100
                END IF
@@ -271,16 +272,16 @@ C
             O_V=O_V+1
             GO TO 100
          END IF
-         IF(F==0)GO TO 80
+                  IF(F==0)CYCLE MACRO_SCAN
          DO
-            IF(O(T)==O(106))GO TO 80
+                        IF(O(T)==O(106))CYCLE MACRO_SCAN
             IF (KD>0) THEN
             DO
                IF( O(99) ==O(T))KD=KD+1
                IF( O(98) ==O(T))KD=KD-1
                IF(KD==0)EXIT
                T=T+1
-               IF(T>O_U)GO TO 80
+               IF(T>O_U)CYCLE MACRO_SCAN
             END DO
             EXIT
             END IF
@@ -289,7 +290,7 @@ C
                DO
                   IF(NB==0)EXIT
                   T=T+1
-                  IF(T>O_U)GO TO 80
+                  IF(T>O_U)CYCLE MACRO_SCAN
                   IF( O(105) ==O(T))NB=NB+1
                   IF( O(106) ==O(T))NB=NB-1
               END DO
@@ -297,22 +298,22 @@ C
             IF (O(69)==0) THEN
                IF( O(84) ==O(T))KC=KC+1
                IF( O(85) ==O(T))KC=KC-1
-               IF(KC<0)GO TO 80
+               IF(KC<0)CYCLE MACRO_SCAN
                IF (N1==1) THEN
                   IF(38==O(T))KP=KP+1
                   IF(46==O(T))KP=KP-1
-                  IF(KP<0)GO TO 80
+                  IF(KP<0)CYCLE MACRO_SCAN
                END IF
                IF (N2==1) THEN
                   IF( O(82) ==O(T))KB=KB+1
                   IF( O(83) ==O(T))KB=KB-1
-                  IF(KB<0)GO TO 80
+                  IF(KB<0)CYCLE MACRO_SCAN
                END IF
-               IF (O(T)==O(79).AND.N3>0)GO TO 80
+               IF (O(T)==O(79).AND.N3>0)CYCLE MACRO_SCAN
             END IF
             T=T+1
             IF (T>O_U) THEN
-               IF(O(15)==1)GO TO 80
+               IF(O(15)==1)CYCLE MACRO_SCAN
                GO TO 10
             END IF
             IF (KC+KP+KB/= 0) CYCLE
@@ -323,7 +324,7 @@ C
          O(O_S-2*(A)-2)=O_V
          GO TO 100
 101   CONTINUE
-      IF(O(15)==1)GO TO 80
+      IF(O(15)==1)CYCLE MACRO_SCAN
       IF (O_S==O_U) THEN
          O_S=525371
          O(O_S)=O(O_U)
@@ -422,9 +423,9 @@ C
             IF( O(82) ==O(O_U))O(11)=O(11)+1
             IF( O(83) ==O(O_U))O(11)=O(11)-1
          END IF
-      CYCLE
       END DO
-90    IF (O(23)>0) THEN
+      END DO MACRO_SCAN
+      IF (O(23)>0) THEN
          O_X=O_X+1
          IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
          O(O_X)=O(O_S)
