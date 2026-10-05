@@ -441,34 +441,33 @@ C
          END IF
          GO TO 30
       END IF
-950   CONTINUE
-      IF (O(O_S)==O(79)) THEN
-         IF (O_W>=IW) O_W=LINF (IW,O_W,15)
-      ELSE IF (O(O_S)==O(97)) THEN
-         IF (O(68)==0) THEN
-            NERD=LINF(O_S+2,O_S+O(O_S+1)+1,12)
-            O_S=O_S+O(O_S+1)+2
+      DO
+         IF (O(O_S)==O(79)) THEN
+            IF (O_W>=IW) O_W=LINF (IW,O_W,15)
+         ELSE IF (O(O_S)==O(97)) THEN
+            IF (O(68)==0) THEN
+               NERD=LINF(O_S+2,O_S+O(O_S+1)+1,12)
+               O_S=O_S+O(O_S+1)+2
+            END IF
+         ELSE IF (O(O_S)==O(92)) THEN
+            O(24)=1
+         ELSE IF (O(O_S)==O(93)) THEN
+            O(24)=0
+         ELSE IF (O(68)==0) THEN
+            O_W=O_W+1
+            O(O_W)=O(O_S)
+            IF (O(O_W)==O(105)) THEN
+               DO
+                  IF(O(O_W)==O(106))EXIT
+                  O_W=O_W+1
+                  O_S=O_S+1
+                  O(O_W)=O(O_S)
+               END DO
+            END IF
          END IF
-      ELSE IF (O(O_S)==O(92)) THEN
-         O(24)=1
-      ELSE IF (O(O_S)==O(93)) THEN
-         O(24)=0
-      ELSE IF (O(68)==0) THEN
-         O_W=O_W+1
-         O(O_W)=O(O_S)
-         IF (O(O_W)==O(105)) THEN
-            DO
-               IF(O(O_W)==O(106))EXIT
-               O_W=O_W+1
-               O_S=O_S+1
-               O(O_W)=O(O_S)
-            END DO
-         END IF
-      END IF
-      O_S=O_S+1
-      IF(O_S>O_U .OR. O(24)==0)GO TO 951
-      GO TO 950
-951   CONTINUE
+         O_S=O_S+1
+         IF(O_S>O_U .OR. O(24)==0)EXIT
+      END DO
       GO TO 30
       END
 C_______________________________________________________________________
