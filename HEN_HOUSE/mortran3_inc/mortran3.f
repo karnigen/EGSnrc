@@ -1056,7 +1056,7 @@ CGHQUVWXYZ
 2420  CONTINUE
       O(54)=O(31)
       IF ( O(S-2*(2)-1)/= O(S-2*(2)-2) )O(54)=O(O(S-2*(2)-1))
-      DO 2431 K = 1,3
+      DO K = 1,3
          A=O(S-2*(K)-1)
          T=O(S-2*(K)-2)
          N=A-1
@@ -1113,7 +1113,7 @@ CGHQUVWXYZ
 2441     CONTINUE
          O(S-2*(K)-2)=N
          L(K)=O(S-2*(K)-2)-O(S-2*(K)-1)
-2431  CONTINUE
+         END DO
       IF (12>O(54).OR.O(54)>14) GO TO 2680
          B=O(S-2*(1)-1)
          E=O(S-2*(1)-2)
