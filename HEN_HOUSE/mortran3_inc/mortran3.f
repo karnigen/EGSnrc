@@ -1728,29 +1728,23 @@ C________________________________________
          J=J+1
          O(J)=O(K)
          K=K+1
-         IF (O(J)/= 45) GO TO 4150
-            IF (O(K)/= 46) GO TO 4170
+         IF (O(J)==45) THEN
+            IF (O(K)==46) THEN
                O(J)=O(85)
                K=K+1
-               GO TO 4160
-4170           IF  (O(K)/= 86)GO TO 4180
+            ELSE IF (O(K)==86) THEN
                O(J)=O(83)
                K=K+1
-4160        CONTINUE
-4180        CONTINUE
-            GO TO 4140
-4150        IF  (O(K)/= 45)GO TO 4190
-            IF (O(J)/= 38) GO TO 4210
+            END IF
+         ELSE IF (O(K)==45) THEN
+            IF (O(J)==38) THEN
                O(J)=O(84)
                K=K+1
-               GO TO 4200
-4210           IF  (O(J)/= 85)GO TO 4220
+            ELSE IF (O(J)==85) THEN
                O(J)=O(82)
                K=K+1
-4200        CONTINUE
-4220        CONTINUE
-4140     CONTINUE
-4190     CONTINUE
+            END IF
+         END IF
       END DO
       DO WHILE(J<=MXT)
          J=J+1
