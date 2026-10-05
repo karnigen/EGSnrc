@@ -694,13 +694,13 @@ CCDGHILM
                GO TO 1480
 1490           O_X=O_W
                O(58)=O(58)-1
-               IF (JV/= 0) GO TO 1550
+               IF (JV==0) THEN
                   P=O(65)
                   Q=O(64)
-                  GO TO 1540
-1550              P=O(67)
+               ELSE
+                  P=O(67)
                   Q=O(66)
-1540           CONTINUE
+               END IF
                O(44)=O(44)+1
                O(O(44))=O(64)+1
                O(44)=O(44)+1
