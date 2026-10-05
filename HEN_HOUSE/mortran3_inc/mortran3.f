@@ -163,8 +163,6 @@ C
       IW=450741
       O_X=O_W
       GO TO 10
-20    CALL COUT
-      CALL EXPAND(A)
 30    IF (O_S>O_U) THEN
          IF (O(23)>0) THEN
             CALL EXPAND(-1)
@@ -222,7 +220,11 @@ C
                O_V=O_V+1
                T=O_V
 240            D=D+1
-               IF(D>=MXD)GO TO 20
+               IF(D>=MXD) THEN
+                  CALL COUT()
+                  CALL EXPAND(A)
+                  GO TO 30
+               END IF
                GO TO 100
 230         CONTINUE
             IF (O(O_V)==O(76).AND.O(69)+KD==0) THEN
