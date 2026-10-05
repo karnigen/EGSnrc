@@ -203,14 +203,13 @@ C
                   IF(O(D-3)/= O(107))F=0
                   IP=D
                   IQ=D
-190               IF(O(IQ)==O(85))GO TO 191
+                  DO
+                     IF(O(IQ)==O(85))EXIT
                      IQ=IQ+1
-                     IF (IQ<=MXD) GO TO 210
-                        CALL MESAGE(14, 20, 0,0)
-                        GO TO 80
-210                  CONTINUE
-                  GO TO 190
-191               CONTINUE
+                     IF(IQ<=MXD)CYCLE
+                     CALL MESAGE(14, 20, 0,0)
+                     GO TO 80
+                  END DO
                   GO TO 100
 180            CONTINUE
 160         CONTINUE
