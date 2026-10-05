@@ -2601,11 +2601,11 @@ C     WRITE(6,1) J,K-1
    1     FORMAT(2I5)
       O(31)=4
       O(34)=2655
-      DO 5291 K = 1,10
+      DO K = 1,10
          O(K+100)=K+100
          O(K+110)=K+110
          O(100-K)=-K
-5291  CONTINUE
+      END DO
 C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
       CALL DUMDUM(76, 90, 79, 78, 75, 38, 46, 74, 82, 83, 84)
       O(86)=77
