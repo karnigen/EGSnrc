@@ -1898,13 +1898,13 @@ C________________________________________
          CALL CRIT(R+4,O(R+3) )
          K=O(S-1)
          IF (K==0) GO TO 4450
-            DO 4461 M = 1,K
+            DO M = 1,K
                CALL DUMDUM(175,90,90,90,90,10,27,16,90,90,90)
                O(175+8)=M
                T=O(S-2*(M)-1)
                N=O(S-2*(M)-2)
                IF (T/= N) CALL CRIT(T,N)
-4461        CONTINUE
+            END DO
 4450     CONTINUE
 4340  CONTINUE
 4430  CONTINUE
