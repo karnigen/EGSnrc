@@ -517,8 +517,9 @@ CADEFGHIJKLRSXYZ
             IF  (O(P)>=O(106))GO TO 1150
             P=P+1
             JMP=O(P-1)-100
-            GO TO (1160,1170,1180,1190,1200),JMP
-1160        IF (M/= 0) GO TO 1220
+            SELECT CASE (JMP)
+            CASE (1)
+            IF (M/= 0) GO TO 1220
                V=O(O(46)-1)
                GO TO 1210
 1220           N=1
@@ -532,7 +533,8 @@ CADEFGHIJKLRSXYZ
                P=P-1
 1210        CONTINUE
             GO TO 1070
-1180        O(46)=O(46)+1
+            CASE (3)
+            O(46)=O(46)+1
             O(O(46))=C
             O(46)=O(46)+1
             O(O(46))=V
@@ -541,7 +543,8 @@ CADEFGHIJKLRSXYZ
             IF(O(46)>2254)CALL MESAGE(15, 20, 0,0)
             C=0
             GO TO 1070
-1190        P=P+2
+            CASE (4)
+            P=P+2
             IF (M/= 1) GO TO 1250
                C=C+1
                IF (C>=O(P-1)) GO TO 1270
@@ -562,7 +565,8 @@ CADEFGHIJKLRSXYZ
             C=O(O(46))
             O(46)=O(46)-1
             GO TO 1300
-1170        P=P+2
+            CASE (2)
+            P=P+2
             M=0
             IF (O(P-2)>O(V).OR.O(V)>O(P-1)) GO TO 1320
                M=1
@@ -570,7 +574,8 @@ CADEFGHIJKLRSXYZ
                IF(V>U)GO TO 1120
 1320        CONTINUE
             GO TO 1300
-1200        W=V
+            CASE (5)
+            W=V
             M=1
             IF (O(P)/= O(76)) GO TO 1340
 1350           IF(O(W)/= O(76).OR.O(P)/= O(76))GO TO 1351
@@ -587,6 +592,7 @@ CADEFGHIJKLRSXYZ
 1361        CONTINUE
             P=P+1
             IF(M==1)V=W
+            END SELECT
 1300        IF(M==1)GO TO 1070
             IF(O(P)/= O(101) .AND. O(P)/= O(104))GO TO 90
             GO TO 1130
