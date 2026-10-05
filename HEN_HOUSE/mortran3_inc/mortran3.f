@@ -2152,9 +2152,9 @@ CCEFGLMNPQRS UVWXY
          GO TO 4790
 4791     CONTINUE
          IF (O(30)/= 1) GO TO 4940
-            DO 4951 K = 1,8
+            DO K = 1,8
                O(254-K+1)=O(O(36)-K+1)
-4951        CONTINUE
+            END DO
             GO TO 4930
 4940        IF  (O(30)/= 2)GO TO 4960
             K=LLONG(247,O(19),10,0)
