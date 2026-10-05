@@ -733,16 +733,27 @@ CCDGHILM
 1430  CONTINUE
 1580  CONTINUE
 1590     IF(O_B>=O_E)GO TO 1591
-        IF (O(O_B)<O(107)) THEN
+         IF (O(O_B)<O(107)) THEN
                O_X=O_X+1
                IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                O(O_X)=O(O_B)
                O_B=O_B+1
                GO TO 1590
-        END IF
+         END IF
             O_B=O_B+1
             JMP=O(O_B-1)-O(106)
-            GO TO (1620,1630,1640,1650),JMP
+            SELECT CASE (JMP)
+            CASE (1)
+               GO TO 1620
+            CASE (2)
+               GO TO 1630
+            CASE (3)
+               GO TO 1640
+            CASE (4)
+               GO TO 1650
+            CASE DEFAULT
+               GO TO 1630
+            END SELECT
 1630        IF (1>O(O_B).OR.O(O_B)>O(O_S-1)) GO TO 1670
                A=O(O_S-2*(O(O_B))-1)
                N=O(O_S-2*(O(O_B))-2)
