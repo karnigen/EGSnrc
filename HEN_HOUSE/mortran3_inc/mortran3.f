@@ -2031,9 +2031,9 @@ C__________________________________________
 4640  CONTINUE
       CALL RW(33,O(56),A,C)
       IF (O(63)>0) CALL RW(23,O(57),A,C)
-      DO 4651 K = A,C
+      DO K = A,C
          O(K)=O(76)
-4651  CONTINUE
+      END DO
       C=175+8
 99999 RETURN
       END
