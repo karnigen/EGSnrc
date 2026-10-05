@@ -1444,14 +1444,13 @@ CFGHIJKLMQRSUVWY
          C=B+1
          NQ=1
          MXC=Z
-3240     CONTINUE
+         DO
             IF( O(105) ==O(C))NQ=NQ+1
             IF( O(106) ==O(C))NQ=NQ-1
-            IF(NQ==0)GO TO 3241
+            IF(NQ==0)EXIT
             C=C+1
             IF(C>MXC)CALL MESAGE(15, 35, 0,0)
-         GO TO 3240
-3241     CONTINUE
+         END DO
          D=C+1
          E=D+1
          IF (O(E)==O(105)) GO TO 3260
