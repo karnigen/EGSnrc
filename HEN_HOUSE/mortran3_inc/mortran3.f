@@ -668,9 +668,9 @@ CCDGHILM
       IF (F>=0) GO TO 1440
          O(23)=O(23)-1
          IF(O(23)==0)O(15)=SEF
-         DO 1451 K = 1,6
+         DO K = 1,6
             O(K)=O(6+O_U+1-K)
-1451     CONTINUE
+         END DO
          J=O(O(O(51)))
          IF (11>J.OR.J>12) GO TO 1470
             JV=LEXP(O_W+1,O_X)
