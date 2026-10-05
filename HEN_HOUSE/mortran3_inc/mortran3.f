@@ -303,11 +303,11 @@ C
                   IF(46==O(T))KP=KP-1
                   IF(KP<0)GO TO 80
                END IF
-               IF (N2/= 1) GO TO 530
+               IF (N2==1) THEN
                   IF( O(82) ==O(T))KB=KB+1
                   IF( O(83) ==O(T))KB=KB-1
                   IF(KB<0)GO TO 80
-530            CONTINUE
+               END IF
                IF (O(T)/= O(79)) GO TO 550
                   IF(N3>0)GO TO 80
 550            CONTINUE
