@@ -315,15 +315,11 @@ C
                IF(O(15)==1)GO TO 80
                GO TO 10
             END IF
-            IF (KC+KP+KB/= 0) GO TO 590
-               IF(MQ==0)D=F
-440            O_V=T
-               O(O_S-2*(A)-2)=O_V
-               GO TO 401
-590         CONTINUE
-         GO TO 400
-401      CONTINUE
-      GO TO 100
+            IF (KC+KP+KB/= 0) GO TO 400
+            IF(MQ==0)D=F
+440         O_V=T
+            O(O_S-2*(A)-2)=O_V
+            GO TO 100
 101   CONTINUE
       IF(O(15)==1)GO TO 80
       IF (O_S==O_U) THEN
