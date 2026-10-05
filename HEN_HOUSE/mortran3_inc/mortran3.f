@@ -733,13 +733,13 @@ CCDGHILM
 1430  CONTINUE
 1580  CONTINUE
 1590     IF(O_B>=O_E)GO TO 1591
-            IF (O(O_B)>=O(107)) GO TO 1610
+        IF (O(O_B)<O(107)) THEN
                O_X=O_X+1
                IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                O(O_X)=O(O_B)
                O_B=O_B+1
                GO TO 1590
-1610        CONTINUE
+        END IF
             O_B=O_B+1
             JMP=O(O_B-1)-O(106)
             GO TO (1620,1630,1640,1650),JMP
