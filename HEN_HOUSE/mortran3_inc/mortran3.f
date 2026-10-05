@@ -287,16 +287,16 @@ C
                IF(T>O_U)GO TO 80
                GO TO 430
 420         CONTINUE
-            IF (O(T)/= O(105)) GO TO 460
+            IF (O(T)==O(105)) THEN
                NB=1
-470            IF(NB==0)GO TO 471
+               DO
+                  IF(NB==0)EXIT
                   T=T+1
                   IF(T>O_U)GO TO 80
                   IF( O(105) ==O(T))NB=NB+1
                   IF( O(106) ==O(T))NB=NB-1
-               GO TO 470
-471            CONTINUE
-460         CONTINUE
+              END DO
+            END IF
             IF (O(69)/= 0) GO TO 490
                IF( O(84) ==O(T))KC=KC+1
                IF( O(85) ==O(T))KC=KC-1
