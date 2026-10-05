@@ -446,10 +446,10 @@ C
             IF (O_W>=IW) O_W=LINF (IW,O_W,15)
             GO TO 960
 970         IF  (O(O_S)/= O(97))GO TO 980
-            IF (O(68)/= 0) GO TO 1000
+            IF (O(68)==0) THEN
                NERD=LINF(O_S+2,O_S+O(O_S+1)+1,12)
                O_S=O_S+O(O_S+1)+2
-1000        CONTINUE
+            END IF
             GO TO 960
 980         IF  (O(O_S)/= O(92))GO TO 1010
             O(24)=1
