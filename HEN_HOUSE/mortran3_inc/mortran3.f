@@ -1566,10 +1566,10 @@ CFGHIJKLMQRSUVWY
             JMP=K-((K/100)*100)-1
             GO TO (2000,3580,3590,3600,3610,3620,3630,3640,3650,3660,3670,
      *      3680,3690,3700,3710),JMP
-3630        IF (O(N)/= 0) GO TO 3730
+3630        IF (O(N)==0) THEN
                CALL MESAGE(14, 10, 0,0)
-               GO TO 3370
-3730        CONTINUE
+               EXIT
+            END IF
             O(N-2) = O(N-2) / O(N)
             GO TO 3740
 3640        O(N-2) = O(N-2) * O(N)
