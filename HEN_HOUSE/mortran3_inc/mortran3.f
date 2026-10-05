@@ -438,14 +438,13 @@ C
          O(O_X)=O(O_S)
          O_S=O_S+1
          IF (O(O_X)/= O(92).OR.O(32)==1265) GO TO 930
-940         CONTINUE
+            DO
                O_X=O_X+1
                IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                O(O_X)=O(O_S)
                O_S=O_S+1
-               IF(O(O_X)==O(93))GO TO 941
-            GO TO 940
-941         CONTINUE
+               IF(O(O_X)==O(93))EXIT
+            END DO
 930      CONTINUE
          GO TO 30
 910   CONTINUE
