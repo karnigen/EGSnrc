@@ -326,11 +326,11 @@ C
       GO TO 100
 101   CONTINUE
       IF(O(15)==1)GO TO 80
-      IF (O_S/= O_U) GO TO 610
+      IF (O_S==O_U) THEN
          O_S=525371
          O(O_S)=O(O_U)
          O_U=O_S
-610   CONTINUE
+      END IF
 10    O(55)=O(76)
       KX=0
 620   CONTINUE
