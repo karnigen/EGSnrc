@@ -1709,9 +1709,9 @@ C________________________________________
                END DO
                CALL RW(18,O(56),157,W-1)
                IF(L>M)EXIT
-               DO 4091 K = 157,175
+               DO K = 157,175
                   O(K)=O(76)
-4091           CONTINUE
+               END DO
             END DO
         END IF
       END IF
