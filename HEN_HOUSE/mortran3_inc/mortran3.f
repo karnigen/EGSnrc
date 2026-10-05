@@ -336,7 +336,7 @@ C
          IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
          O(O_U)=O(O_C)
          O_C=O_C+1
-         IF(O_C>O(43))CALL NXTCRD
+         IF(O_C>O(43))CALL NXTCRD()
          IF (O(O_U)==O(84)) THEN
             O(55)=O(O_U)
             KX=1
@@ -346,7 +346,7 @@ C
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
                O(O_U)=O(O_C)
                O_C=O_C+1
-               IF(O_C>O(43))CALL NXTCRD
+               IF(O_C>O(43))CALL NXTCRD()
                IF( O(84) ==O(O_U))KX=KX+1
                IF( O(85) ==O(O_U))KX=KX-1
             END DO
@@ -374,14 +374,14 @@ C
             IF (O_C<=O_MXC) THEN
                O(55)=O(76)
                O_C=O_C+1
-               IF(O_C>O(43))CALL NXTCRD
+               IF(O_C>O(43))CALL NXTCRD()
                GO TO 10
             ELSE IF (O(26)==1) THEN
                O(55)=O(76)
-               CALL NXTCRD
+               CALL NXTCRD()
                GO TO 10
             ELSE
-               CALL NXTCRD
+               CALL NXTCRD()
                O_U=O_U+1
                GO TO 680
             END IF
@@ -394,11 +394,11 @@ C
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
                O(O_U)=O(O_C)
                O_C=O_C+1
-               IF(O_C>O(43))CALL NXTCRD
+               IF(O_C>O(43))CALL NXTCRD()
                IF (O(O_U)/= O(86))CYCLE
                IF (O(O_C)==O(86)) THEN
                   O_C=O_C+1
-                  IF(O_C>O(43))CALL NXTCRD
+                  IF(O_C>O(43))CALL NXTCRD()
                   CYCLE
                END IF
                O(O_U)=O(106)
@@ -2575,7 +2575,7 @@ C
       O_W=450741-1
       O(O_W)=O(79)
       CALL DUMDUM(44,2105,2155,2205,2255,2305,2355,2455,2505,0,0)
-      CALL NXTCRD
+      CALL NXTCRD()
 99999 RETURN
       END
 C_______________________________________________________________________
