@@ -157,15 +157,15 @@ C
 
       O(5)=100
       O(6)=1000
-      CALLINITAL(1)
+      CALL INITAL(1)
       IW=450741
       X=W
       GOTO10
-20    CALLCOUT
-      CALLEXPAND(A)
+20    CALL COUT
+      CALL EXPAND(A)
 30    IF (S.LE.U) GOTO 50
          IF (O(23).LE.0) GOTO 70
-            CALLEXPAND(-1)
+            CALL EXPAND(-1)
             GOTO30
 70       CONTINUE
          S=525371
@@ -184,8 +184,8 @@ C
       A=0
       T=S
       V=S
-      IF(O(29).GE.4) CALLMACTRC(2,D,MXD)
-      IF(O(29).GE.4) CALLMACTRC(5,V,U+1)
+      IF(O(29).GE.4) CALL MACTRC(2,D,MXD)
+      IF(O(29).GE.4) CALL MACTRC(5,V,U+1)
 100   IF(V.GT.U)GOTO101
          IF (O(V).NE.O(97)) GOTO 120
             V=V+O(V+1)+3
@@ -204,7 +204,7 @@ C
 190               IF(O(IQ).EQ.O(85))GOTO191
                      IQ=IQ+1
                      IF (IQ.LE.MXD) GOTO 210
-                        CALLMESAGE(14, 20, 0,0)
+                        CALL MESAGE(14, 20, 0,0)
                         GOTO80
 210                  CONTINUE
                   GOTO 190
@@ -339,19 +339,19 @@ C
       KX=0
 620   CONTINUE
          U=U+1
-         IF(U.GT.600000)CALLMESAGE(15, 1, 0,0)
+         IF(U.GT.600000)CALL MESAGE(15, 1, 0,0)
          O(U)=O(C)
          C=C+1
-         IF(C.GT.O(43))CALLNXTCRD
+         IF(C.GT.O(43))CALL NXTCRD
          IF (O(U).NE.O(84)) GOTO 640
             O(55)=O(U)
             KX=1
 650         IF(KX.EQ.0)GOTO651
                U=U+1
-               IF(U.GT.600000)CALLMESAGE(15, 1, 0,0)
+               IF(U.GT.600000)CALL MESAGE(15, 1, 0,0)
                O(U)=O(C)
                C=C+1
-               IF(C.GT.O(43))CALLNXTCRD
+               IF(C.GT.O(43))CALL NXTCRD
                IF( O(84) .EQ.O(U))KX=KX+1
                IF( O(85) .EQ.O(U))KX=KX-1
             GOTO 650
@@ -365,7 +365,7 @@ C
             Y=U
 690         IF(O(C).EQ.O(87).OR.C.GT.O(43))GOTO691
                U=U+1
-               IF(U.GT.600000)CALLMESAGE(15, 1, 0,0)
+               IF(U.GT.600000)CALL MESAGE(15, 1, 0,0)
                O(U)=O(C)
                C=C+1
             GOTO 690
@@ -380,16 +380,16 @@ C
             IF (C.LE.MXC) GOTO 730
                IF (O(26).NE.1) GOTO 750
                   O(55)=O(76)
-                  CALLNXTCRD
+                  CALL NXTCRD
                   GOTO10
 750            CONTINUE
-               CALLNXTCRD
+               CALL NXTCRD
                U=U+1
                GOTO680
 730         CONTINUE
             O(55)=O(76)
             C=C+1
-            IF(C.GT.O(43))CALLNXTCRD
+            IF(C.GT.O(43))CALL NXTCRD
             GOTO10
 670      CONTINUE
          IF (O(U).NE.O(86).OR.O(28).LE.0) GOTO 770
@@ -397,10 +397,10 @@ C
             O(U)=O(105)
 780         CONTINUE
                U=U+1
-               IF(U.GT.600000)CALLMESAGE(15, 1, 0,0)
+               IF(U.GT.600000)CALL MESAGE(15, 1, 0,0)
                O(U)=O(C)
                C=C+1
-               IF(C.GT.O(43))CALLNXTCRD
+               IF(C.GT.O(43))CALL NXTCRD
                IF (O(U).NE.O(86)) GOTO 800
                   IF (O(C).EQ.O(86)) GOTO 820
                      O(U)=O(106)
@@ -408,7 +408,7 @@ C
                      GOTO781
 820               CONTINUE
                   C=C+1
-                  IF(C.GT.O(43))CALLNXTCRD
+                  IF(C.GT.O(43))CALL NXTCRD
 800            CONTINUE
             GOTO 780
 781         CONTINUE
@@ -433,13 +433,13 @@ C
       GOTO30
 90    IF (O(23).LE.0) GOTO 910
          X=X+1
-         IF(X.GT.O(40))CALLMESAGE(15, 3, 0,0)
+         IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
          O(X)=O(S)
          S=S+1
          IF (O(X).NE.O(92).OR.O(32).EQ.1265) GOTO 930
 940         CONTINUE
                X=X+1
-               IF(X.GT.O(40))CALLMESAGE(15, 3, 0,0)
+               IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                O(X)=O(S)
                S=S+1
                IF(O(X).EQ.O(93))GOTO941
@@ -513,13 +513,13 @@ CADEFGHIJKLRSXYZ
          IF (O(P).GT.100) GOTO 1140
             IQ=Q
             I=MINI(P,Q,NP,1505)
-            IF(O(29).GE.4) CALLMACTRC(5,V,U)
+            IF(O(29).GE.4) CALL MACTRC(5,V,U)
             IF(I.EQ.0)GOTO90
             O(45)=O(45)+1
             O(O(45))=IQ
             O(45)=O(45)+1
             O(O(45))=NP
-            IF(O(45).GT.2204)CALLMESAGE(15, 19, 0,0)
+            IF(O(45).GT.2204)CALL MESAGE(15, 19, 0,0)
             GOTO 1130
 1140        IF  (O(P).GE.O(106))GOTO1150
             P=P+1
@@ -533,7 +533,7 @@ CADEFGHIJKLRSXYZ
                   IF( O(103) .EQ.O(P))N=N+1
                   IF( O(104) .EQ.O(P))N=N-1
                   P=P+1
-                  IF(P.GT.Q)CALLMESAGE(14, 27, 0,0)
+                  IF(P.GT.Q)CALL MESAGE(14, 27, 0,0)
                GOTO 1230
 1231           CONTINUE
                P=P-1
@@ -545,7 +545,7 @@ CADEFGHIJKLRSXYZ
             O(O(46))=V
             O(46)=O(46)+1
             O(O(46))=P
-            IF(O(46).GT.2254)CALLMESAGE(15, 20, 0,0)
+            IF(O(46).GT.2254)CALL MESAGE(15, 20, 0,0)
             C=0
             GOTO1070
 1190        P=P+2
@@ -559,7 +559,7 @@ CADEFGHIJKLRSXYZ
             IF(C.GE.O(P-2))M=1
             IF( M.EQ.0 ) V=O(O(46)-1)
             IF (.NOT.((O(46).EQ.2205))) GOTO 1290
-               CALLMESAGE(14, 17, 0,0)
+               CALL MESAGE(14, 17, 0,0)
                GOTO90
 1290        CONTINUE
             NUL=O(O(46))
@@ -597,7 +597,7 @@ CADEFGHIJKLRSXYZ
 1300        IF(M.EQ.1)GOTO1070
             IF(O(P).NE.O(101) .AND. O(P).NE.O(104))GOTO90
             GOTO 1130
-1150        CALLMESAGE(14, 19, P,Q+11)
+1150        CALL MESAGE(14, 19, P,Q+11)
             GOTO90
 1130     CONTINUE
       GOTO 1070
@@ -637,7 +637,7 @@ CABCDEFGHIJKNRTXYZ
          P=M+4
          Q=O(M+3)
 C   IF Q-PnL jM;
-         IF(O(29).GE.6) CALLMACTRC(2,P,Q)
+         IF(O(29).GE.6) CALL MACTRC(2,P,Q)
 1420     IF(P.GE.Q)GOTO1421
             IF(O(P).NE.O(V))GOTO1390
             P=P+1
@@ -650,7 +650,7 @@ C   IF Q-PnL jM;
          W=V
          GOTO 99999
 1410  CONTINUE
-      CALLMESAGE(14, 15, S,U+1)
+      CALL MESAGE(14, 15, S,U+1)
 99999 RETURN
       END
 C_______________________________________________________________________
@@ -701,7 +701,7 @@ CCDGHILM
                O(O(44))=O(64)+1
                O(44)=O(44)+1
                O(O(44))=E
-               IF(O(44).GT.2154)CALLMESAGE(15, 18, 0,0)
+               IF(O(44).GT.2154)CALL MESAGE(15, 18, 0,0)
                B=P
                E=Q
 1480        CONTINUE
@@ -721,17 +721,17 @@ CCDGHILM
          R=O(R)
          O(62)=O(62)+1
          IF (O(62).LE.1000) GOTO 1570
-            CALLMESAGE(14, 4, 0,0)
+            CALL MESAGE(14, 4, 0,0)
             O(29)=2
 1570     CONTINUE
-         IF(O(29).GE.2) CALLMACTRC(22,O(22),S)
+         IF(O(29).GE.2) CALL MACTRC(22,O(22),S)
          IF( O(23).EQ.0 )X=W
 1430  CONTINUE
 1580  CONTINUE
 1590     IF(B.GE.E)GOTO1591
             IF (O(B).GE.O(107)) GOTO 1610
                X=X+1
-               IF(X.GT.O(40))CALLMESAGE(15, 3, 0,0)
+               IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                O(X)=O(B)
                B=B+1
                GOTO1590
@@ -744,14 +744,14 @@ CCDGHILM
                N=O(S-2*(O(B))-2)
 1680           IF(A.GE.N)GOTO1681
                   X=X+1
-                  IF(X.GT.O(40))CALLMESAGE(15, 3, 0,0)
+                  IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                   O(X)=O(A)
                   A=A+1
                GOTO 1680
 1681           CONTINUE
                GOTO1690
 1670        CONTINUE
-            CALLMESAGE(15, 4, B,E)
+            CALL MESAGE(15, 4, B,E)
 1620        IF (O(B).NE.12) GOTO 1710
                B=B+1
                IF (O(B).NE.23) GOTO 1730
@@ -778,13 +778,13 @@ CCDGHILM
 1810           CONTINUE
                GOTO1690
 1710        CONTINUE
-            IF(O(68).EQ.0)CALLKAT
+            IF(O(68).EQ.0)CALL KAT
             GOTO1690
 1640        IF (O(B).NE.10) GOTO 1830
                B=B+1
-               IF(1.GT.O(B).OR.O(B).GT.O(S-1) )CALLMESAGE(15, 4, B,E)
+               IF(1.GT.O(B).OR.O(B).GT.O(S-1) )CALL MESAGE(15, 4, B,E)
                X=X+LLONG(X,O(S-2*(O(B))-2)-O(S-2*(O(B))-1),10,0)
-               IF(X.GT.O(40))CALLMESAGE(15, 3, 0,0)
+               IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                B=B+2
                GOTO1590
 1830        CONTINUE
@@ -796,7 +796,7 @@ CCDGHILM
                   IF( O(110) .EQ.O(B))T=T-1
                   IF(T.EQ.0)GOTO1861
                   X=X+1
-                  IF(X.GT.O(40))CALLMESAGE(15, 3, 0,0)
+                  IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                   O(X)=O(B)
                   B=B+1
                GOTO 1860
@@ -820,7 +820,7 @@ CCDGHILM
             O(O(51))=W
             O(51)=O(51)+1
             O(O(51))=B
-            IF(O(51).GT.2554)CALLMESAGE(15, 34, 0,0)
+            IF(O(51).GT.2554)CALL MESAGE(15, 34, 0,0)
             W=X
             GOTO1690
 1650        IF (KRAP.EQ.0.OR.KRAQ.NE.O(23)) GOTO 1900
@@ -839,7 +839,7 @@ CCDGHILM
             Y=O(Z)
             IF(O(Z+2).EQ.O(105))Y=0
             IF((9.LT.Y).AND.(Y.LT.15))Y=O(31)
-            IF( 0.GT.Y.OR.Y.GE.8 )CALLMESAGE(15, 17, B,E)
+            IF( 0.GT.Y.OR.Y.GE.8 )CALL MESAGE(15, 17, B,E)
             O(32)=Y*120+1145
             GOTO1591
 1690        B=B+1
@@ -859,7 +859,7 @@ CCDGHILM
 1920     CONTINUE
       GOTO 1580
 1581  CONTINUE
-      IF(O(29).GE.2) CALLMACTRC(33,W,X)
+      IF(O(29).GE.2) CALL MACTRC(33,W,X)
 1940  IF(X.LE.W)GOTO1941
          V=V-1
          O(V)=O(X)
@@ -885,7 +885,7 @@ C________________________________________
       integer jmp,t,ibg,z,iuni,nba
       save    jmp,t,ibg,z,iuni,nba
 CFGHIJKLPQ  YZ
-      IF(O(B).LT.19.OR.O(B).GT.30) CALLMESAGE(15, 7, B-2,E)
+      IF(O(B).LT.19.OR.O(B).GT.30) CALL MESAGE(15, 7, B-2,E)
       B=B+1
       JMP=O(B-1)-18
       GOTO(1950,1960,1970,1390,1980,1990,2000,2010,2020,2030,2040,2050),
@@ -894,7 +894,7 @@ CFGHIJKLPQ  YZ
       X=X+1
       O(X)=O(T)
       GOTO 99999
-1960  CALLKRUNC(0)
+1960  CALL KRUNC(0)
       GOTO 99999
 1970  IF (O(B).NE.12) GOTO 2070
          X=X+LLONG(X,O(L-O(B+1))+O(B+2),10,1)
@@ -910,7 +910,7 @@ CFGHIJKLPQ  YZ
          B=B+1
          O(47)=O(47)+1
          O(O(47))=NIB(X,10)
-         IF(O(47).GT.2304)CALLMESAGE(15, 21, 0,0)
+         IF(O(47).GT.2304)CALL MESAGE(15, 21, 0,0)
          GOTO2120
 2110  CONTINUE
       IF (O(B).NE.30) GOTO 2140
@@ -918,17 +918,17 @@ CFGHIJKLPQ  YZ
          IF(O(B).EQ.1)O(L-1)=O(L)
          L=L-1
          IF (L.GE.2255) GOTO 2160
-            CALLMESAGE(14, 7, 0,0)
+            CALL MESAGE(14, 7, 0,0)
             L=L+1
 2160     CONTINUE
          GOTO1300
 2140  CONTINUE
-      CALLMESAGE(15, 7, B-2,E)
+      CALL MESAGE(15, 7, B-2,E)
 1390  IF (O(B).NE.28) GOTO 2180
          B=B+1
          O(48)=O(48)+1
          O(O(48))=O(B)
-         IF(O(48).GT.2354)CALLMESAGE(15, 22, 0,0)
+         IF(O(48).GT.2354)CALL MESAGE(15, 22, 0,0)
          GOTO 99999
 2180  CONTINUE
       IF (O(B).NE.27) GOTO 2200
@@ -941,16 +941,16 @@ CFGHIJKLPQ  YZ
          O(X)=O(M)
          M=M-1
          IF (M.GE.2305) GOTO 2240
-            CALLMESAGE(14, 8, 0,0)
+            CALL MESAGE(14, 8, 0,0)
             M=M+1
 2240     CONTINUE
          GOTO 99999
 2220  CONTINUE
-      CALLMESAGE(15, 7, B-2,E)
+      CALL MESAGE(15, 7, B-2,E)
 1980  IBG=O(X)
       X=X-1+LLONG(X-1,IBG,10,1)
       GOTO 99999
-1990  CALLDEFINE(S)
+1990  CALL DEFINE(S)
       GOTO 99999
 2000  O(58)=1
       B=B+4
@@ -963,7 +963,7 @@ CFGHIJKLPQ  YZ
 2010  O(16)=O(16)+10
       O(47)=O(47)+1
       O(O(47))=O(16)
-      IF(O(47).GT.2304)CALLMESAGE(15, 21, 0,0)
+      IF(O(47).GT.2304)CALL MESAGE(15, 21, 0,0)
 2120  IF (O(B).NE.1) GOTO 2260
          Z=O(L-1)
          O(L-1)=O(L)
@@ -978,7 +978,7 @@ CFGHIJKLPQ  YZ
 2020  IUNI=O(B)
       REWIND IUNI
       GOTO 99999
-2040  IF(O(29).GE.1) CALLMACTRC(22,O(22),S)
+2040  IF(O(29).GE.1) CALL MACTRC(22,O(22),S)
       B=B-1
       GOTO 99999
 2030  T=O(B)
@@ -1012,7 +1012,7 @@ CFGHIJKLPQ  YZ
          IF (NBA.GT.1) X=X-1+LLONG(X-1,O(T),NBA,1)
          GOTO 99999
 2370  CONTINUE
-      CALLMESAGE(15, 7, B-3,E)
+      CALL MESAGE(15, 7, B-3,E)
 99999 RETURN
       END
 C_______________________________________________________________________
@@ -1052,7 +1052,7 @@ CGHQUVWXYZ
       save      l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       DIMENSION L(3)
       IF (O(S-2*(1)-1).NE.O(S-2*(1)-2)) GOTO 2420
-         CALLMESAGE(14, 1, 0,0)
+         CALL MESAGE(14, 1, 0,0)
          GOTO 99999
 2420  CONTINUE
       O(54)=O(31)
@@ -1128,7 +1128,7 @@ CGHQUVWXYZ
                O(54)=O(31)
                GOTO2760
 2750        CONTINUE
-            CALLMESAGE(14, 2, 0,0)
+            CALL MESAGE(14, 2, 0,0)
             GOTO 99999
 2730     CONTINUE
          M=O(M)
@@ -1155,11 +1155,11 @@ C      D-LINK PAT         CAT PTR   MARK PAT
                C=O(C)
             GOTO 2810
 2811        CONTINUE
-            IF(O(13).GT.0)CALLMACTRC(13,0,S)
+            IF(O(13).GT.0)CALL MACTRC(13,0,S)
             GOTO 99999
 2800     CONTINUE
          NEED= 4+L(3)
-         IF(NEED.GT. 450740-O(34)) CALLKRUNC(NEED)
+         IF(NEED.GT. 450740-O(34)) CALL KRUNC(NEED)
          C=O(M+2)
 2820     IF(O(C).EQ.0)GOTO2821
             C=O(C)
@@ -1176,11 +1176,11 @@ C      D-LINK PAT         CAT PTR   MARK PAT
          DO 2831 J = 1,K
             O(O(34)-J)=O(A-J)
 2831     CONTINUE
-         IF(O(13).GT.0)CALLMACTRC(12,0,S)
+         IF(O(13).GT.0)CALL MACTRC(12,0,S)
          GOTO 99999
 2680  CONTINUE
 2760  NEED=L(1)+L(3)+2*4
-      IF (NEED.GT.450740-O(34)) CALLKRUNC(2+NEED)
+      IF (NEED.GT.450740-O(34)) CALL KRUNC(2+NEED)
       A=O(S-2*(1)-1)
       Z=A+L(1)-1
       P=O(34)
@@ -1193,15 +1193,15 @@ C      D-LINK PAT         CAT PTR   MARK PAT
       GOTO 2840
 2841  CONTINUE
       IF (O(I).NE.O(84).OR.O(54).LE.2) GOTO 2860
-         CALLMESAGE(14, 21, O(S-2*(1)-1),O(S-2*(1)-2))
+         CALL MESAGE(14, 21, O(S-2*(1)-1),O(S-2*(1)-2))
          GOTO 99999
 2860  CONTINUE
       IF (O(I).LE.O(105)) GOTO 2880
-         CALLMESAGE(14, 9, O(S-2*(1)-1),O(S-2*(1)-2))
+         CALL MESAGE(14, 9, O(S-2*(1)-1),O(S-2*(1)-2))
          GOTO 99999
 2880  CONTINUE
       IF ((0.LE.O(54)).AND.(O(54).LE.7)) GOTO 2900
-         CALLMESAGE(14, 12, O(S-2*(1)-1),O(S-2*(1)-2))
+         CALL MESAGE(14, 12, O(S-2*(1)-1),O(S-2*(1)-2))
          GOTO 99999
 2900  CONTINUE
       I=O(I) + 1145 + O(54)*120
@@ -1220,12 +1220,12 @@ C      D-LINK PAT         CAT PTR   MARK PAT
       E=O(S-2*(3)-2)
       K=L(3)
       IF (K.EQ.0) GOTO 2920
-         CALLDOIT(E-K,E)
+         CALL DOIT(E-K,E)
          DO 2931 J = 1,K
             O(F-J)=O(E-J)
 2931     CONTINUE
 2920  CONTINUE
-      IF (O(13).GT.0) CALLMACTRC(15,P,R)
+      IF (O(13).GT.0) CALL MACTRC(15,P,R)
       O(34)= P +NEED
       O(60)=450740-O(34)
       O(61)=(100*O(60))/(450740-2655)
@@ -1336,10 +1336,10 @@ C   MOVE IT
 3081  CONTINUE
       O(34)=O(34)-D
       O(O(34))=0
-      IF (R.GT.D)CALLMESAGE(15, 6, 0,0)
+      IF (R.GT.D)CALL MESAGE(15, 6, 0,0)
       O(60)=450740-O(34)
       O(61)=(100*O(60))/(450740-2655)
-      CALLMESAGE(13,1,D,0)
+      CALL MESAGE(13,1,D,0)
 99999 RETURN
       END
 C_______________________________________________________________________
@@ -1437,7 +1437,7 @@ CFGHIJKLMQRSUVWY
             IF( O(106) .EQ.O(C))NQ=NQ-1
             IF(NQ.EQ.0)GOTO3241
             C=C+1
-            IF(C.GT.MXC)CALLMESAGE(15, 35, 0,0)
+            IF(C.GT.MXC)CALL MESAGE(15, 35, 0,0)
          GOTO 3240
 3241     CONTINUE
          D=C+1
@@ -1543,7 +1543,7 @@ CFGHIJKLMQRSUVWY
                O(O(49))=X
                O(49)=O(49)+1
                O(O(49))=0
-               IF(O(49).GT.2454)CALLMESAGE(15, 23, 0,0)
+               IF(O(49).GT.2454)CALL MESAGE(15, 23, 0,0)
                B=T
                GOTO3270
 3550        CONTINUE
@@ -1557,7 +1557,7 @@ CFGHIJKLMQRSUVWY
             GOTO(2000,3580,3590,3600,3610,3620,3630,3640,3650,3660,3670,
      *      3680,3690,3700,3710),JMP
 3630        IF (O(N).NE.0) GOTO 3730
-               CALLMESAGE(14, 10, 0,0)
+               CALL MESAGE(14, 10, 0,0)
                GOTO3370
 3730        CONTINUE
             O(N-2) = O(N-2) / O(N)
@@ -1598,7 +1598,7 @@ CFGHIJKLMQRSUVWY
 3280     CONTINUE
       GOTO 3270
 3271  CONTINUE
-3370  CALLMESAGE(14, 23, A,Z+1)
+3370  CALL MESAGE(14, 23, A,Z+1)
 99999 RETURN
       END
 C_______________________________________________________________________
@@ -1614,8 +1614,8 @@ C________________________________________
       integer k,j,w,i,l,m,y,nerd
       save    k,j,w,i,l,m,y,nerd
       O(62)=0
-      IF(O(52).EQ.2) CALLMESAGE(16,1,0,0)
-3770  CALLRW(0,O(9),325,MXR)
+      IF(O(52).EQ.2) CALL MESAGE(16,1,0,0)
+3770  CALL RW(0,O(9),325,MXR)
       IF (O(52).NE.1) GOTO 3790
          O(52)=0
          O(9)=O(O(50))
@@ -1646,7 +1646,7 @@ C________________________________________
             O(15)=1
             GOTO 3870
 3890        IF  (10.GT.O(458).OR.O(458).GT.30)GOTO3900
-            CALLCCCARD(O(458)-9)
+            CALL CCCARD(O(458)-9)
             O(12)=O(43)
             O(O(12))=O(79)
 3870     CONTINUE
@@ -1679,7 +1679,7 @@ C________________________________________
                W=W+1
                O(W)=O(456+K)
 4031        CONTINUE
-            CALLRW(18,O(56),157,W)
+            CALL RW(18,O(56),157,W)
             GOTO 4010
 4020        I=MOD(MAX0(O(53)*O(11),0),90)
             L=457
@@ -1704,7 +1704,7 @@ C________________________________________
                   L=L+1
                GOTO 4080
 4081           CONTINUE
-               CALLRW(18,O(56),157,W-1)
+               CALL RW(18,O(56),157,W-1)
                IF(L.GT.M)GOTO4061
                DO 4091 K = 157,175
                   O(K)=O(76)
@@ -1714,7 +1714,7 @@ C________________________________________
 4010     CONTINUE
 3950  CONTINUE
       IF (O(15).NE.1) GOTO 4110
-         IF (O(457).NE.93 ) CALLRW(23,O(57),325,404)
+         IF (O(457).NE.93 ) CALL RW(23,O(57),325,404)
          GOTO 4100
 4110     IF  (O(10).NE.1)GOTO4120
          NERD=LINF(457,MXT,10)
@@ -1810,10 +1810,10 @@ CABCDEFGHJLMNPQRSTUVWXYZ
       GOTO 99999
 2050  O(50)=O(50)+1
       O(O(50))=O(9)
-      IF(O(50).GT.2504)CALLMESAGE(15, 30, 0,0)
+      IF(O(50).GT.2504)CALL MESAGE(15, 30, 0,0)
       O(9)=N5(1,99,O(9))
       GOTO 99999
-3640  CALLMESAGE(14, 22, 0,0)
+3640  CALL MESAGE(14, 22, 0,0)
 99999 RETURN
       END
 C_______________________________________________________________________
@@ -1830,7 +1830,7 @@ C__________________________________________
       J=457+4
       N5=NIB(J,10)
       IF ((L.LE.N5).AND.(N5.LE.M)) GOTO 4290
-         CALLMESAGE(14, 3, 0,0)
+         CALL MESAGE(14, 3, 0,0)
          N5=K
 4290  CONTINUE
 99999 RETURN
@@ -1847,62 +1847,62 @@ C________________________________________
       save    k,m,t,n
       IF (O(23).GT.0.AND.O(29).LT.3.AND.W.NE.4)GOTO 99999
       IF (W.NE.2) GOTO 4310
-         CALLDUMDUM(175,90,37,37,37,22,42,29,27,34,90)
+         CALL DUMDUM(175,90,37,37,37,22,42,29,27,34,90)
          O(175+4)=(O(32)-1145)/120
-         CALLCRIT(R,S)
+         CALL CRIT(R,S)
          GOTO 4300
 4310     IF  (W.NE.4)GOTO4320
-         CALLDUMDUM(175,90,45,28,29,27,10,23,16,14,90)
-         CALLCRIT(R,S)
+         CALL DUMDUM(175,90,45,28,29,27,10,23,16,14,90)
+         CALL CRIT(R,S)
          GOTO 4300
 4320     IF  (W.NE.5)GOTO4330
-         CALLDUMDUM(175,90,37,10,16,10,18,23,28,29,90)
-         CALLCRIT(R,S)
+         CALL DUMDUM(175,90,37,10,16,10,18,23,28,29,90)
+         CALL CRIT(R,S)
 4300  CONTINUE
 4330  CONTINUE
       IF (W.NE.33) GOTO 4350
          IF (O(23).NE.0) GOTO 4370
-            CALLDUMDUM(175,90,90,27,14,13,30,12,14,13,90)
+            CALL DUMDUM(175,90,90,27,14,13,30,12,14,13,90)
             GOTO 4360
-4370        CALLDUMDUM(175,90,90,90,90,90,23,14,28,29,90)
+4370        CALL DUMDUM(175,90,90,90,90,90,23,14,28,29,90)
             O(175+3)=O(23)
 4360     CONTINUE
-         CALLCRIT(R+1,S+1)
+         CALL CRIT(R+1,S+1)
          GOTO 4340
 4350     IF  (W.NE.15)GOTO4380
-         CALLDUMDUM(175,90,90,13,14,15,18,23,14,13,90)
-         CALLCRIT(R+4,O(R+3))
+         CALL DUMDUM(175,90,90,13,14,15,18,23,14,13,90)
+         CALL CRIT(R+4,O(R+3))
          IF (R+4.GE.O(R+3)) GOTO 4400
-            CALLDUMDUM(175,90,90,90,90,31,10,21,30,14,90)
+            CALL DUMDUM(175,90,90,90,90,31,10,21,30,14,90)
             O(175+2)=O(54)
-            CALLCRIT(S+4,O(S+3))
+            CALL CRIT(S+4,O(S+3))
             GOTO 4390
-4400        CALLDUMDUM(175,90,23,30,21,21,90,31,10,21,90)
-            CALLCRIT(S,S)
+4400        CALL DUMDUM(175,90,23,30,21,21,90,31,10,21,90)
+            CALL CRIT(S,S)
 4390     CONTINUE
          GOTO 4340
 4380     IF  (W.NE.12)GOTO4410
-         CALLDUMDUM(175,90,10,25,25,14,23,13,14,13,90)
-         CALLCRIT(O(S-2*(3)-1),O(S-2*(3)-2) )
-         CALLDUMDUM(175,90,90,90,90,90,90,90,29,24,90)
-         CALLCRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
+         CALL DUMDUM(175,90,10,25,25,14,23,13,14,13,90)
+         CALL CRIT(O(S-2*(3)-1),O(S-2*(3)-2) )
+         CALL DUMDUM(175,90,90,90,90,90,90,90,29,24,90)
+         CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
          GOTO 4340
 4410     IF  (W.NE.13)GOTO4420
-         CALLDUMDUM(175,90,90,27,14,22,24,31,14,13,90)
-         CALLCRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
+         CALL DUMDUM(175,90,90,27,14,22,24,31,14,13,90)
+         CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
          GOTO 4340
 4420     IF  (W.NE.22)GOTO4430
          IF(O(R+4).LT.0)GOTO 99999
-         CALLDUMDUM(175,90,90,22,10,29,12,17,14,13,90)
-         CALLCRIT(R+4,O(R+3) )
+         CALL DUMDUM(175,90,90,22,10,29,12,17,14,13,90)
+         CALL CRIT(R+4,O(R+3) )
          K=O(S-1)
          IF (K.EQ.0) GOTO 4450
             DO 4461 M = 1,K
-               CALLDUMDUM(175,90,90,90,90,10,27,16,90,90,90)
+               CALL DUMDUM(175,90,90,90,90,10,27,16,90,90,90)
                O(175+8)=M
                T=O(S-2*(M)-1)
                N=O(S-2*(M)-2)
-               IF (T.NE.N) CALLCRIT(T,N)
+               IF (T.NE.N) CALL CRIT(T,N)
 4461        CONTINUE
 4450     CONTINUE
 4340  CONTINUE
@@ -1932,8 +1932,8 @@ C__________________________________________
             IF(O(C).EQ.-2)O(C)=82
          GOTO 4480
 4481     CONTINUE
-         CALLRW(33,O(56),175,C)
-         CALLDUMDUM(175,90,90,90,90,90,90,90,90,90,90)
+         CALL RW(33,O(56),175,C)
+         CALL DUMDUM(175,90,90,90,90,90,90,90,90,90,90)
       GOTO 4470
 4471  CONTINUE
 99999 RETURN
@@ -1949,39 +1949,39 @@ C________________________________________
       common/junk/ verbose
       logical verbose
       IF(LEVEL.EQ.14 .OR. LEVEL.EQ.15)O(63)=O(63)+1
-      CALLFIND(LEVEL,NO,K1)
-      IF(K2.NE.0)CALLMACTRC(4,K1,K2)
+      CALL FIND(LEVEL,NO,K1)
+      IF(K2.NE.0)CALL MACTRC(4,K1,K2)
       IF (LEVEL.NE.13) GOTO 4500
-         CALLFIND(13,2,O(60))
-         CALLFIND(13,3,O(61))
+         CALL FIND(13,2,O(60))
+         CALL FIND(13,3,O(61))
 4500  CONTINUE
       IF (LEVEL.GT.14) GOTO 4520
          IF(O(63).LT.100)RETURN
-         CALLFIND(15,10,0)
+         CALL FIND(15,10,0)
 4520  CONTINUE
       IF (O(55).NE.O(86).AND.O(55).NE.O(87)) GOTO 4540
          O(63)=O(63)+1
-         IF(O(55).EQ.O(86)) CALLFIND(16,5,0)
-         IF(O(55).EQ.O(87))CALLFIND(16,4,0)
+         IF(O(55).EQ.O(86)) CALL FIND(16,5,0)
+         IF(O(55).EQ.O(87))CALL FIND(16,4,0)
 4540  CONTINUE
       IF(O(47).GT.2255.OR.O(48).GT.2305)O(63)=O(63)+1
       IF (O(48).LE.2305) GOTO 4560
-         CALLFIND(16,3,O(48)-2305)
+         CALL FIND(16,3,O(48)-2305)
 4560  CONTINUE
 4570  IF(O(47).LE.2255)GOTO4571
-         CALLFIND(16,2,O(O(47)))
+         CALL FIND(16,2,O(O(47)))
          O(47)=O(47)-1
       GOTO 4570
 4571  CONTINUE
-      CALLFIND(13,3,O(61))
+      CALL FIND(13,3,O(61))
       IF (O(63).NE.0) GOTO 4590
-         CALLFIND(16,6,0)
+         CALL FIND(16,6,0)
          GOTO 4580
-4590     CALLFIND(16,7,O(63))
+4590     CALL FIND(16,7,O(63))
          write(6,*) 'compilation error (stop 12)'
          call exit(12) !stop 12
 4580  CONTINUE
-      IF (O(59).EQ.0)CALLINITAL(2)
+      IF (O(59).EQ.0)CALL INITAL(2)
       if( verbose ) write(6,*) 'OK'
       call exit(0) !stop 0
       END
@@ -2013,14 +2013,14 @@ C__________________________________________
          GOTO 4600
 4610     C=C+LLONG(C,N,10,0)
 4600  CONTINUE
-      IF(L.EQ.15) CALLDUMDUM(175,90,45,45,45,15,10,29,10,21,90)
-      IF(L.EQ.14) CALLDUMDUM(175,90,45,32,10,27,23,18,23,16,90)
+      IF(L.EQ.15) CALL DUMDUM(175,90,45,45,45,15,10,29,10,21,90)
+      IF(L.EQ.14) CALL DUMDUM(175,90,45,32,10,27,23,18,23,16,90)
       IF (L.NE.13.AND.L.NE.16) GOTO 4640
-         CALLDUMDUM(175,90,90,90,90,90,90,90,90,90,90)
+         CALL DUMDUM(175,90,90,90,90,90,90,90,90,90,90)
          IF(V.NE.0) NERD=LLONG(A,V,10,0)
 4640  CONTINUE
-      CALLRW(33,O(56),A,C)
-      IF (O(63).GT.0) CALLRW(23,O(57),A,C)
+      CALL RW(33,O(56),A,C)
+      IF (O(63).GT.0) CALL RW(23,O(57),A,C)
       DO 4651 K = A,C
          O(K)=O(76)
 4651  CONTINUE
@@ -2090,8 +2090,8 @@ CCEFGLMNPQRS UVWXY
 4670  CONTINUE
       IF (B.LE.Z) GOTO 4750
          IF (I.LE.175) GOTO 4770
-            CALLRW(33,O(57),175,181)
-            IF(IND.EQ.linf_rule_diagnostic_mode)CALLMESAGE(14, 14, 0,0)
+            CALL RW(33,O(57),175,181)
+            IF(IND.EQ.linf_rule_diagnostic_mode)CALL MESAGE(14, 14, 0,0)
             GOTO 99999
 4770     CONTINUE
 4750  CONTINUE
@@ -2171,7 +2171,7 @@ CCEFGLMNPQRS UVWXY
             O(K)=O(689+O(K))
 5051     CONTINUE
 C   LOOKOUT
-         CALLRW(23,O(57),175,254)
+         CALL RW(23,O(57),175,254)
          DO 5061 K = 175,254
             O(K)=O(76)
 5061     CONTINUE
@@ -2508,7 +2508,7 @@ C     O(14)=O(4)   THIS IS NO LONGER USED IN FORTRAN 77 VERSIONS
          READ (IUNI,1) KOUNT,(O(K),K=1,KOUNT)
 C
 C     The following line
-C        CALLRW(23,O(57),325+2,325+79)
+C        CALL RW(23,O(57),325+2,325+79)
 C     has been changed to conform with our (NRCC) current version.
 C     The effect seems to be that the
 C     %%1Copyright ....
@@ -2517,11 +2517,11 @@ C     Previous to this date, the old version was in our standard
 C     distribution.
 C     Alex Bielajew 88/09/20
 C
-         CALLRW(23,O(57),325+3,325+79)
-         CALLRW(23,O(56),325+2,325+79)
+         CALL RW(23,O(57),325+3,325+79)
+         CALL RW(23,O(56),325+2,325+79)
          REWIND IUNI
          GOTO 5220
-5230     CALLRAW
+5230     CALL RAW
 5220  CONTINUE
       O(55)=O(76)
       O(40)=525371
@@ -2536,8 +2536,8 @@ C
       O(U)=O(79)
       W=450741-1
       O(W)=O(79)
-      CALLDUMDUM(44,2105,2155,2205,2255,2305,2355,2455,2505,0,0)
-      CALLNXTCRD
+      CALL DUMDUM(44,2105,2155,2205,2255,2305,2355,2455,2505,0,0)
+      CALL NXTCRD
 99999 RETURN
       END
 C_______________________________________________________________________
@@ -2561,17 +2561,17 @@ C__________________________________________
       O(36)=456+O(37)
       O(43)=456+O(41)
       O(42)=324+O(41)
-      CALLRW(0,O(9),325,O(38))
-      CALLRW(0,O(9),689,689+73)
-      CALLRW(0,O(9),325,O(38))
-      CALLRW(0,O(9),689+74,789+70)
+      CALL RW(0,O(9),325,O(38))
+      CALL RW(0,O(9),689,689+73)
+      CALL RW(0,O(9),325,O(38))
+      CALL RW(0,O(9),689+74,789+70)
       DO 5251 K = 689,788
          O(K-100)=O(K)
 5251  CONTINUE
 CMAKE INPUT AND OUTPUT SAME
 C .(MNOSET+54)=.(MNOSET+41);     OUT-TRANSLATE L-ARROW TO =
-      CALLRW(23,O(56),325+41,404)
-      CALLRW(23,O(57),325+41,404)
+      CALL RW(23,O(56),325+41,404)
+      CALL RW(23,O(57),325+41,404)
       DO 5261 K = 1,100
             J=O(589+K-1)
          O(889+J)=K-1
@@ -2586,12 +2586,12 @@ C     WRITE(6,1) J,K-1
          O(100-K)=-K
 5291  CONTINUE
 C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
-      CALLDUMDUM(76, 90, 79, 78, 75, 38, 46, 74, 82, 83, 84)
+      CALL DUMDUM(76, 90, 79, 78, 75, 38, 46, 74, 82, 83, 84)
       O(86)=77
       O(87)=80
-      CALLDUMDUM(29001,29018,29016,29016,29016,29016,29009,0,3,0,0)
-      CALLDUMDUM(29009,38,108,46,108,38,108,46,107,24,0)
-      CALLDEFINE(29009)
+      CALL DUMDUM(29001,29018,29016,29016,29016,29016,29009,0,3,0,0)
+      CALL DUMDUM(29009,38,108,46,108,38,108,46,107,24,0)
+      CALL DEFINE(29009)
       P(46)=101
       P(38)=202
       P(87)=303
