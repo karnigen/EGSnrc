@@ -2305,10 +2305,11 @@ C
        KOF=589
       IF (N==33) KOF=100+KOF
       IF (N==23) KOF=0
-         DO 5181 L=1,NR
-         HC(L) = MIN(255,MAX(0, O(J+L-1) ))
-         IF (KOF>0) HC(L)=O(HC(L)+KOF)
-5181        CH(L)=CHAR( HC(L)  )
+         DO L=1,NR
+            HC(L) = MIN(255,MAX(0, O(J+L-1) ))
+            IF (KOF>0) HC(L)=O(HC(L)+KOF)
+            CH(L)=CHAR( HC(L)  )
+         END DO
       if( i==oflag ) then
         nn6 = nn6+1
         if( nn6==1 ) return
