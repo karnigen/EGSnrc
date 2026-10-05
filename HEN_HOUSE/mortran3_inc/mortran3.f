@@ -577,19 +577,19 @@ CADEFGHIJKLRSXYZ
             CASE (5)
             W=V
             M=1
-            IF (O(P)/= O(76)) GO TO 1340
-1350           IF(O(W)/= O(76).OR.O(P)/= O(76))GO TO 1351
+            IF (O(P)==O(76)) THEN
+               DO
+                  IF(O(W)/= O(76).OR.O(P)/= O(76))EXIT
                   W=W-1
                   P=P+1
-               GO TO 1350
-1351           CONTINUE
-1340        CONTINUE
-1360        IF(O(P)==O(106))GO TO 1361
+               END DO
+            END IF
+            DO
+               IF(O(P)==O(106))EXIT
                IF(O(P)/= O(W).OR.W>U)M=0
                P=P+1
                W=W+1
-            GO TO 1360
-1361        CONTINUE
+            END DO
             P=P+1
             IF(M==1)V=W
             END SELECT
