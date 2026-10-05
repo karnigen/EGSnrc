@@ -163,8 +163,8 @@ C
       GO TO 10
 20    CALL COUT
       CALL EXPAND(A)
-30    IF (S.LE.U) GOTO 50
-         IF (O(23).LE.0) GOTO 70
+30    IF (S.LE.U) GO TO 50
+         IF (O(23).LE.0) GO TO 70
             CALL EXPAND(-1)
             GO TO 30
 70       CONTINUE
@@ -187,13 +187,13 @@ C
       IF(O(29).GE.4) CALL MACTRC(2,D,MXD)
       IF(O(29).GE.4) CALL MACTRC(5,V,U+1)
 100   IF(V.GT.U)GO TO 101
-         IF (O(V).NE.O(97)) GOTO 120
+         IF (O(V).NE.O(97)) GO TO 120
             V=V+O(V+1)+3
             GO TO 100
 120      CONTINUE
-         IF (MQ.NE.0) GOTO 140
-            IF (O(D).NE.O(84)) GOTO 160
-               IF (O(D+1).GT.100.OR.O(32).LE.1505) GOTO 180
+         IF (MQ.NE.0) GO TO 140
+            IF (O(D).NE.O(84)) GO TO 160
+               IF (O(D+1).GT.100.OR.O(32).LE.1505) GO TO 180
                   O(S-2*(A+1)-1)=V
                   O(S-2*(A+1)-2)=V
                   D=D+1
@@ -203,16 +203,16 @@ C
                   IQ=D
 190               IF(O(IQ).EQ.O(85))GO TO 191
                      IQ=IQ+1
-                     IF (IQ.LE.MXD) GOTO 210
+                     IF (IQ.LE.MXD) GO TO 210
                         CALL MESAGE(14, 20, 0,0)
                         GO TO 80
 210                  CONTINUE
-                  GOTO 190
+                  GO TO 190
 191               CONTINUE
                   GO TO 100
 180            CONTINUE
 160         CONTINUE
-            IF (O(D).NE.O(V).OR.O(V).GE.O(107)) GOTO 230
+            IF (O(D).NE.O(V).OR.O(V).GE.O(107)) GO TO 230
                IF( O(105) .EQ.O(D))O(69)=O(69)+1
                IF( O(106) .EQ.O(D))O(69)=O(69)-1
                IF(O(D).EQ.O(99))KD=1
@@ -223,13 +223,13 @@ C
                IF(D.GE.MXD)GO TO 20
                GO TO 100
 230         CONTINUE
-            IF (O(V).NE.O(76)) GOTO 260
-               IF (O(69)+KD.NE.0) GOTO 280
+            IF (O(V).NE.O(76)) GO TO 260
+               IF (O(69)+KD.NE.0) GO TO 280
                   V=V+1
                   GO TO 100
 280            CONTINUE
 260         CONTINUE
-            IF (O(D).NE.O(107)) GOTO 300
+            IF (O(D).NE.O(107)) GO TO 300
                D=D+1
                N=O(D)
                N1=N/4
@@ -237,7 +237,7 @@ C
                N3=N-4*N1-2*N2
                GO TO 310
 300         CONTINUE
-            IF (O(D).NE.O(108)) GOTO 330
+            IF (O(D).NE.O(108)) GO TO 330
                N1=1
                N2=1
                N3=O(59)
@@ -252,14 +252,14 @@ C
                KP=0
                GO TO 100
 330         CONTINUE
-            GOTO 130
+            GO TO 130
 140         P=IP
             Q=IQ
             IA=V
             IF(O(69).NE.0)IA=0
             IRE=ISPEC(P,Q,V,U,IA)
             IF(IRE.EQ.1)GO TO 101
-            IF (IRE.NE.3) GOTO 350
+            IF (IRE.NE.3) GO TO 350
                A=A+1
                IF(F.NE.0)O(S-2*(A-1)-2)=T
                IF(IA.NE.0)O(S-2*(A)-1)=IA
@@ -269,8 +269,8 @@ C
                GO TO 240
 350         CONTINUE
 130      CONTINUE
-         IF (O(V).NE.O(76)) GOTO 370
-            IF (MQ.NE.1) GOTO 390
+         IF (O(V).NE.O(76)) GO TO 370
+            IF (MQ.NE.1) GO TO 390
                V=V+1
                GO TO 100
 390         CONTINUE
@@ -278,7 +278,7 @@ C
          IF(F.EQ.0)GO TO 80
 400      CONTINUE
             IF(O(T).EQ.O(106))GO TO 80
-            IF (KD.LE.0) GOTO 420
+            IF (KD.LE.0) GO TO 420
 430            IF( O(99) .EQ.O(T))KD=KD+1
                IF( O(98) .EQ.O(T))KD=KD-1
                IF(KD.EQ.0)GO TO 440
@@ -286,51 +286,51 @@ C
                IF(T.GT.U)GO TO 80
                GO TO 430
 420         CONTINUE
-            IF (O(T).NE.O(105)) GOTO 460
+            IF (O(T).NE.O(105)) GO TO 460
                NB=1
 470            IF(NB.EQ.0)GO TO 471
                   T=T+1
                   IF(T.GT.U)GO TO 80
                   IF( O(105) .EQ.O(T))NB=NB+1
                   IF( O(106) .EQ.O(T))NB=NB-1
-               GOTO 470
+               GO TO 470
 471            CONTINUE
 460         CONTINUE
-            IF (O(69).NE.0) GOTO 490
+            IF (O(69).NE.0) GO TO 490
                IF( O(84) .EQ.O(T))KC=KC+1
                IF( O(85) .EQ.O(T))KC=KC-1
                IF(KC.LT.0)GO TO 80
-               IF (N1.NE.1) GOTO 510
+               IF (N1.NE.1) GO TO 510
                   IF(38.EQ.O(T))KP=KP+1
                   IF(46.EQ.O(T))KP=KP-1
                   IF(KP.LT.0)GO TO 80
 510            CONTINUE
-               IF (N2.NE.1) GOTO 530
+               IF (N2.NE.1) GO TO 530
                   IF( O(82) .EQ.O(T))KB=KB+1
                   IF( O(83) .EQ.O(T))KB=KB-1
                   IF(KB.LT.0)GO TO 80
 530            CONTINUE
-               IF (O(T).NE.O(79)) GOTO 550
+               IF (O(T).NE.O(79)) GO TO 550
                   IF(N3.GT.0)GO TO 80
 550            CONTINUE
 490         CONTINUE
             T=T+1
-            IF (T.LE.U) GOTO 570
+            IF (T.LE.U) GO TO 570
                IF(O(15).EQ.1)GO TO 80
                GO TO 10
 570         CONTINUE
-            IF (KC+KP+KB.NE.0) GOTO 590
+            IF (KC+KP+KB.NE.0) GO TO 590
                IF(MQ.EQ.0)D=F
 440            V=T
                O(S-2*(A)-2)=V
                GO TO 401
 590         CONTINUE
-         GOTO 400
+         GO TO 400
 401      CONTINUE
-      GOTO 100
+      GO TO 100
 101   CONTINUE
       IF(O(15).EQ.1)GO TO 80
-      IF (S.NE.U) GOTO 610
+      IF (S.NE.U) GO TO 610
          S=525371
          O(S)=O(U)
          U=S
@@ -343,7 +343,7 @@ C
          O(U)=O(C)
          C=C+1
          IF(C.GT.O(43))CALL NXTCRD
-         IF (O(U).NE.O(84)) GOTO 640
+         IF (O(U).NE.O(84)) GO TO 640
             O(55)=O(U)
             KX=1
 650         IF(KX.EQ.0)GO TO 651
@@ -354,11 +354,11 @@ C
                IF(C.GT.O(43))CALL NXTCRD
                IF( O(84) .EQ.O(U))KX=KX+1
                IF( O(85) .EQ.O(U))KX=KX-1
-            GOTO 650
+            GO TO 650
 651         CONTINUE
             O(55)=O(76)
 640      CONTINUE
-         IF (O(U).NE.O(87)) GOTO 670
+         IF (O(U).NE.O(87)) GO TO 670
 680         IF(O(26).NE.1)O(55)=O(87)
             O(U)=O(97)
             U=U+1
@@ -368,17 +368,17 @@ C
                IF(U.GT.600000)CALL MESAGE(15, 1, 0,0)
                O(U)=O(C)
                C=C+1
-            GOTO 690
+            GO TO 690
 691         CONTINUE
             U=U+1
             O(U)=O(96)
             O(Y)=U-Y-1
-            IF (O(Y).NE.0) GOTO 710
+            IF (O(Y).NE.0) GO TO 710
                U=U-2
                O(U)=O(76)
 710         CONTINUE
-            IF (C.LE.MXC) GOTO 730
-               IF (O(26).NE.1) GOTO 750
+            IF (C.LE.MXC) GO TO 730
+               IF (O(26).NE.1) GO TO 750
                   O(55)=O(76)
                   CALL NXTCRD
                   GO TO 10
@@ -392,7 +392,7 @@ C
             IF(C.GT.O(43))CALL NXTCRD
             GO TO 10
 670      CONTINUE
-         IF (O(U).NE.O(86).OR.O(28).LE.0) GOTO 770
+         IF (O(U).NE.O(86).OR.O(28).LE.0) GO TO 770
             O(55)=O(U)
             O(U)=O(105)
 780         CONTINUE
@@ -401,8 +401,8 @@ C
                O(U)=O(C)
                C=C+1
                IF(C.GT.O(43))CALL NXTCRD
-               IF (O(U).NE.O(86)) GOTO 800
-                  IF (O(C).EQ.O(86)) GOTO 820
+               IF (O(U).NE.O(86)) GO TO 800
+                  IF (O(C).EQ.O(86)) GO TO 820
                      O(U)=O(106)
                      O(55)=O(76)
                      GO TO 781
@@ -410,76 +410,76 @@ C
                   C=C+1
                   IF(C.GT.O(43))CALL NXTCRD
 800            CONTINUE
-            GOTO 780
+            GO TO 780
 781         CONTINUE
 770      CONTINUE
-         IF (O(U).NE.O(76)) GOTO 840
-            IF (S.EQ.U) GOTO 860
+         IF (O(U).NE.O(76)) GO TO 840
+            IF (S.EQ.U) GO TO 860
                IF(O(U-1).EQ.O(76))U=U-1
 860         CONTINUE
 870         CONTINUE
                IF(C.EQ.MXC .OR.O(C).NE.O(76))GO TO 871
                C=C+1
-            GOTO 870
+            GO TO 870
 871         CONTINUE
 840      CONTINUE
-         IF (KX.NE.0) GOTO 890
+         IF (KX.NE.0) GO TO 890
             IF(O(U).EQ.O(79))GO TO 621
             IF( O(82) .EQ.O(U))O(11)=O(11)+1
             IF( O(83) .EQ.O(U))O(11)=O(11)-1
 890      CONTINUE
-      GOTO 620
+      GO TO 620
 621   CONTINUE
       GO TO 30
-90    IF (O(23).LE.0) GOTO 910
+90    IF (O(23).LE.0) GO TO 910
          X=X+1
          IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
          O(X)=O(S)
          S=S+1
-         IF (O(X).NE.O(92).OR.O(32).EQ.1265) GOTO 930
+         IF (O(X).NE.O(92).OR.O(32).EQ.1265) GO TO 930
 940         CONTINUE
                X=X+1
                IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                O(X)=O(S)
                S=S+1
                IF(O(X).EQ.O(93))GO TO 941
-            GOTO 940
+            GO TO 940
 941         CONTINUE
 930      CONTINUE
          GO TO 30
 910   CONTINUE
 950   CONTINUE
-         IF (O(S).NE.O(79)) GOTO 970
+         IF (O(S).NE.O(79)) GO TO 970
             IF (W.GE.IW) W=LINF (IW,W,15)
-            GOTO 960
+            GO TO 960
 970         IF  (O(S).NE.O(97))GO TO 980
-            IF (O(68).NE.0) GOTO 1000
+            IF (O(68).NE.0) GO TO 1000
                NERD=LINF(S+2,S+O(S+1)+1,12)
                S=S+O(S+1)+2
 1000        CONTINUE
-            GOTO 960
+            GO TO 960
 980         IF  (O(S).NE.O(92))GO TO 1010
             O(24)=1
-            GOTO 960
+            GO TO 960
 1010        IF  (O(S).NE.O(93))GO TO 1020
             O(24)=0
-            GOTO 960
+            GO TO 960
 1020        IF  (O(68).NE.0)GO TO 1030
             W=W+1
             O(W)=O(S)
-            IF (O(W).NE.O(105)) GOTO 1050
+            IF (O(W).NE.O(105)) GO TO 1050
 1060           IF(O(W).EQ.O(106))GO TO 1061
                   W=W+1
                   S=S+1
                   O(W)=O(S)
-               GOTO 1060
+               GO TO 1060
 1061           CONTINUE
 1050        CONTINUE
 960      CONTINUE
 1030     CONTINUE
          S=S+1
          IF(S.GT.U .OR. O(24).EQ.0)GO TO 951
-      GOTO 950
+      GO TO 950
 951   CONTINUE
       GO TO 30
       END
@@ -502,15 +502,15 @@ C__________________________________________
 CADEFGHIJKLRSXYZ
       O(46)=2205
 1070  IF(P.GE.Q)GO TO 1071
-         IF (O(V).NE.O(76)) GOTO 1090
-            IF (V.NE.T) GOTO 1110
+         IF (O(V).NE.O(76)) GO TO 1090
+            IF (V.NE.T) GO TO 1110
                V=V+1
                T=T+1
                IF(V.GT.U)GO TO 1120
                GO TO 1070
 1110        CONTINUE
 1090     CONTINUE
-         IF (O(P).GT.100) GOTO 1140
+         IF (O(P).GT.100) GO TO 1140
             IQ=Q
             I=MINI(P,Q,NP,1505)
             IF(O(29).GE.4) CALL MACTRC(5,V,U)
@@ -520,21 +520,21 @@ CADEFGHIJKLRSXYZ
             O(45)=O(45)+1
             O(O(45))=NP
             IF(O(45).GT.2204)CALL MESAGE(15, 19, 0,0)
-            GOTO 1130
+            GO TO 1130
 1140        IF  (O(P).GE.O(106))GO TO 1150
             P=P+1
             JMP=O(P-1)-100
             GO TO (1160,1170,1180,1190,1200),JMP
-1160        IF (M.NE.0) GOTO 1220
+1160        IF (M.NE.0) GO TO 1220
                V=O(O(46)-1)
-               GOTO 1210
+               GO TO 1210
 1220           N=1
 1230           IF(N.EQ.0)GO TO 1231
                   IF( O(103) .EQ.O(P))N=N+1
                   IF( O(104) .EQ.O(P))N=N-1
                   P=P+1
                   IF(P.GT.Q)CALL MESAGE(14, 27, 0,0)
-               GOTO 1230
+               GO TO 1230
 1231           CONTINUE
                P=P-1
 1210        CONTINUE
@@ -549,16 +549,16 @@ CADEFGHIJKLRSXYZ
             C=0
             GO TO 1070
 1190        P=P+2
-            IF (M.NE.1) GOTO 1250
+            IF (M.NE.1) GO TO 1250
                C=C+1
-               IF (C.GE.O(P-1)) GOTO 1270
+               IF (C.GE.O(P-1)) GO TO 1270
                   P=O(O(46))
                   GO TO 1070
 1270           CONTINUE
 1250        CONTINUE
             IF(C.GE.O(P-2))M=1
             IF( M.EQ.0 ) V=O(O(46)-1)
-            IF (.NOT.((O(46).EQ.2205))) GOTO 1290
+            IF (.NOT.((O(46).EQ.2205))) GO TO 1290
                CALL MESAGE(14, 17, 0,0)
                GO TO 90
 1290        CONTINUE
@@ -571,7 +571,7 @@ CADEFGHIJKLRSXYZ
             GO TO 1300
 1170        P=P+2
             M=0
-            IF (O(P-2).GT.O(V).OR.O(V).GT.O(P-1)) GOTO 1320
+            IF (O(P-2).GT.O(V).OR.O(V).GT.O(P-1)) GO TO 1320
                M=1
                V=V+1
                IF(V.GT.U)GO TO 1120
@@ -579,30 +579,30 @@ CADEFGHIJKLRSXYZ
             GO TO 1300
 1200        W=V
             M=1
-            IF (O(P).NE.O(76)) GOTO 1340
+            IF (O(P).NE.O(76)) GO TO 1340
 1350           IF(O(W).NE.O(76).OR.O(P).NE.O(76))GO TO 1351
                   W=W-1
                   P=P+1
-               GOTO 1350
+               GO TO 1350
 1351           CONTINUE
 1340        CONTINUE
 1360        IF(O(P).EQ.O(106))GO TO 1361
                IF(O(P).NE.O(W).OR.W.GT.U)M=0
                P=P+1
                W=W+1
-            GOTO 1360
+            GO TO 1360
 1361        CONTINUE
             P=P+1
             IF(M.EQ.1)V=W
 1300        IF(M.EQ.1)GO TO 1070
             IF(O(P).NE.O(101) .AND. O(P).NE.O(104))GO TO 90
-            GOTO 1130
+            GO TO 1130
 1150        CALL MESAGE(14, 19, P,Q+11)
             GO TO 90
 1130     CONTINUE
-      GOTO 1070
+      GO TO 1070
 1071  CONTINUE
-      IF (.NOT.(.NOT.(O(45).EQ.2155))) GOTO 1380
+      IF (.NOT.(.NOT.(O(45).EQ.2155))) GO TO 1380
          P=O(O(45))
          O(45)=O(45)-1
          Q=O(O(45))
@@ -611,9 +611,9 @@ CADEFGHIJKLRSXYZ
 1380  CONTINUE
       IV=V
       ISPEC=3
-      GOTO 99999
+      GO TO 99999
 90    ISPEC=2
-      GOTO 99999
+      GO TO 99999
 1120  ISPEC=1
 99999 RETURN
       END
@@ -631,7 +631,7 @@ C__________________________________________
       M=KCT+O(S)
 CABCDEFGHIJKNRTXYZ
       L=U-S
-1390  IF (O(M).EQ.0) GOTO 1410
+1390  IF (O(M).EQ.0) GO TO 1410
          M=O(M)
          V=S
          P=M+4
@@ -642,13 +642,13 @@ C   IF Q-PnL jM;
             IF(O(P).NE.O(V))GO TO 1390
             P=P+1
             V=V+1
-         GOTO 1420
+         GO TO 1420
 1421     CONTINUE
          S=O(M+2)+4
          U=O(O(M+2)+3)
          MINI=1
          W=V
-         GOTO 99999
+         GO TO 99999
 1410  CONTINUE
       CALL MESAGE(14, 15, S,U+1)
 99999 RETURN
@@ -670,30 +670,30 @@ C________________________________________
       save    kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
 CCDGHILM
       T=0
-      IF (F.GE.0) GOTO 1440
+      IF (F.GE.0) GO TO 1440
          O(23)=O(23)-1
          IF(O(23).EQ.0)O(15)=SEF
          DO 1451 K = 1,6
             O(K)=O(6+U+1-K)
 1451     CONTINUE
          J=O(O(O(51)))
-         IF (11.GT.J.OR.J.GT.12) GOTO 1470
+         IF (11.GT.J.OR.J.GT.12) GO TO 1470
             JV=LEXP(W+1,X)
-            IF (O(58).NE.0) GOTO 1490
-               IF (J.NE.12) GOTO 1510
+            IF (O(58).NE.0) GO TO 1490
+               IF (J.NE.12) GO TO 1510
                   X=W+LLONG(W,JV,10,0)
 1510           CONTINUE
-               IF (J.NE.11) GOTO 1530
+               IF (J.NE.11) GO TO 1530
                   X=W+1
                   O(X)=JV
 1530           CONTINUE
-               GOTO 1480
+               GO TO 1480
 1490           X=W
                O(58)=O(58)-1
-               IF (JV.NE.0) GOTO 1550
+               IF (JV.NE.0) GO TO 1550
                   P=O(65)
                   Q=O(64)
-                  GOTO 1540
+                  GO TO 1540
 1550              P=O(67)
                   Q=O(66)
 1540           CONTINUE
@@ -712,7 +712,7 @@ CCDGHILM
          O(51)=O(51)-1
          O(32)=O(O(51))
          O(51)=O(51)-1
-         GOTO 1430
+         GO TO 1430
 1440     O(S-1)=F
          O(40) = S-2*F-3
          R=O(O(22)+2)
@@ -720,7 +720,7 @@ CCDGHILM
          E=O(R+3)
          R=O(R)
          O(62)=O(62)+1
-         IF (O(62).LE.1000) GOTO 1570
+         IF (O(62).LE.1000) GO TO 1570
             CALL MESAGE(14, 4, 0,0)
             O(29)=2
 1570     CONTINUE
@@ -729,7 +729,7 @@ CCDGHILM
 1430  CONTINUE
 1580  CONTINUE
 1590     IF(B.GE.E)GO TO 1591
-            IF (O(B).GE.O(107)) GOTO 1610
+            IF (O(B).GE.O(107)) GO TO 1610
                X=X+1
                IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                O(X)=O(B)
@@ -739,7 +739,7 @@ CCDGHILM
             B=B+1
             JMP=O(B-1)-O(106)
             GO TO (1620,1630,1640,1650),JMP
-1630        IF (1.GT.O(B).OR.O(B).GT.O(S-1)) GOTO 1670
+1630        IF (1.GT.O(B).OR.O(B).GT.O(S-1)) GO TO 1670
                A=O(S-2*(O(B))-1)
                N=O(S-2*(O(B))-2)
 1680           IF(A.GE.N)GO TO 1681
@@ -747,32 +747,32 @@ CCDGHILM
                   IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                   O(X)=O(A)
                   A=A+1
-               GOTO 1680
+               GO TO 1680
 1681           CONTINUE
                GO TO 1690
 1670        CONTINUE
             CALL MESAGE(15, 4, B,E)
-1620        IF (O(B).NE.12) GOTO 1710
+1620        IF (O(B).NE.12) GO TO 1710
                B=B+1
-               IF (O(B).NE.23) GOTO 1730
-                  IF (O(68).NE.0) GOTO 1750
+               IF (O(B).NE.23) GO TO 1730
+                  IF (O(68).NE.0) GO TO 1750
                      KGN=1
                      O(68)=1
-                     GOTO 1740
+                     GO TO 1740
 1750                 KGN=KGN+1
 1740              CONTINUE
-                  GOTO 1720
+                  GO TO 1720
 1730              IF  (O(B).NE.16)GO TO 1760
-                  IF (O(68).NE.1) GOTO 1780
+                  IF (O(68).NE.1) GO TO 1780
                      KGN=KGN+1
 1780              CONTINUE
-                  GOTO 1720
+                  GO TO 1720
 1760              IF  (O(B).NE.14)GO TO 1790
                   KGN=KGN-1
                   IF(KGN.LE.0)O(68)=0
 1720           CONTINUE
 1790           CONTINUE
-               IF (O(71).EQ.0) GOTO 1810
+               IF (O(71).EQ.0) GO TO 1810
                   IF(O(68).EQ.0)O(32)=1625
                   IF(O(68).NE.0)O(32)=1145
 1810           CONTINUE
@@ -780,7 +780,7 @@ CCDGHILM
 1710        CONTINUE
             IF(O(68).EQ.0)CALL KAT
             GO TO 1690
-1640        IF (O(B).NE.10) GOTO 1830
+1640        IF (O(B).NE.10) GO TO 1830
                B=B+1
                IF(1.GT.O(B).OR.O(B).GT.O(S-1) )CALL MESAGE(15, 4, B,E)
                X=X+LLONG(X,O(S-2*(O(B))-2)-O(S-2*(O(B))-1),10,0)
@@ -788,7 +788,7 @@ CCDGHILM
                B=B+2
                GO TO 1590
 1830        CONTINUE
-            IF (O(B).NE.13) GOTO 1850
+            IF (O(B).NE.13) GO TO 1850
                B=B+1
                T=1
 1860           CONTINUE
@@ -799,11 +799,11 @@ CCDGHILM
                   IF(X.GT.O(40))CALL MESAGE(15, 3, 0,0)
                   O(X)=O(B)
                   B=B+1
-               GOTO 1860
+               GO TO 1860
 1861           CONTINUE
                GO TO 1690
 1850        CONTINUE
-            IF (O(B).NE.15) GOTO 1880
+            IF (O(B).NE.15) GO TO 1880
                X=X+1
                O(X)=O(97)
                X=X+1
@@ -823,7 +823,7 @@ CCDGHILM
             IF(O(51).GT.2554)CALL MESAGE(15, 34, 0,0)
             W=X
             GO TO 1690
-1650        IF (KRAP.EQ.0.OR.KRAQ.NE.O(23)) GOTO 1900
+1650        IF (KRAP.EQ.0.OR.KRAQ.NE.O(23)) GO TO 1900
                X=X+1
                O(S)=O(96)
                O(KRAP)=X-KRAP-1
@@ -843,28 +843,28 @@ CCDGHILM
             O(32)=Y*120+1145
             GO TO 1591
 1690        B=B+1
-         GOTO 1590
+         GO TO 1590
 1591     CONTINUE
          IF(O(23).GT.0)GO TO 1581
-         IF (.NOT.((O(44).EQ.2105))) GOTO 1930
+         IF (.NOT.((O(44).EQ.2105))) GO TO 1930
             IF(R.LE.0)GO TO 1581
             B=R+4
             E=O(R+3)
             R=O(R)
-            GOTO 1920
+            GO TO 1920
 1930        E=O(O(44))
             O(44)=O(44)-1
             B=O(O(44))
             O(44)=O(44)-1
 1920     CONTINUE
-      GOTO 1580
+      GO TO 1580
 1581  CONTINUE
       IF(O(29).GE.2) CALL MACTRC(33,W,X)
 1940  IF(X.LE.W)GO TO 1941
          V=V-1
          O(V)=O(X)
          X=X-1
-      GOTO 1940
+      GO TO 1940
 1941  CONTINUE
       S=V
 99999 RETURN
@@ -893,65 +893,65 @@ CFGHIJKLPQ  YZ
 1950  T=O(B)+78
       X=X+1
       O(X)=O(T)
-      GOTO 99999
+      GO TO 99999
 1960  CALL KRUNC(0)
-      GOTO 99999
-1970  IF (O(B).NE.12) GOTO 2070
+      GO TO 99999
+1970  IF (O(B).NE.12) GO TO 2070
          X=X+LLONG(X,O(L-O(B+1))+O(B+2),10,1)
          B=B+2
-         GOTO 99999
+         GO TO 99999
 2070  CONTINUE
-      IF (O(B).NE.16) GOTO 2090
+      IF (O(B).NE.16) GO TO 2090
          O(16)=O(16)+10
          X=X+LLONG(X,O(16),10,0)
-         GOTO 99999
+         GO TO 99999
 2090  CONTINUE
-      IF (O(B).NE.28) GOTO 2110
+      IF (O(B).NE.28) GO TO 2110
          B=B+1
          O(47)=O(47)+1
          O(O(47))=NIB(X,10)
          IF(O(47).GT.2304)CALL MESAGE(15, 21, 0,0)
          GO TO 2120
 2110  CONTINUE
-      IF (O(B).NE.30) GOTO 2140
+      IF (O(B).NE.30) GO TO 2140
          B=B+1
          IF(O(B).EQ.1)O(L-1)=O(L)
          L=L-1
-         IF (L.GE.2255) GOTO 2160
+         IF (L.GE.2255) GO TO 2160
             CALL MESAGE(14, 7, 0,0)
             L=L+1
 2160     CONTINUE
          GO TO 1300
 2140  CONTINUE
       CALL MESAGE(15, 7, B-2,E)
-1390  IF (O(B).NE.28) GOTO 2180
+1390  IF (O(B).NE.28) GO TO 2180
          B=B+1
          O(48)=O(48)+1
          O(O(48))=O(B)
          IF(O(48).GT.2354)CALL MESAGE(15, 22, 0,0)
-         GOTO 99999
+         GO TO 99999
 2180  CONTINUE
-      IF (O(B).NE.27) GOTO 2200
+      IF (O(B).NE.27) GO TO 2200
          B=B+1
          O(M)=O(B)
-         GOTO 99999
+         GO TO 99999
 2200  CONTINUE
-      IF (O(B).NE.30) GOTO 2220
+      IF (O(B).NE.30) GO TO 2220
          X=X+1
          O(X)=O(M)
          M=M-1
-         IF (M.GE.2305) GOTO 2240
+         IF (M.GE.2305) GO TO 2240
             CALL MESAGE(14, 8, 0,0)
             M=M+1
 2240     CONTINUE
-         GOTO 99999
+         GO TO 99999
 2220  CONTINUE
       CALL MESAGE(15, 7, B-2,E)
 1980  IBG=O(X)
       X=X-1+LLONG(X-1,IBG,10,1)
-      GOTO 99999
+      GO TO 99999
 1990  CALL DEFINE(S)
-      GOTO 99999
+      GO TO 99999
 2000  O(58)=1
       B=B+4
       O(67)=B+O(B-1)
@@ -959,12 +959,12 @@ CFGHIJKLPQ  YZ
       O(65)=B+O(B-3)
       O(64)=B+O(B-4)
       B=B-1
-      GOTO 99999
+      GO TO 99999
 2010  O(16)=O(16)+10
       O(47)=O(47)+1
       O(O(47))=O(16)
       IF(O(47).GT.2304)CALL MESAGE(15, 21, 0,0)
-2120  IF (O(B).NE.1) GOTO 2260
+2120  IF (O(B).NE.1) GO TO 2260
          Z=O(L-1)
          O(L-1)=O(L)
          O(L)=Z
@@ -974,16 +974,16 @@ CFGHIJKLPQ  YZ
         write(6,*) 'compilation error (stop 18)'
         call exit(18) !stop 18
       endif
-      GOTO 99999
+      GO TO 99999
 2020  IUNI=O(B)
       REWIND IUNI
-      GOTO 99999
+      GO TO 99999
 2040  IF(O(29).GE.1) CALL MACTRC(22,O(22),S)
       B=B-1
-      GOTO 99999
+      GO TO 99999
 2030  T=O(B)
       B=B+1
-      IF (0.GE.O(B).OR.O(B).GE.5) GOTO 2280
+      IF (0.GE.O(B).OR.O(B).GE.5) GO TO 2280
          T=T+26*O(B)
          B=B+1
 2280  CONTINUE
@@ -993,24 +993,24 @@ CFGHIJKLPQ  YZ
       B=B+1
       NBA=O(X)
       X=X-1
-2290  IF (O(B).NE.43) GOTO 2310
+2290  IF (O(B).NE.43) GO TO 2310
          O(T)=O(T)+1
-         GOTO 99999
+         GO TO 99999
 2310  CONTINUE
-      IF (O(B).NE.42) GOTO 2330
+      IF (O(B).NE.42) GO TO 2330
          O(T)=O(T)-1
-         GOTO 99999
+         GO TO 99999
 2330  CONTINUE
-      IF (O(B).NE.41) GOTO 2350
+      IF (O(B).NE.41) GO TO 2350
          O(T)=O(X)
          X=X-1
-         GOTO 99999
+         GO TO 99999
 2350  CONTINUE
-      IF (O(B).NE.12) GOTO 2370
+      IF (O(B).NE.12) GO TO 2370
          X=X+1
          O(X)=O(T)
          IF (NBA.GT.1) X=X-1+LLONG(X-1,O(T),NBA,1)
-         GOTO 99999
+         GO TO 99999
 2370  CONTINUE
       CALL MESAGE(15, 7, B-3,E)
 99999 RETURN
@@ -1030,12 +1030,12 @@ C__________________________________________
       save    t,nerd
       T=S
 2380  IF(T.GT.V)GO TO 2381
-         IF (O(T).NE.O(97)) GOTO 2400
+         IF (O(T).NE.O(97)) GO TO 2400
             NERD=LINF(T+2,T+O(T+1)+1,12)
             T=T+O(T+1)+2
 2400     CONTINUE
          T=T+1
-      GOTO 2380
+      GO TO 2380
 2381  CONTINUE
       RETURN
       END
@@ -1051,9 +1051,9 @@ CGHQUVWXYZ
       integer   l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       save      l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       DIMENSION L(3)
-      IF (O(S-2*(1)-1).NE.O(S-2*(1)-2)) GOTO 2420
+      IF (O(S-2*(1)-1).NE.O(S-2*(1)-2)) GO TO 2420
          CALL MESAGE(14, 1, 0,0)
-         GOTO 99999
+         GO TO 99999
 2420  CONTINUE
       O(54)=O(31)
       IF ( O(S-2*(2)-1).NE.O(S-2*(2)-2) )O(54)=O(O(S-2*(2)-1))
@@ -1066,70 +1066,70 @@ CGHQUVWXYZ
             N=N+1
             O(N)=O(A)
             A=A+1
-            IF (O(N).NE.O(86)) GOTO 2460
-               IF (K.NE.3.AND.O(28).LE.0) GOTO 2480
-                  IF (Z.NE.0) GOTO 2500
+            IF (O(N).NE.O(86)) GO TO 2460
+               IF (K.NE.3.AND.O(28).LE.0) GO TO 2480
+                  IF (Z.NE.0) GO TO 2500
                      O(N)=O(105)
                      Z=1
-                     GOTO 2490
-2500                 IF (O(A).NE.O(86).OR.A.GT.T) GOTO 2520
+                     GO TO 2490
+2500                 IF (O(A).NE.O(86).OR.A.GT.T) GO TO 2520
                         A=A+1
-                        GOTO 2510
+                        GO TO 2510
 2520                    O(N)=O(106)
                         Z=0
 2510                 CONTINUE
 2490              CONTINUE
 2480           CONTINUE
-               GOTO 2450
+               GO TO 2450
 2460           IF  (O(N).NE.O(76))GO TO 2530
-               IF (Z.NE.0) GOTO 2550
+               IF (Z.NE.0) GO TO 2550
 2560              IF(O(A).NE.O(76).OR.A.GE.T)GO TO 2561
                      A=A+1
-                  GOTO 2560
+                  GO TO 2560
 2561              CONTINUE
 2550           CONTINUE
-               GOTO 2450
+               GO TO 2450
 2530           IF  (O(N).NE.O(78))GO TO 2570
-               IF (O(A).NE.O(78)) GOTO 2590
+               IF (O(A).NE.O(78)) GO TO 2590
                   A=A+1
-                  GOTO 2580
+                  GO TO 2580
 2590              O(N)=O(108)
 2580           CONTINUE
-               GOTO 2450
+               GO TO 2450
 2570           IF  (O(N).NE.O(77))GO TO 2600
-               IF (O(A).NE.O(77)) GOTO 2620
+               IF (O(A).NE.O(77)) GO TO 2620
                   A=A+1
-                  GOTO 2610
+                  GO TO 2610
 2620              O(N)=O(107)
 2610           CONTINUE
 2450        CONTINUE
 2600        CONTINUE
-            IF (O(33).NE.0) GOTO 2640
-               IF (K.NE.3) GOTO 2660
+            IF (O(33).NE.0) GO TO 2640
+               IF (K.NE.3) GO TO 2660
                   IF(O(N).EQ.O(84))O(N)=O(109)
                   IF(O(N).EQ.O(85))O(N)=O(110)
 2660           CONTINUE
 2640        CONTINUE
-         GOTO 2440
+         GO TO 2440
 2441     CONTINUE
          O(S-2*(K)-2)=N
          L(K)=O(S-2*(K)-2)-O(S-2*(K)-1)
 2431  CONTINUE
-      IF (12.GT.O(54).OR.O(54).GT.14) GOTO 2680
+      IF (12.GT.O(54).OR.O(54).GT.14) GO TO 2680
          B=O(S-2*(1)-1)
          E=O(S-2*(1)-2)
-         IF (O(54).NE.14) GOTO 2700
+         IF (O(54).NE.14) GO TO 2700
             M=1505+O(B)
-            GOTO 2690
+            GO TO 2690
 2700        M=1625+O(B)
 2690     CONTINUE
-2710     IF (O(M).NE.0) GOTO 2730
-            IF (O(54).NE.12) GOTO 2750
+2710     IF (O(M).NE.0) GO TO 2730
+            IF (O(54).NE.12) GO TO 2750
                O(54)=O(31)
                GO TO 2760
 2750        CONTINUE
             CALL MESAGE(14, 2, 0,0)
-            GOTO 99999
+            GO TO 99999
 2730     CONTINUE
          M=O(M)
          P = M+4
@@ -1140,12 +1140,12 @@ CGHQUVWXYZ
             P=P+1
             A=A+1
             IF(A.GE.E)GO TO 2780
-         GOTO 2770
+         GO TO 2770
 2771     CONTINUE
 C   TRACE9;
 C      D-LINK PAT         CAT PTR   MARK PAT
          GO TO 2710
-2780     IF (O(54).EQ.12) GOTO 2800
+2780     IF (O(54).EQ.12) GO TO 2800
             IF(O(M).NE.0)O((O(M))+1)=O(M+1)
             O(O(M+1))=O(M)
             C=O(M+2)
@@ -1153,17 +1153,17 @@ C      D-LINK PAT         CAT PTR   MARK PAT
 2810        IF(C.EQ.0)GO TO 2811
                O(C+2)=O(90)
                C=O(C)
-            GOTO 2810
+            GO TO 2810
 2811        CONTINUE
             IF(O(13).GT.0)CALL MACTRC(13,0,S)
-            GOTO 99999
+            GO TO 99999
 2800     CONTINUE
          NEED= 4+L(3)
          IF(NEED.GT. 450740-O(34)) CALL KRUNC(NEED)
          C=O(M+2)
 2820     IF(O(C).EQ.0)GO TO 2821
             C=O(C)
-         GOTO 2820
+         GO TO 2820
 2821     CONTINUE
          O(C)=O(34)
          O(O(34))=0
@@ -1177,7 +1177,7 @@ C      D-LINK PAT         CAT PTR   MARK PAT
             O(O(34)-J)=O(A-J)
 2831     CONTINUE
          IF(O(13).GT.0)CALL MACTRC(12,0,S)
-         GOTO 99999
+         GO TO 99999
 2680  CONTINUE
 2760  NEED=L(1)+L(3)+2*4
       IF (NEED.GT.450740-O(34)) CALL KRUNC(2+NEED)
@@ -1190,19 +1190,19 @@ C      D-LINK PAT         CAT PTR   MARK PAT
          O(F)=O(A)
          F=F+1
          A=A+1
-      GOTO 2840
+      GO TO 2840
 2841  CONTINUE
-      IF (O(I).NE.O(84).OR.O(54).LE.2) GOTO 2860
+      IF (O(I).NE.O(84).OR.O(54).LE.2) GO TO 2860
          CALL MESAGE(14, 21, O(S-2*(1)-1),O(S-2*(1)-2))
-         GOTO 99999
+         GO TO 99999
 2860  CONTINUE
-      IF (O(I).LE.O(105)) GOTO 2880
+      IF (O(I).LE.O(105)) GO TO 2880
          CALL MESAGE(14, 9, O(S-2*(1)-1),O(S-2*(1)-2))
-         GOTO 99999
+         GO TO 99999
 2880  CONTINUE
-      IF ((0.LE.O(54)).AND.(O(54).LE.7)) GOTO 2900
+      IF ((0.LE.O(54)).AND.(O(54).LE.7)) GO TO 2900
          CALL MESAGE(14, 12, O(S-2*(1)-1),O(S-2*(1)-2))
-         GOTO 99999
+         GO TO 99999
 2900  CONTINUE
       I=O(I) + 1145 + O(54)*120
       O(P)=O(I)
@@ -1219,7 +1219,7 @@ C      D-LINK PAT         CAT PTR   MARK PAT
       F=P+NEED
       E=O(S-2*(3)-2)
       K=L(3)
-      IF (K.EQ.0) GOTO 2920
+      IF (K.EQ.0) GO TO 2920
          CALL DOIT(E-K,E)
          DO 2931 J = 1,K
             O(F-J)=O(E-J)
@@ -1246,43 +1246,43 @@ C__________________________________________
 CBCDEFGHIJKLMNQRUVWY
       T=Z
 2940  IF(T.LT.A)GO TO 2941
-         IF (O(T).NE.O(95)) GOTO 2960
-            IF (O(T-1).NE.O(94)) GOTO 2980
+         IF (O(T).NE.O(95)) GO TO 2960
+            IF (O(T-1).NE.O(94)) GO TO 2980
                S(X+1)=T+1
                S(X+2)=O(T)
                X=X+2
                T=T-1
-               GOTO 2970
+               GO TO 2970
 2980           S(X+1)= T+1
                X=X+1
 2990           IF(O(T).EQ.O(107).AND.O(T+1).EQ.25)GO TO 2991
                   T=T-1
-                  IF(T.LT.A)GOTO 99999
-               GOTO 2990
+                  IF(T.LT.A)GO TO 99999
+               GO TO 2990
 2991           CONTINUE
                P=T+6
                O(P-1)= S(X)-P
                X=X-1
-               IF (S(X).NE.O(95)) GOTO 3010
+               IF (S(X).NE.O(95)) GO TO 3010
                   O(P-4)= S(X-2)-P
                   O(P-3)= S(X-1)-P
                   O(P-2)= O(P-3)-2
                   X=X-3
-                  GOTO 3000
+                  GO TO 3000
 3010              O(P-2)=S(X)-P
                   O(P-3)=S(X)-P
                   O(P-4)=S(X)-P
                   X=X-1
 3000           CONTINUE
 2970        CONTINUE
-            GOTO 2950
+            GO TO 2950
 2960        IF  (O(T).NE.O(94))GO TO 3020
             S(X+1)= T
             X=X+1
 2950     CONTINUE
 3020     CONTINUE
          T=T-1
-      GOTO 2940
+      GO TO 2940
 2941  CONTINUE
 99999 RETURN
       END
@@ -1297,16 +1297,16 @@ CABEFGHIJKLQTUVWXYZ
       integer O
       integer m,n,d,p,s,c,i
       save    m,n,d,p,s,c,i
-      IF (O(35).EQ.0) GOTO 3040
+      IF (O(35).EQ.0) GO TO 3040
          M=O(35)
 3050     IF(M.EQ.O(34))GO TO 3051
-            IF (O(M+2).LT.0) GOTO 3070
+            IF (O(M+2).LT.0) GO TO 3070
                IF(O(M).NE.0)O((O(M))+1)=O(M+1)
                O(O(M+1))=O(M)
 3070        CONTINUE
             O(M+2)=O(90)
             M=O(M+3)
-         GOTO 3050
+         GO TO 3050
 3051     CONTINUE
 3040  CONTINUE
       N=2655
@@ -1320,7 +1320,7 @@ C PREDECESSOR  SUCCESSOR    CONCAT
          P=O(M+1)
          S=O(M)
          C=O(M+2)
-         IF (C.NE.O(90)) GOTO 3100
+         IF (C.NE.O(90)) GO TO 3100
             D=D+ N-M
             GO TO 3080
 3100     CONTINUE
@@ -1332,7 +1332,7 @@ C   MOVE IT
          DO 3111 I = M,N
             O(I-D)=O(I)
 3111     CONTINUE
-      GOTO 3080
+      GO TO 3080
 3081  CONTINUE
       O(34)=O(34)-D
       O(O(34))=0
@@ -1356,15 +1356,15 @@ C__________________________________________
       N=0
 3120  IF(O(L).NE.O(76))GO TO 3121
          L=L-1
-      GOTO 3120
+      GO TO 3120
 3121  CONTINUE
 3130  IF(0.GT.O(L).OR.O(L).GE.B)GO TO 3131
          N=N+O(L)*M
          M=M*B
          L=L-1
-      GOTO 3130
+      GO TO 3130
 3131  CONTINUE
-      IF (O(L).NE.42) GOTO 3150
+      IF (O(L).NE.42) GO TO 3150
          L=L-1
          N=-N
 3150  CONTINUE
@@ -1381,22 +1381,22 @@ C__________________________________________
       integer O
       integer n,l,i,j,k
       save    n,l,i,j,k
-      IF(O(68).NE.0)GOTO 99999
+      IF(O(68).NE.0)GO TO 99999
       N=IABS(NUM)
       L=LOC
       I=N/B
       J=1
-      IF (IND.NE.0) GOTO 3170
+      IF (IND.NE.0) GO TO 3170
          L=L+1
          O(L)=O(76)
 3170  CONTINUE
 3180  IF(I.LE.0)GO TO 3181
          I=I/B
          J=J+1
-      GOTO 3180
+      GO TO 3180
 3181  CONTINUE
 CCOUNT DIGITS IN EXPANSION
-      IF (NUM.GE.0) GOTO 3200
+      IF (NUM.GE.0) GO TO 3200
          L=L+1
          O(L)=42
 3200  CONTINUE
@@ -1407,7 +1407,7 @@ CCOUNT DIGITS IN EXPANSION
          N=K
          J=J-1
          IF(J.LE.0)GO TO 3211
-      GOTO 3210
+      GO TO 3210
 3211  CONTINUE
 99999 RETURN
       END
@@ -1426,7 +1426,7 @@ CFGHIJKLMQRSUVWY
       integer ispec
       integer b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
       save    b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
-      IF (O(A+1).NE.O(105)) GOTO 3230
+      IF (O(A+1).NE.O(105)) GO TO 3230
          LEXP=1
          B=A+1
          C=B+1
@@ -1438,28 +1438,28 @@ CFGHIJKLMQRSUVWY
             IF(NQ.EQ.0)GO TO 3241
             C=C+1
             IF(C.GT.MXC)CALL MESAGE(15, 35, 0,0)
-         GOTO 3240
+         GO TO 3240
 3241     CONTINUE
          D=C+1
          E=D+1
-         IF (O(E).EQ.O(105)) GOTO 3260
+         IF (O(E).EQ.O(105)) GO TO 3260
             LONE=1
             MP=E
             MQ=Z
             MV=B+1
             MU=C
             IF(ISPEC(MP,MQ,MV,MU,LONE).NE.3)LEXP=0
-            GOTO 3250
+            GO TO 3250
 3260        IF(E.GT.Z-1)GO TO 3261
                IF(O(B).NE.O(E))LEXP=0
                B=B+1
                E=E+1
-            GOTO 3260
+            GO TO 3260
 3261        CONTINUE
             IF(B.NE.D) LEXP=0
 3250     CONTINUE
          IF(O(D).EQ.89) LEXP=1-LEXP
-         GOTO 99999
+         GO TO 99999
 3230  CONTINUE
       LEXP=0
       O(20)=0
@@ -1469,23 +1469,23 @@ CFGHIJKLMQRSUVWY
       O(N)=0
       B=A
 3270  IF(B.GT.Z)GO TO 3271
-         IF (0.GT.O(B).OR.O(B).GT.9) GOTO 3290
+         IF (0.GT.O(B).OR.O(B).GT.9) GO TO 3290
             O(N)=0
             O(20)=1
 3300        IF(0.GT.O(B).OR.O(B).GT.9)GO TO 3301
                O(N)=10*O(N)+O(B)
                B=B+1
-            GOTO 3300
+            GO TO 3300
 3301        CONTINUE
-            GOTO 3280
+            GO TO 3280
 3290        IF  (O(B).NE.O(76))GO TO 3310
             B=B+1
-            GOTO 3280
+            GO TO 3280
 3310        T=B
-            IF (10.GT.O(T).OR.O(T).GT.29) GOTO 3330
+            IF (10.GT.O(T).OR.O(T).GT.29) GO TO 3330
                X=O(T)*O(T+1)
                T=T+2
-               IF (O(T).NE.29.AND.O(T).NE.13) GOTO 3350
+               IF (O(T).NE.29.AND.O(T).NE.13) GO TO 3350
                   X=X+O(T)
                   T=T+1
 3350           CONTINUE
@@ -1495,41 +1495,41 @@ CFGHIJKLMQRSUVWY
 3330        CONTINUE
             X=O(T)
             T=T+1
-            IF (X.NE.45.OR.O(T).NE.45) GOTO 3390
+            IF (X.NE.45.OR.O(T).NE.45) GO TO 3390
                T=T+1
                X=36
-               GOTO 3380
+               GO TO 3380
 3390           IF  (X.NE.89)GO TO 3400
                X=29
-               IF (O(T).NE.41) GOTO 3420
+               IF (O(T).NE.41) GO TO 3420
                   T=T+1
                   X=16
 3420           CONTINUE
-               GOTO 3380
+               GO TO 3380
 3400           IF  (X.NE.85)GO TO 3430
                X=30
-               IF (O(T).NE.41) GOTO 3450
+               IF (O(T).NE.41) GO TO 3450
                   T=T+1
                   X=14
 3450           CONTINUE
-               GOTO 3380
+               GO TO 3380
 3430           IF  (X.NE.41)GO TO 3460
                X=18
-               IF (O(T).NE.86) GOTO 3480
+               IF (O(T).NE.86) GO TO 3480
                   T=T+1
                   X=11
 3480           CONTINUE
-               GOTO 3380
+               GO TO 3380
 3460           IF  (X.NE.86)GO TO 3490
                X=23
-               IF (O(T).NE.41) GOTO 3510
+               IF (O(T).NE.41) GO TO 3510
                   T=T+1
                   X=11
 3510           CONTINUE
-               GOTO 3380
+               GO TO 3380
 3490           IF  (X.NE.(87))GO TO 3520
                X=32
-               GOTO 3380
+               GO TO 3380
 3520           IF  (X.NE.(88))GO TO 3530
                X=13
 3380        CONTINUE
@@ -1537,7 +1537,7 @@ CFGHIJKLMQRSUVWY
             IF(P(X).EQ.0)GO TO 3370
 3360        IF(X.LT.10.OR.X.GT.O(81) .OR. (X.EQ.O(81).AND.O(20).EQ.0))
      *      GO TO 3370
-            IF (P(X)/100.LE.P(O(N-1))/100.AND.X.NE.O(80)) GOTO 3550
+            IF (P(X)/100.LE.P(O(N-1))/100.AND.X.NE.O(80)) GO TO 3550
                O(20)=0
                O(49)=O(49)+1
                O(O(49))=X
@@ -1547,16 +1547,16 @@ CFGHIJKLMQRSUVWY
                B=T
                GO TO 3270
 3550        CONTINUE
-            IF (N.NE.MNN) GOTO 3570
+            IF (N.NE.MNN) GO TO 3570
                LEXP=O(N)
-               GOTO 99999
+               GO TO 99999
 3570        CONTINUE
             K=P(O(N-1))
             O(20)=1
             JMP=K-((K/100)*100)-1
             GO TO (2000,3580,3590,3600,3610,3620,3630,3640,3650,3660,3670,
      *      3680,3690,3700,3710),JMP
-3630        IF (O(N).NE.0) GOTO 3730
+3630        IF (O(N).NE.0) GO TO 3730
                CALL MESAGE(14, 10, 0,0)
                GO TO 3370
 3730        CONTINUE
@@ -1596,7 +1596,7 @@ CFGHIJKLMQRSUVWY
 3760        O(N-2)=0
 3740        N=N-2
 3280     CONTINUE
-      GOTO 3270
+      GO TO 3270
 3271  CONTINUE
 3370  CALL MESAGE(14, 23, A,Z+1)
 99999 RETURN
@@ -1616,16 +1616,16 @@ C________________________________________
       O(62)=0
       IF(O(52).EQ.2) CALL MESAGE(16,1,0,0)
 3770  CALL RW(0,O(9),325,MXR)
-      IF (O(52).NE.1) GOTO 3790
+      IF (O(52).NE.1) GO TO 3790
          O(52)=0
          O(9)=O(O(50))
          O(50)=O(50)-1
-         IF (O(9).NE.0) GOTO 3810
+         IF (O(9).NE.0) GO TO 3810
             O(52)=2
             O(15)=1
             O(12)=O(43)
             O(O(12))=O(79)
-            GOTO 99999
+            GO TO 99999
 3810     CONTINUE
 3790  CONTINUE
       DO 3821 K= 325,MXR
@@ -1634,36 +1634,36 @@ C________________________________________
       O(19)=O(19)+1
       O(12)=457
       O(157)=O(76)
-      IF (O(457).NE.93) GOTO 3860
-         IF (O(458).NE.14) GOTO 3880
+      IF (O(457).NE.93) GO TO 3860
+         IF (O(458).NE.14) GO TO 3880
             O(157)=1
             O(325)=O(689+O(76))
             O(325+1)=O(325)
             O(12)=458+1
-            GOTO 3870
+            GO TO 3870
 3880        IF  (O(458).NE.93)GO TO 3890
             O(52)=1
             O(15)=1
-            GOTO 3870
+            GO TO 3870
 3890        IF  (10.GT.O(458).OR.O(458).GT.30)GO TO 3900
             CALL CCCARD(O(458)-9)
             O(12)=O(43)
             O(O(12))=O(79)
 3870     CONTINUE
 3900     CONTINUE
-         IF (O(52).NE.1.AND.O(458).NE.22.AND.O(458).NE.15) GOTO 3920
+         IF (O(52).NE.1.AND.O(458).NE.22.AND.O(458).NE.15) GO TO 3920
             O(12)=O(43)
             O(O(12))=O(79)
-            GOTO 99999
+            GO TO 99999
 3920     CONTINUE
 3860  CONTINUE
-3930  IF (O(21).NE.1) GOTO 3950
+3930  IF (O(21).NE.1) GO TO 3950
          DO 3961 J = 158,174
             O(J)=O(76)
 3961     CONTINUE
-         IF (O(30).NE.1) GOTO 3980
+         IF (O(30).NE.1) GO TO 3980
             J=LLONG(158,O(19),10,0)
-            GOTO 3970
+            GO TO 3970
 3980        IF  (O(30).NE.2)GO TO 3990
             DO 4001 J = 1,8
                O(157+J)=O(O(43)+J)
@@ -1673,24 +1673,24 @@ C________________________________________
          IF(O(68).NE.0)O(167)=33
          O(169)=O(55)
          J=LLONG(170,O(11),10,0)
-         IF (O(53).NE.0) GOTO 4020
+         IF (O(53).NE.0) GO TO 4020
             W=174
             DO 4031 K = 1,MXN
                W=W+1
                O(W)=O(456+K)
 4031        CONTINUE
             CALL RW(18,O(56),157,W)
-            GOTO 4010
+            GO TO 4010
 4020        I=MOD(MAX0(O(53)*O(11),0),90)
             L=457
             M=O(43)
 4040        IF(O(L).NE.O(76).OR.L.EQ.M)GO TO 4041
                L=L+1
-            GOTO 4040
+            GO TO 4040
 4041        CONTINUE
 4050        IF(O(M).NE.O(76).OR.L.EQ.M)GO TO 4051
                M=M-1
-            GOTO 4050
+            GO TO 4050
 4051        CONTINUE
 4060        CONTINUE
                W=175
@@ -1702,48 +1702,48 @@ C________________________________________
                   O(W)=O(L)
                   W=W+1
                   L=L+1
-               GOTO 4080
+               GO TO 4080
 4081           CONTINUE
                CALL RW(18,O(56),157,W-1)
                IF(L.GT.M)GO TO 4061
                DO 4091 K = 157,175
                   O(K)=O(76)
 4091           CONTINUE
-            GOTO 4060
+            GO TO 4060
 4061        CONTINUE
 4010     CONTINUE
 3950  CONTINUE
-      IF (O(15).NE.1) GOTO 4110
+      IF (O(15).NE.1) GO TO 4110
          IF (O(457).NE.93 ) CALL RW(23,O(57),325,404)
-         GOTO 4100
+         GO TO 4100
 4110     IF  (O(10).NE.1)GO TO 4120
          NERD=LINF(457,MXT,10)
 4100  CONTINUE
 4120  CONTINUE
       IF(O(15).EQ.1)GO TO 3770
-      IF (O(14).LT.2) GOTO 99999
+      IF (O(14).LT.2) GO TO 99999
       J=456
       K=457
 4130  IF(K.GT.MXT)GO TO 4131
          J=J+1
          O(J)=O(K)
          K=K+1
-         IF (O(J).NE.45) GOTO 4150
-            IF (O(K).NE.46) GOTO 4170
+         IF (O(J).NE.45) GO TO 4150
+            IF (O(K).NE.46) GO TO 4170
                O(J)=O(85)
                K=K+1
-               GOTO 4160
+               GO TO 4160
 4170           IF  (O(K).NE.86)GO TO 4180
                O(J)=O(83)
                K=K+1
 4160        CONTINUE
 4180        CONTINUE
-            GOTO 4140
+            GO TO 4140
 4150        IF  (O(K).NE.45)GO TO 4190
-            IF (O(J).NE.38) GOTO 4210
+            IF (O(J).NE.38) GO TO 4210
                O(J)=O(84)
                K=K+1
-               GOTO 4200
+               GO TO 4200
 4210           IF  (O(J).NE.85)GO TO 4220
                O(J)=O(82)
                K=K+1
@@ -1751,12 +1751,12 @@ C________________________________________
 4220        CONTINUE
 4140     CONTINUE
 4190     CONTINUE
-      GOTO 4130
+      GO TO 4130
 4131  CONTINUE
 4230  IF(J.GT.MXT)GO TO 4231
          J=J+1
          O(J)=90
-      GOTO 4230
+      GO TO 4230
 4231  CONTINUE
 99999 RETURN
       END
@@ -1778,41 +1778,41 @@ C________________________________________
      *1390,1980,3640,3640,2010,2020,2030,2040,2050),JMP
 CABCDEFGHJLMNPQRSTUVWXYZ
 680   O(10) =N5(0,2,1)
-      GOTO 99999
+      GO TO 99999
 4240  O(37) =N5(0,132,132)
       O(38)=324+O(37)
       O(36)=456+O(37)
-      GOTO 99999
+      GO TO 99999
 310   O(41)=N5(10,132,132)
       O(43)=456+O(41)
       O(42)=324+O(41)
-      GOTO 99999
+      GO TO 99999
 4250  O(13)=N5(0,2,0)
-      GOTO 99999
+      GO TO 99999
 4260  O(15) =1
-      GOTO 99999
+      GO TO 99999
 4270  O(53)=N5(0,50,2)
-      GOTO 99999
+      GO TO 99999
 1970  O(21)=1
-      GOTO 99999
+      GO TO 99999
 1390  O(15) =0
-      GOTO 99999
+      GO TO 99999
 1980  O(21)=0
-      GOTO 99999
+      GO TO 99999
 2010  O(26)=N5(0,1,1)
-      GOTO 99999
+      GO TO 99999
 2020  I =N5(1,99,8)
       REWIND I
-      GOTO 99999
+      GO TO 99999
 2030  O(30)=N5(0,2,0)
-      GOTO 99999
+      GO TO 99999
 2040  O(29)=N5(0,9,0)
-      GOTO 99999
+      GO TO 99999
 2050  O(50)=O(50)+1
       O(O(50))=O(9)
       IF(O(50).GT.2504)CALL MESAGE(15, 30, 0,0)
       O(9)=N5(1,99,O(9))
-      GOTO 99999
+      GO TO 99999
 3640  CALL MESAGE(14, 22, 0,0)
 99999 RETURN
       END
@@ -1829,7 +1829,7 @@ C__________________________________________
       save    j
       J=457+4
       N5=NIB(J,10)
-      IF ((L.LE.N5).AND.(N5.LE.M)) GOTO 4290
+      IF ((L.LE.N5).AND.(N5.LE.M)) GO TO 4290
          CALL MESAGE(14, 3, 0,0)
          N5=K
 4290  CONTINUE
@@ -1845,58 +1845,58 @@ C________________________________________
       integer O
       integer k,m,t,n
       save    k,m,t,n
-      IF (O(23).GT.0.AND.O(29).LT.3.AND.W.NE.4)GOTO 99999
-      IF (W.NE.2) GOTO 4310
+      IF (O(23).GT.0.AND.O(29).LT.3.AND.W.NE.4)GO TO 99999
+      IF (W.NE.2) GO TO 4310
          CALL DUMDUM(175,90,37,37,37,22,42,29,27,34,90)
          O(175+4)=(O(32)-1145)/120
          CALL CRIT(R,S)
-         GOTO 4300
+         GO TO 4300
 4310     IF  (W.NE.4)GO TO 4320
          CALL DUMDUM(175,90,45,28,29,27,10,23,16,14,90)
          CALL CRIT(R,S)
-         GOTO 4300
+         GO TO 4300
 4320     IF  (W.NE.5)GO TO 4330
          CALL DUMDUM(175,90,37,10,16,10,18,23,28,29,90)
          CALL CRIT(R,S)
 4300  CONTINUE
 4330  CONTINUE
-      IF (W.NE.33) GOTO 4350
-         IF (O(23).NE.0) GOTO 4370
+      IF (W.NE.33) GO TO 4350
+         IF (O(23).NE.0) GO TO 4370
             CALL DUMDUM(175,90,90,27,14,13,30,12,14,13,90)
-            GOTO 4360
+            GO TO 4360
 4370        CALL DUMDUM(175,90,90,90,90,90,23,14,28,29,90)
             O(175+3)=O(23)
 4360     CONTINUE
          CALL CRIT(R+1,S+1)
-         GOTO 4340
+         GO TO 4340
 4350     IF  (W.NE.15)GO TO 4380
          CALL DUMDUM(175,90,90,13,14,15,18,23,14,13,90)
          CALL CRIT(R+4,O(R+3))
-         IF (R+4.GE.O(R+3)) GOTO 4400
+         IF (R+4.GE.O(R+3)) GO TO 4400
             CALL DUMDUM(175,90,90,90,90,31,10,21,30,14,90)
             O(175+2)=O(54)
             CALL CRIT(S+4,O(S+3))
-            GOTO 4390
+            GO TO 4390
 4400        CALL DUMDUM(175,90,23,30,21,21,90,31,10,21,90)
             CALL CRIT(S,S)
 4390     CONTINUE
-         GOTO 4340
+         GO TO 4340
 4380     IF  (W.NE.12)GO TO 4410
          CALL DUMDUM(175,90,10,25,25,14,23,13,14,13,90)
          CALL CRIT(O(S-2*(3)-1),O(S-2*(3)-2) )
          CALL DUMDUM(175,90,90,90,90,90,90,90,29,24,90)
          CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
-         GOTO 4340
+         GO TO 4340
 4410     IF  (W.NE.13)GO TO 4420
          CALL DUMDUM(175,90,90,27,14,22,24,31,14,13,90)
          CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
-         GOTO 4340
+         GO TO 4340
 4420     IF  (W.NE.22)GO TO 4430
-         IF(O(R+4).LT.0)GOTO 99999
+         IF(O(R+4).LT.0)GO TO 99999
          CALL DUMDUM(175,90,90,22,10,29,12,17,14,13,90)
          CALL CRIT(R+4,O(R+3) )
          K=O(S-1)
-         IF (K.EQ.0) GOTO 4450
+         IF (K.EQ.0) GO TO 4450
             DO 4461 M = 1,K
                CALL DUMDUM(175,90,90,90,90,10,27,16,90,90,90)
                O(175+8)=M
@@ -1930,11 +1930,11 @@ C__________________________________________
             IF(O(C).GT.100+19)O(C)=100
             IF(O(C).EQ.-1)O(C)=74
             IF(O(C).EQ.-2)O(C)=82
-         GOTO 4480
+         GO TO 4480
 4481     CONTINUE
          CALL RW(33,O(56),175,C)
          CALL DUMDUM(175,90,90,90,90,90,90,90,90,90,90)
-      GOTO 4470
+      GO TO 4470
 4471  CONTINUE
 99999 RETURN
       END
@@ -1951,32 +1951,32 @@ C________________________________________
       IF(LEVEL.EQ.14 .OR. LEVEL.EQ.15)O(63)=O(63)+1
       CALL FIND(LEVEL,NO,K1)
       IF(K2.NE.0)CALL MACTRC(4,K1,K2)
-      IF (LEVEL.NE.13) GOTO 4500
+      IF (LEVEL.NE.13) GO TO 4500
          CALL FIND(13,2,O(60))
          CALL FIND(13,3,O(61))
 4500  CONTINUE
-      IF (LEVEL.GT.14) GOTO 4520
+      IF (LEVEL.GT.14) GO TO 4520
          IF(O(63).LT.100)RETURN
          CALL FIND(15,10,0)
 4520  CONTINUE
-      IF (O(55).NE.O(86).AND.O(55).NE.O(87)) GOTO 4540
+      IF (O(55).NE.O(86).AND.O(55).NE.O(87)) GO TO 4540
          O(63)=O(63)+1
          IF(O(55).EQ.O(86)) CALL FIND(16,5,0)
          IF(O(55).EQ.O(87))CALL FIND(16,4,0)
 4540  CONTINUE
       IF(O(47).GT.2255.OR.O(48).GT.2305)O(63)=O(63)+1
-      IF (O(48).LE.2305) GOTO 4560
+      IF (O(48).LE.2305) GO TO 4560
          CALL FIND(16,3,O(48)-2305)
 4560  CONTINUE
 4570  IF(O(47).LE.2255)GO TO 4571
          CALL FIND(16,2,O(O(47)))
          O(47)=O(47)-1
-      GOTO 4570
+      GO TO 4570
 4571  CONTINUE
       CALL FIND(13,3,O(61))
-      IF (O(63).NE.0) GOTO 4590
+      IF (O(63).NE.0) GO TO 4590
          CALL FIND(16,6,0)
-         GOTO 4580
+         GO TO 4580
 4590     CALL FIND(16,7,O(63))
          write(6,*) 'compilation error (stop 12)'
          call exit(12) !stop 12
@@ -1999,7 +1999,7 @@ C__________________________________________
       A=175
       C=A+9
       Q=1865+L
-680   IF (O(Q).EQ.0) GOTO 4610
+680   IF (O(Q).EQ.0) GO TO 4610
          Q=O(Q)
          IF(O(Q+5).NE.N)GO TO 680
          R=O(Q+2)+4
@@ -2008,14 +2008,14 @@ C__________________________________________
             C=C+1
             O(C)=O(R)
             R=R+1
-         GOTO 4620
+         GO TO 4620
 4621     CONTINUE
-         GOTO 4600
+         GO TO 4600
 4610     C=C+LLONG(C,N,10,0)
 4600  CONTINUE
       IF(L.EQ.15) CALL DUMDUM(175,90,45,45,45,15,10,29,10,21,90)
       IF(L.EQ.14) CALL DUMDUM(175,90,45,32,10,27,23,18,23,16,90)
-      IF (L.NE.13.AND.L.NE.16) GOTO 4640
+      IF (L.NE.13.AND.L.NE.16) GO TO 4640
          CALL DUMDUM(175,90,90,90,90,90,90,90,90,90,90)
          IF(V.NE.0) NERD=LLONG(A,V,10,0)
 4640  CONTINUE
@@ -2046,7 +2046,7 @@ C     LINF modes: packed comments and rule diagnostics.
 CCEFGLMNPQRS UVWXY
       O(62)=0
       IF (IND.EQ.linf_comment_mode .AND. (O(25).EQ.0.OR.O(10).EQ.1
-     * .OR.O(96).EQ.O(A)))GOTO 99999
+     * .OR.O(96).EQ.O(A)))GO TO 99999
       KST=0
       H=0
       B=A
@@ -2064,35 +2064,35 @@ CCEFGLMNPQRS UVWXY
       DO 4661 J = 175,254
          O(J)=O(76)
 4661  CONTINUE
-      IF (IND.NE.linf_rule_diagnostic_mode) GOTO 4680
+      IF (IND.NE.linf_rule_diagnostic_mode) GO TO 4680
 4690     IF(I.GE.181.OR.B.GT.Z)GO TO 4691
-            IF (O(B).NE.O(76)) GOTO 4710
+            IF (O(B).NE.O(76)) GO TO 4710
                B=B+1
                GO TO 4690
 4710        CONTINUE
-            IF (0.GT.O(B).OR.O(B).GT.9) GOTO 4730
+            IF (0.GT.O(B).OR.O(B).GT.9) GO TO 4730
                O(I)=O(B)
                I=I+1
                B=B+1
-               GOTO 4720
+               GO TO 4720
 4730           GO TO 4691
 4720        CONTINUE
-         GOTO 4690
+         GO TO 4690
 4691     CONTINUE
          NPL=65
          D=45
          KOFF=7
-         GOTO 4670
+         GO TO 4670
 4680     NPL=71
          D=12
          O(175)=D
          KOFF=MAX(MIN(80,O(39)),2)
 4670  CONTINUE
-      IF (B.LE.Z) GOTO 4750
-         IF (I.LE.175) GOTO 4770
+      IF (B.LE.Z) GO TO 4750
+         IF (I.LE.175) GO TO 4770
             CALL RW(33,O(57),175,181)
             IF(IND.EQ.linf_rule_diagnostic_mode)CALL MESAGE(14, 14, 0,0)
-            GOTO 99999
+            GO TO 99999
 4770     CONTINUE
 4750  CONTINUE
       C=174+KOFF+KUT*O(18)
@@ -2102,68 +2102,68 @@ CCEFGLMNPQRS UVWXY
 4780  IF(B.GT.Z)GO TO 4781
          LIMC=MIN0(B+NPL,Z)
 4790     IF(B.GT.LIMC.OR.I.GT.246)GO TO 4791
-            IF (IND.NE.linf_rule_diagnostic_mode) GOTO 4810
-               IF (O(17).NE.1) GOTO 4830
-                  IF (O(B).NE.O(105)) GOTO 4850
+            IF (IND.NE.linf_rule_diagnostic_mode) GO TO 4810
+               IF (O(17).NE.1) GO TO 4830
+                  IF (O(B).NE.O(105)) GO TO 4850
                      IF(I.GT.246-4)GO TO 4791
                      H=1
 4860                 IF(O(B+H).EQ.O(106))GO TO 4861
                         H=H+1
-                     GOTO 4860
+                     GO TO 4860
 4861                 CONTINUE
                      O(B+H)=O(76)
-                     IF (H.NE.1) GOTO 4880
+                     IF (H.NE.1) GO TO 4880
                         O(B)=O(86)
                         H=0
-                        GOTO 4870
+                        GO TO 4870
 4880                    I=I+LLONG(I-1,H-1,10,0)
                         O(I)=17
                         B=B+1
                         I=I+1
 4870                 CONTINUE
 4850              CONTINUE
-                  GOTO 4820
-4830              IF (O(B).NE.O(86)) GOTO 4900
+                  GO TO 4820
+4830              IF (O(B).NE.O(86)) GO TO 4900
                      O(I)=O(B)
                      I=I+1
 4900              CONTINUE
 4820           CONTINUE
 4810        CONTINUE
-            IF (O(B).NE.O(70)) GOTO 4920
+            IF (O(B).NE.O(70)) GO TO 4920
                B=B+1
                GO TO 4791
 4920        CONTINUE
             O(I)=O(B)
             I=I+1
             B=B+1
-         GOTO 4790
+         GO TO 4790
 4791     CONTINUE
-         IF (O(30).NE.1) GOTO 4940
+         IF (O(30).NE.1) GO TO 4940
             DO 4951 K = 1,8
                O(254-K+1)=O(O(36)-K+1)
 4951        CONTINUE
-            GOTO 4930
+            GO TO 4930
 4940        IF  (O(30).NE.2)GO TO 4960
             K=LLONG(247,O(19),10,0)
 4930     CONTINUE
 4960     CONTINUE
          DO 4971 K = 175,246
-            IF (O(K).NE.O(105)) GOTO 4990
+            IF (O(K).NE.O(105)) GO TO 4990
                O(K)=O(86)
                KST=1
 4990        CONTINUE
-            IF (O(K).NE.O(106)) GOTO 5010
+            IF (O(K).NE.O(106)) GO TO 5010
                O(K)=O(86)
                KST=0
 5010        CONTINUE
 4971     CONTINUE
       IF (I.LE.246.OR.IND.NE.linf_rule_diagnostic_mode
-     *    .OR.KST.NE.0) GOTO 5030
+     *    .OR.KST.NE.0) GO TO 5030
 5040        IF(O(I-1).GE.38.OR.KST.LE.0)GO TO 5041
                B=B-1
                I=I-1
                O(I)=O(76)
-            GOTO 5040
+            GO TO 5040
 5041        CONTINUE
 5030     CONTINUE
          DO 5051 K = 175,254
@@ -2176,16 +2176,16 @@ C   LOOKOUT
             O(K)=O(76)
 5061     CONTINUE
          I=C
-         IF (IND.NE.linf_rule_diagnostic_mode) GOTO 5080
+         IF (IND.NE.linf_rule_diagnostic_mode) GO TO 5080
             O(175+5)=D
-            GOTO 5070
+            GO TO 5070
 5080        O(175)=D
 5070     CONTINUE
-         IF (KST.LE.0) GOTO 5100
+         IF (KST.LE.0) GO TO 5100
             I=181
             O(181-1)=45
 5100     CONTINUE
-      GOTO 4780
+      GO TO 4780
 4781  CONTINUE
       LAST=KUR
       IF(IND.EQ.linf_comment_mode) O(A)=O(96)
@@ -2239,7 +2239,7 @@ C
       save f_buffer
 
       NR=K+1-J
-      IF (N.NE.0) GOTO 5120
+      IF (N.NE.0) GO TO 5120
          !write(44,*) 'nr = ',nr,k,j,i
          READ(I,1,END=5130) (CH(M),M=1,NR)
          if( i.ne.1 ) then
@@ -2255,7 +2255,7 @@ C
              !  do m1=m,nr
              !    ch(m1) = ' '
              !  end do
-             !  goto 50
+             !  GO TO 50
              !end if
              if( ch(m).eq.'/'.and.ch(m+1).eq.'*' ) then
                ! A C style comment
@@ -2280,7 +2280,7 @@ C
          !write(44,1) (CH(M),M=1,NR)
          DO 99 M=1,NR
 99       O(J+M-1)=ICHAR(CH(M))
-         GOTO 99999
+         GO TO 99999
 5120  CONTINUE
        KOF=589
       IF (N.EQ.33) KOF=100+KOF
@@ -2302,13 +2302,13 @@ C
       !  if( ch(jj).eq.' ' ) then
       !     nrr=nrr-1
       !  else
-      !     goto 20
+      !     GO TO 20
       !  end if
       !end do
       ! GCC versions < 3.4.0 miscompile the above when optimization is on.
       ! --IK, Nov 23 2005.
       do jj=nr,1,-1
-          if( ch(jj).ne.' ' ) goto 20
+          if( ch(jj).ne.' ' ) GO TO 20
       end do
 20    continue
       nrr = jj
@@ -2319,7 +2319,7 @@ C
       ! and make the # to be the first char on the line.
       nfirst=1
       do jj=1,nrr
-        if( ch(jj).ne.' ' ) goto 31
+        if( ch(jj).ne.' ' ) GO TO 31
       end do
 31    continue
       if( ch(jj).eq.'#' ) then
@@ -2343,7 +2343,7 @@ C
           jj = 7
           if( .not.is_quote ) then
               do jj=7,nrr
-                  if( ch(jj).ne.' ' ) goto 66
+                  if( ch(jj).ne.' ' ) GO TO 66
               end do
           end if
 66        continue
@@ -2378,7 +2378,7 @@ C
           end do
           if( .not.is_quote ) then
               do ii=nfl,1,-1
-                  if( f_buffer(ii).ne.' ' ) goto 62
+                  if( f_buffer(ii).ne.' ' ) GO TO 62
               end do
 62            continue
               nfl = ii
@@ -2398,14 +2398,14 @@ C
               if( ii.gt.nfl ) ii = nfl
               write(i,'(a6,66a1)') '     *',(f_buffer(m),m=jj+1,ii)
               jj = ii
-              goto 67
+              GO TO 67
           end if
           return
       endif
 
       if( .not.is_format ) then
           do jj=7,nrr
-              if( ch(jj).ne.' ') goto 61
+              if( ch(jj).ne.' ') GO TO 61
           end do
 61        continue
           do ii=jj,jj+5
@@ -2461,7 +2461,7 @@ C
           call egs_fdate(I)
           write(I,*)
       end if
-      GOTO 99999
+      GO TO 99999
 5130  O(52)=1
 99999 RETURN
       END
@@ -2481,7 +2481,7 @@ C________________________________________
       EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
      *(O(7),W),(O(8),X)
       save    kount,k,iuni,count
-      IF (IND.NE.2) GOTO 5200
+      IF (IND.NE.2) GO TO 5200
          O(59)=1
          O(19)=5
          KOUNT=O(34)+1
@@ -2504,7 +2504,7 @@ C     O(14)=O(4)   THIS IS NO LONGER USED IN FORTRAN 77 VERSIONS
       O(16)=O(6)
       READ(IUNI,2)COUNT
       REWIND IUNI
-      IF (COUNT.EQ.'C') GOTO 5230
+      IF (COUNT.EQ.'C') GO TO 5230
          READ (IUNI,1) KOUNT,(O(K),K=1,KOUNT)
 C
 C     The following line
@@ -2520,7 +2520,7 @@ C
          CALL RW(23,O(57),325+3,325+79)
          CALL RW(23,O(56),325+2,325+79)
          REWIND IUNI
-         GOTO 5220
+         GO TO 5220
 5230     CALL RAW
 5220  CONTINUE
       O(55)=O(76)
@@ -2640,7 +2640,7 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
         ! making all necessary links and hope for the best
 
         OPEN(UNIT=1,file='fort.1',STATUS='OLD',err=11)
-        goto 12
+        GO TO 12
 11      call getarg(0,arg)
         write(6,'(a,a)') arg(1:lnblnk1(arg)),' called without arguments'
         write(6,'(a)') '  but file fort.1 does not exist! '
@@ -2746,7 +2746,7 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
           do j=i+1,narg
             call getarg(j,arg)
             if( arg(1:1).eq.'-' ) then
-              goto 88
+              GO TO 88
             end if
             nfe=j
           end do
@@ -2816,7 +2816,7 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
                 end if
               end if
             end if
-            goto 104
+            GO TO 104
 102         next = .false.
 104         continue
           end do
