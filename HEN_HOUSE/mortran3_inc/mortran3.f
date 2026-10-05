@@ -2160,16 +2160,16 @@ CCEFGLMNPQRS UVWXY
             K=LLONG(247,O(19),10,0)
 4930     CONTINUE
 4960     CONTINUE
-         DO 4971 K = 175,246
-            IF (O(K)/= O(105)) GO TO 4990
+         DO K = 175,246
+            IF (O(K)==O(105)) THEN
                O(K)=O(86)
                KST=1
-4990        CONTINUE
-            IF (O(K)/= O(106)) GO TO 5010
+            END IF
+            IF (O(K)==O(106)) THEN
                O(K)=O(86)
                KST=0
-5010        CONTINUE
-4971     CONTINUE
+            END IF
+         END DO
       IF (I<=246.OR.IND/= linf_rule_diagnostic_mode
      *    .OR.KST/= 0) GO TO 5030
 5040        IF(O(I-1)>=38.OR.KST<=0)GO TO 5041
