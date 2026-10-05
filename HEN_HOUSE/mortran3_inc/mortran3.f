@@ -1483,11 +1483,10 @@ CFGHIJKLMQRSUVWY
          IF (0>O(B).OR.O(B)>9) GO TO 3290
             O(N)=0
             O(20)=1
-3300        IF(0>O(B).OR.O(B)>9)GO TO 3301
+            DO WHILE(0<=O(B).AND.O(B)<=9)
                O(N)=10*O(N)+O(B)
                B=B+1
-            GO TO 3300
-3301        CONTINUE
+            END DO
             CYCLE
 3290        IF  (O(B)/= O(76))GO TO 3310
             B=B+1
