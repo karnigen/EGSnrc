@@ -777,9 +777,7 @@ CCDGHILM
                   END IF
                   GO TO 1720
 1730              IF  (O(O_B)/= 16)GO TO 1760
-                  IF (O(68)/= 1) GO TO 1780
-                     KGN=KGN+1
-1780              CONTINUE
+                  IF (O(68)==1) KGN=KGN+1
                   GO TO 1720
 1760              IF  (O(O_B)/= 14)GO TO 1790
                   KGN=KGN-1
