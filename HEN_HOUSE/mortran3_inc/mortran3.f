@@ -1666,9 +1666,9 @@ C________________________________________
          END IF
       END IF
       IF (O(21)==1) THEN
-         DO 3961 J = 158,174
+         DO J = 158,174
             O(J)=O(76)
-3961     CONTINUE
+         END DO
          IF (O(30)==1) THEN
             J=LLONG(158,O(19),10,0)
          ELSE IF (O(30)==2) THEN
