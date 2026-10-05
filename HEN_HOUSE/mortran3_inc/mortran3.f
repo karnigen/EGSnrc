@@ -2185,9 +2185,9 @@ CCEFGLMNPQRS UVWXY
          END DO
 C   LOOKOUT
          CALL RW(23,O(57),175,254)
-         DO 5061 K = 175,254
+         DO K = 175,254
             O(K)=O(76)
-5061     CONTINUE
+         END DO
          I=C
          IF (IND/= linf_rule_diagnostic_mode) GO TO 5080
             O(175+5)=D
