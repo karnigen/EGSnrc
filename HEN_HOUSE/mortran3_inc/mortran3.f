@@ -1495,10 +1495,10 @@ CFGHIJKLMQRSUVWY
             IF (10>O(T).OR.O(T)>29) GO TO 3330
                X=O(T)*O(T+1)
                T=T+2
-               IF (O(T)/= 29.AND.O(T)/= 13) GO TO 3350
+               IF (O(T)==29.OR.O(T)==13) THEN
                   X=X+O(T)
                   T=T+1
-3350           CONTINUE
+               END IF
                X=X/20
                IF((10<X).AND.(X<33))GO TO 3360
                GO TO 3370
