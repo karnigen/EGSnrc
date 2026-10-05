@@ -272,7 +272,7 @@ C
             GO TO 100
          END IF
          IF(F==0)GO TO 80
-400      CONTINUE
+         DO
             IF(O(T)==O(106))GO TO 80
             IF (KD>0) THEN
             DO
@@ -282,7 +282,7 @@ C
                T=T+1
                IF(T>O_U)GO TO 80
             END DO
-            GO TO 440
+            EXIT
             END IF
             IF (O(T)==O(105)) THEN
                NB=1
@@ -315,11 +315,13 @@ C
                IF(O(15)==1)GO TO 80
                GO TO 10
             END IF
-            IF (KC+KP+KB/= 0) GO TO 400
+            IF (KC+KP+KB/= 0) CYCLE
             IF(MQ==0)D=F
-440         O_V=T
-            O(O_S-2*(A)-2)=O_V
-            GO TO 100
+            EXIT
+         END DO
+         O_V=T
+         O(O_S-2*(A)-2)=O_V
+         GO TO 100
 101   CONTINUE
       IF(O(15)==1)GO TO 80
       IF (O_S==O_U) THEN
