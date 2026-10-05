@@ -1334,9 +1334,9 @@ C PREDECESSOR  SUCCESSOR    CONCAT
          O(P)=O(P)-D
          O(M+3)=O(M+3)-D
 C   MOVE IT
-         DO 3111 I = M,N
+         DO I = M,N
             O(I-D)=O(I)
-3111     CONTINUE
+         END DO
       GO TO 3080
 3081  CONTINUE
       O(34)=O(34)-D
