@@ -1715,13 +1715,11 @@ C________________________________________
             END DO
         END IF
       END IF
-      IF (O(15)/= 1) GO TO 4110
-         IF (O(457)/= 93 ) CALL RW(23,O(57),325,404)
-         GO TO 4100
-4110     IF  (O(10)/= 1)GO TO 4120
+      IF (O(15)==1) THEN
+         IF (O(457)/= 93) CALL RW(23,O(57),325,404)
+      ELSE IF (O(10)==1) THEN
          NERD=LINF(457,MXT,10)
-4100  CONTINUE
-4120  CONTINUE
+      END IF
       IF(O(15)==1)GO TO 3770
       IF (O(14)<2) GO TO 99999
       J=456
