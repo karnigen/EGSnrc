@@ -494,15 +494,15 @@ C__________________________________________
 CADEFGHIJKLRSXYZ
       O(46)=2205
 1070  IF(P>=Q)GO TO 1071
-         IF (O(V)/= O(76)) GO TO 1090
-            IF (V/= T) GO TO 1110
+         IF (O(V)==O(76)) THEN
+            IF (V==T) THEN
                V=V+1
                T=T+1
                IF(V>U)GO TO 1120
                GO TO 1070
-1110        CONTINUE
-1090     CONTINUE
-         IF (O(P)>100) GO TO 1140
+            END IF
+         END IF
+         IF (O(P)<=100) THEN
             IQ=Q
             I=MINI(P,Q,NP,1505)
             IF(O(29)>=4) CALL MACTRC(5,V,U)
@@ -513,7 +513,8 @@ CADEFGHIJKLRSXYZ
             O(O(45))=NP
             IF(O(45)>2204)CALL MESAGE(15, 19, 0,0)
             GO TO 1130
-1140        IF  (O(P)>=O(106))GO TO 1150
+         END IF
+            IF  (O(P)>=O(106))GO TO 1150
             P=P+1
             JMP=O(P-1)-100
             GO TO (1160,1170,1180,1190,1200),JMP
@@ -2542,7 +2543,7 @@ C
          CALL RW(23,O(56),325+2,325+79)
          REWIND IUNI
          GO TO 5220
-5230     CALL RAW
+5230     CALL RAW()
 5220  CONTINUE
       O(55)=O(76)
       O(40)=525371
