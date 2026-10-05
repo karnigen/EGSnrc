@@ -776,18 +776,16 @@ CCDGHILM
                      KGN=KGN+1
                   END IF
                   GO TO 1720
-1730              IF  (O(O_B)/= 16)GO TO 1760
-                  IF (O(68)==1) KGN=KGN+1
-                  GO TO 1720
-1760              IF  (O(O_B)/= 14)GO TO 1790
+1730              IF (O(O_B)==16 .AND. O(68)==1) KGN=KGN+1
+                  IF (O(O_B)==14) THEN
                   KGN=KGN-1
                   IF(KGN<=0)O(68)=0
+                  END IF
 1720           CONTINUE
-1790           CONTINUE
-               IF (O(71)==0) GO TO 1810
+               IF (O(71)/=0) THEN
                   IF(O(68)==0)O(32)=1625
                   IF(O(68)/= 0)O(32)=1145
-1810           CONTINUE
+               END IF
                GO TO 1690
 1710        CONTINUE
             IF(O(68)==0)CALL KAT
