@@ -544,27 +544,27 @@ CADEFGHIJKLRSXYZ
             C=0
             GO TO 1070
             CASE (4)
-            P=P+2
-            IF (M/= 1) GO TO 1250
-               C=C+1
-               IF (C>=O(P-1)) GO TO 1270
-                  P=O(O(46))
-                  GO TO 1070
-1270           CONTINUE
-1250        CONTINUE
-            IF(C>=O(P-2))M=1
-            IF( M==0 ) V=O(O(46)-1)
-            IF (.NOT.((O(46)==2205))) GO TO 1290
-               CALL MESAGE(14, 17, 0,0)
-               GO TO 90
-1290        CONTINUE
-            NUL=O(O(46))
-            O(46)=O(46)-1
-            NUL=O(O(46))
-            O(46)=O(46)-1
-            C=O(O(46))
-            O(46)=O(46)-1
-            GO TO 1300
+               P=P+2
+               IF (M==1) THEN
+                  C=C+1
+                  IF (C<O(P-1)) THEN
+                     P=O(O(46))
+                     GO TO 1070
+                  END IF
+               END IF
+               IF(C>=O(P-2))M=1
+               IF( M==0 ) V=O(O(46)-1)
+               IF (O(46)==2205) THEN
+                  CALL MESAGE(14, 17, 0,0)
+                  GO TO 90
+               END IF
+               NUL=O(O(46))
+               O(46)=O(46)-1
+               NUL=O(O(46))
+               O(46)=O(46)-1
+               C=O(O(46))
+               O(46)=O(46)-1
+               GO TO 1300
             CASE (2)
             P=P+2
             M=0
