@@ -224,12 +224,10 @@ C
                IF(D>=MXD)GO TO 20
                GO TO 100
 230         CONTINUE
-            IF (O(O_V)/= O(76)) GO TO 260
-               IF (O(69)+KD/= 0) GO TO 280
+            IF (O(O_V)==O(76).AND.O(69)+KD==0) THEN
                   O_V=O_V+1
                   GO TO 100
-280            CONTINUE
-260         CONTINUE
+            END IF
             IF (O(D)==O(107)) THEN
                D=D+1
                N=O(D)
