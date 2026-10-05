@@ -1627,18 +1627,18 @@ C________________________________________
       O(62)=0
       IF(O(52)==2) CALL MESAGE(16,1,0,0)
 3770  CALL RW(0,O(9),325,MXR)
-      IF (O(52)/= 1) GO TO 3790
+      IF (O(52)==1) THEN
          O(52)=0
          O(9)=O(O(50))
          O(50)=O(50)-1
-         IF (O(9)/= 0) GO TO 3810
+         IF (O(9)==0) THEN
             O(52)=2
             O(15)=1
             O(12)=O(43)
             O(O(12))=O(79)
-            GO TO 99999
-3810     CONTINUE
-3790  CONTINUE
+            RETURN
+         END IF
+      END IF
       DO 3821 K= 325,MXR
       O(K+132)=O(889+O(K))
 3821  CONTINUE
