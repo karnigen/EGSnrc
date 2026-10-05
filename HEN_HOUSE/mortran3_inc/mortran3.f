@@ -1665,7 +1665,7 @@ C________________________________________
             RETURN
          END IF
       END IF
-3930  IF (O(21)/= 1) GO TO 3950
+      IF (O(21)==1) THEN
          DO 3961 J = 158,174
             O(J)=O(76)
 3961     CONTINUE
@@ -1720,7 +1720,7 @@ C________________________________________
             GO TO 4060
 4061        CONTINUE
 4010     CONTINUE
-3950  CONTINUE
+      END IF
       IF (O(15)/= 1) GO TO 4110
          IF (O(457)/= 93 ) CALL RW(23,O(57),325,404)
          GO TO 4100
