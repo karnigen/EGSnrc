@@ -139,12 +139,11 @@ C##############################################################################
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-      integer b,e,r,s,v,u,w,x,c,mxc,m
+      integer c,mxc,m
       integer iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia,
      &        ire,nb,kx,y,nerd
       integer ispec,linf
-      EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
-     *(O(7),W),(O(8),X),(O(12),C),(O(43),MXC),(O(22),M)
+      EQUIVALENCE(O(12),C),(O(43),MXC),(O(22),M)
 C
       common/nrcc/ oflag
       integer      oflag
@@ -154,28 +153,28 @@ C
 
       call open_units
 
-      write(E,'(a,T55,$)') 'Mortran 3.2',' '
-      call egs_fdate(E)
-      write(E,*)
+      write(O_E,'(a,T55,$)') 'Mortran 3.2',' '
+      call egs_fdate(O_E)
+      write(O_E,*)
 
-      V=100
-      U=1000
+      O_V=100
+      O_U=1000
       CALL INITAL(1)
       IW=450741
-      X=W
+      O_X=O_W
       GO TO 10
 20    CALL COUT
       CALL EXPAND(A)
-30    IF (S<=U) GO TO 50
+30    IF (O_S<=O_U) GO TO 50
          IF (O(23)<=0) GO TO 70
             CALL EXPAND(-1)
             GO TO 30
 70       CONTINUE
-         S=525371
-         U=S-1
+         O_S=525371
+         O_U=O_S-1
          GO TO 10
 50    CONTINUE
-      M=O(32)+O(S)
+      M=O(32)+O(O_S)
 80    IF(O(M)==0)GO TO 90
       M=O(M)
       D=M+4
@@ -185,20 +184,20 @@ C
       MQ=0
       F=0
       A=0
-      T=S
-      V=S
+      T=O_S
+      O_V=O_S
       IF(O(29)>=4) CALL MACTRC(2,D,MXD)
-      IF(O(29)>=4) CALL MACTRC(5,V,U+1)
-100   IF(V>U)GO TO 101
-         IF (O(V)/= O(97)) GO TO 120
-            V=V+O(V+1)+3
+      IF(O(29)>=4) CALL MACTRC(5,O_V,O_U+1)
+100   IF(O_V>O_U)GO TO 101
+         IF (O(O_V)/= O(97)) GO TO 120
+            O_V=O_V+O(O_V+1)+3
             GO TO 100
 120      CONTINUE
          IF (MQ/= 0) GO TO 140
             IF (O(D)/= O(84)) GO TO 160
                IF (O(D+1)>100.OR.O(32)<=1505) GO TO 180
-                  O(S-2*(A+1)-1)=V
-                  O(S-2*(A+1)-2)=V
+                  O(O_S-2*(A+1)-1)=O_V
+                  O(O_S-2*(A+1)-2)=O_V
                   D=D+1
                   MQ=1
                   IF(O(D-3)/= O(107))F=0
@@ -215,20 +214,20 @@ C
                   GO TO 100
 180            CONTINUE
 160         CONTINUE
-            IF (O(D)/= O(V).OR.O(V)>=O(107)) GO TO 230
+            IF (O(D)/= O(O_V).OR.O(O_V)>=O(107)) GO TO 230
                IF( O(105) ==O(D))O(69)=O(69)+1
                IF( O(106) ==O(D))O(69)=O(69)-1
                IF(O(D)==O(99))KD=1
                IF(O(D)==O(98))KD=0
-               V=V+1
-               T=V
+               O_V=O_V+1
+               T=O_V
 240            D=D+1
                IF(D>=MXD)GO TO 20
                GO TO 100
 230         CONTINUE
-            IF (O(V)/= O(76)) GO TO 260
+            IF (O(O_V)/= O(76)) GO TO 260
                IF (O(69)+KD/= 0) GO TO 280
-                  V=V+1
+                  O_V=O_V+1
                   GO TO 100
 280            CONTINUE
 260         CONTINUE
@@ -244,9 +243,9 @@ C
                N1=1
                N2=1
                N3=O(59)
-310            T=V
-               O(S-2*(A+1)-1)=V
-               O(S-2*(A+1)-2)=V
+310            T=O_V
+               O(O_S-2*(A+1)-1)=O_V
+               O(O_S-2*(A+1)-2)=O_V
                A=A+1
                D=D+1
                F=D
@@ -258,23 +257,23 @@ C
             GO TO 130
 140         P=IP
             Q=IQ
-            IA=V
+            IA=O_V
             IF(O(69)/= 0)IA=0
-            IRE=ISPEC(P,Q,V,U,IA)
+            IRE=ISPEC(P,Q,O_V,O_U,IA)
             IF(IRE==1)GO TO 101
             IF (IRE/= 3) GO TO 350
                A=A+1
-               IF(F/= 0)O(S-2*(A-1)-2)=T
-               IF(IA/= 0)O(S-2*(A)-1)=IA
-               O(S-2*(A)-2)=V
+               IF(F/= 0)O(O_S-2*(A-1)-2)=T
+               IF(IA/= 0)O(O_S-2*(A)-1)=IA
+               O(O_S-2*(A)-2)=O_V
                D=Q
                MQ=0
                GO TO 240
 350         CONTINUE
 130      CONTINUE
-         IF (O(V)/= O(76)) GO TO 370
+         IF (O(O_V)/= O(76)) GO TO 370
             IF (MQ/= 1) GO TO 390
-               V=V+1
+               O_V=O_V+1
                GO TO 100
 390         CONTINUE
 370      CONTINUE
@@ -286,14 +285,14 @@ C
                IF( O(98) ==O(T))KD=KD-1
                IF(KD==0)GO TO 440
                T=T+1
-               IF(T>U)GO TO 80
+               IF(T>O_U)GO TO 80
                GO TO 430
 420         CONTINUE
             IF (O(T)/= O(105)) GO TO 460
                NB=1
 470            IF(NB==0)GO TO 471
                   T=T+1
-                  IF(T>U)GO TO 80
+                  IF(T>O_U)GO TO 80
                   IF( O(105) ==O(T))NB=NB+1
                   IF( O(106) ==O(T))NB=NB-1
                GO TO 470
@@ -318,14 +317,14 @@ C
 550            CONTINUE
 490         CONTINUE
             T=T+1
-            IF (T<=U) GO TO 570
+            IF (T<=O_U) GO TO 570
                IF(O(15)==1)GO TO 80
                GO TO 10
 570         CONTINUE
             IF (KC+KP+KB/= 0) GO TO 590
                IF(MQ==0)D=F
-440            V=T
-               O(S-2*(A)-2)=V
+440            O_V=T
+               O(O_S-2*(A)-2)=O_V
                GO TO 401
 590         CONTINUE
          GO TO 400
@@ -333,52 +332,52 @@ C
       GO TO 100
 101   CONTINUE
       IF(O(15)==1)GO TO 80
-      IF (S/= U) GO TO 610
-         S=525371
-         O(S)=O(U)
-         U=S
+      IF (O_S/= O_U) GO TO 610
+         O_S=525371
+         O(O_S)=O(O_U)
+         O_U=O_S
 610   CONTINUE
 10    O(55)=O(76)
       KX=0
 620   CONTINUE
-         U=U+1
-         IF(U>600000)CALL MESAGE(15, 1, 0,0)
-         O(U)=O(C)
+         O_U=O_U+1
+         IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
+         O(O_U)=O(C)
          C=C+1
          IF(C>O(43))CALL NXTCRD
-         IF (O(U)/= O(84)) GO TO 640
-            O(55)=O(U)
+         IF (O(O_U)/= O(84)) GO TO 640
+            O(55)=O(O_U)
             KX=1
 650         IF(KX==0)GO TO 651
-               U=U+1
-               IF(U>600000)CALL MESAGE(15, 1, 0,0)
-               O(U)=O(C)
+               O_U=O_U+1
+               IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
+               O(O_U)=O(C)
                C=C+1
                IF(C>O(43))CALL NXTCRD
-               IF( O(84) ==O(U))KX=KX+1
-               IF( O(85) ==O(U))KX=KX-1
+               IF( O(84) ==O(O_U))KX=KX+1
+               IF( O(85) ==O(O_U))KX=KX-1
             GO TO 650
 651         CONTINUE
             O(55)=O(76)
 640      CONTINUE
-         IF (O(U)/= O(87)) GO TO 670
+         IF (O(O_U)/= O(87)) GO TO 670
 680         IF(O(26)/= 1)O(55)=O(87)
-            O(U)=O(97)
-            U=U+1
-            Y=U
+            O(O_U)=O(97)
+            O_U=O_U+1
+            Y=O_U
 690         IF(O(C)==O(87).OR.C>O(43))GO TO 691
-               U=U+1
-               IF(U>600000)CALL MESAGE(15, 1, 0,0)
-               O(U)=O(C)
+               O_U=O_U+1
+               IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
+               O(O_U)=O(C)
                C=C+1
             GO TO 690
 691         CONTINUE
-            U=U+1
-            O(U)=O(96)
-            O(Y)=U-Y-1
+            O_U=O_U+1
+            O(O_U)=O(96)
+            O(Y)=O_U-Y-1
             IF (O(Y)/= 0) GO TO 710
-               U=U-2
-               O(U)=O(76)
+               O_U=O_U-2
+               O(O_U)=O(76)
 710         CONTINUE
             IF (C<=MXC) GO TO 730
                IF (O(26)/= 1) GO TO 750
@@ -387,7 +386,7 @@ C
                   GO TO 10
 750            CONTINUE
                CALL NXTCRD
-               U=U+1
+               O_U=O_U+1
                GO TO 680
 730         CONTINUE
             O(55)=O(76)
@@ -395,18 +394,18 @@ C
             IF(C>O(43))CALL NXTCRD
             GO TO 10
 670      CONTINUE
-         IF (O(U)/= O(86).OR.O(28)<=0) GO TO 770
-            O(55)=O(U)
-            O(U)=O(105)
+         IF (O(O_U)/= O(86).OR.O(28)<=0) GO TO 770
+            O(55)=O(O_U)
+            O(O_U)=O(105)
 780         CONTINUE
-               U=U+1
-               IF(U>600000)CALL MESAGE(15, 1, 0,0)
-               O(U)=O(C)
+               O_U=O_U+1
+               IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
+               O(O_U)=O(C)
                C=C+1
                IF(C>O(43))CALL NXTCRD
-               IF (O(U)/= O(86)) GO TO 800
+               IF (O(O_U)/= O(86)) GO TO 800
                   IF (O(C)==O(86)) GO TO 820
-                     O(U)=O(106)
+                     O(O_U)=O(106)
                      O(55)=O(76)
                      GO TO 781
 820               CONTINUE
@@ -416,9 +415,9 @@ C
             GO TO 780
 781         CONTINUE
 770      CONTINUE
-         IF (O(U)/= O(76)) GO TO 840
-            IF (S==U) GO TO 860
-               IF(O(U-1)==O(76))U=U-1
+         IF (O(O_U)/= O(76)) GO TO 840
+            IF (O_S==O_U) GO TO 860
+               IF(O(O_U-1)==O(76))O_U=O_U-1
 860         CONTINUE
 870         CONTINUE
                IF(C==MXC .OR.O(C)/= O(76))GO TO 871
@@ -427,61 +426,61 @@ C
 871         CONTINUE
 840      CONTINUE
          IF (KX/= 0) GO TO 890
-            IF(O(U)==O(79))GO TO 621
-            IF( O(82) ==O(U))O(11)=O(11)+1
-            IF( O(83) ==O(U))O(11)=O(11)-1
+            IF(O(O_U)==O(79))GO TO 621
+            IF( O(82) ==O(O_U))O(11)=O(11)+1
+            IF( O(83) ==O(O_U))O(11)=O(11)-1
 890      CONTINUE
       GO TO 620
 621   CONTINUE
       GO TO 30
 90    IF (O(23)<=0) GO TO 910
-         X=X+1
-         IF(X>O(40))CALL MESAGE(15, 3, 0,0)
-         O(X)=O(S)
-         S=S+1
-         IF (O(X)/= O(92).OR.O(32)==1265) GO TO 930
+         O_X=O_X+1
+         IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
+         O(O_X)=O(O_S)
+         O_S=O_S+1
+         IF (O(O_X)/= O(92).OR.O(32)==1265) GO TO 930
 940         CONTINUE
-               X=X+1
-               IF(X>O(40))CALL MESAGE(15, 3, 0,0)
-               O(X)=O(S)
-               S=S+1
-               IF(O(X)==O(93))GO TO 941
+               O_X=O_X+1
+               IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
+               O(O_X)=O(O_S)
+               O_S=O_S+1
+               IF(O(O_X)==O(93))GO TO 941
             GO TO 940
 941         CONTINUE
 930      CONTINUE
          GO TO 30
 910   CONTINUE
 950   CONTINUE
-         IF (O(S)/= O(79)) GO TO 970
-            IF (W>=IW) W=LINF (IW,W,15)
+         IF (O(O_S)/= O(79)) GO TO 970
+            IF (O_W>=IW) O_W=LINF (IW,O_W,15)
             GO TO 960
-970         IF  (O(S)/= O(97))GO TO 980
+970         IF  (O(O_S)/= O(97))GO TO 980
             IF (O(68)/= 0) GO TO 1000
-               NERD=LINF(S+2,S+O(S+1)+1,12)
-               S=S+O(S+1)+2
+               NERD=LINF(O_S+2,O_S+O(O_S+1)+1,12)
+               O_S=O_S+O(O_S+1)+2
 1000        CONTINUE
             GO TO 960
-980         IF  (O(S)/= O(92))GO TO 1010
+980         IF  (O(O_S)/= O(92))GO TO 1010
             O(24)=1
             GO TO 960
-1010        IF  (O(S)/= O(93))GO TO 1020
+1010        IF  (O(O_S)/= O(93))GO TO 1020
             O(24)=0
             GO TO 960
 1020        IF  (O(68)/= 0)GO TO 1030
-            W=W+1
-            O(W)=O(S)
-            IF (O(W)/= O(105)) GO TO 1050
-1060           IF(O(W)==O(106))GO TO 1061
-                  W=W+1
-                  S=S+1
-                  O(W)=O(S)
+            O_W=O_W+1
+            O(O_W)=O(O_S)
+            IF (O(O_W)/= O(105)) GO TO 1050
+1060           IF(O(O_W)==O(106))GO TO 1061
+                  O_W=O_W+1
+                  O_S=O_S+1
+                  O(O_W)=O(O_S)
                GO TO 1060
 1061           CONTINUE
 1050        CONTINUE
 960      CONTINUE
 1030     CONTINUE
-         S=S+1
-         IF(S>U .OR. O(24)==0)GO TO 951
+         O_S=O_S+1
+         IF(O_S>O_U .OR. O(24)==0)GO TO 951
       GO TO 950
 951   CONTINUE
       GO TO 30
@@ -673,9 +672,6 @@ C________________________________________
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-      integer b,e,r,s,v,u,w,x
-      EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
-     *(O(7),W),(O(8),X)
       integer lexp,llong
       integer kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
       DATA KGN/0/
@@ -686,21 +682,21 @@ CCDGHILM
          O(23)=O(23)-1
          IF(O(23)==0)O(15)=SEF
          DO 1451 K = 1,6
-            O(K)=O(6+U+1-K)
+            O(K)=O(6+O_U+1-K)
 1451     CONTINUE
          J=O(O(O(51)))
          IF (11>J.OR.J>12) GO TO 1470
-            JV=LEXP(W+1,X)
+            JV=LEXP(O_W+1,O_X)
             IF (O(58)/= 0) GO TO 1490
                IF (J/= 12) GO TO 1510
-                  X=W+LLONG(W,JV,10,0)
+                  O_X=O_W+LLONG(O_W,JV,10,0)
 1510           CONTINUE
                IF (J/= 11) GO TO 1530
-                  X=W+1
-                  O(X)=JV
+                  O_X=O_W+1
+                  O(O_X)=JV
 1530           CONTINUE
                GO TO 1480
-1490           X=W
+1490           O_X=O_W
                O(58)=O(58)-1
                IF (JV/= 0) GO TO 1550
                   P=O(65)
@@ -712,61 +708,61 @@ CCDGHILM
                O(44)=O(44)+1
                O(O(44))=O(64)+1
                O(44)=O(44)+1
-               O(O(44))=E
+               O(O(44))=O_E
                IF(O(44)>2154)CALL MESAGE(15, 18, 0,0)
-               B=P
-               E=Q
+               O_B=P
+               O_E=Q
 1480        CONTINUE
 1470     CONTINUE
          NUL=O(O(51))
          O(51)=O(51)-1
-         W=O(O(51))
+         O_W=O(O(51))
          O(51)=O(51)-1
          O(32)=O(O(51))
          O(51)=O(51)-1
          GO TO 1430
-1440     O(S-1)=F
-         O(40) = S-2*F-3
-         R=O(O(22)+2)
-         B=R+4
-         E=O(R+3)
-         R=O(R)
+1440     O(O_S-1)=F
+         O(40) = O_S-2*F-3
+         O_R=O(O(22)+2)
+         O_B=O_R+4
+         O_E=O(O_R+3)
+         O_R=O(O_R)
          O(62)=O(62)+1
          IF (O(62)<=1000) GO TO 1570
             CALL MESAGE(14, 4, 0,0)
             O(29)=2
 1570     CONTINUE
-         IF(O(29)>=2) CALL MACTRC(22,O(22),S)
-         IF( O(23)==0 )X=W
+         IF(O(29)>=2) CALL MACTRC(22,O(22),O_S)
+         IF( O(23)==0 )O_X=O_W
 1430  CONTINUE
 1580  CONTINUE
-1590     IF(B>=E)GO TO 1591
-            IF (O(B)>=O(107)) GO TO 1610
-               X=X+1
-               IF(X>O(40))CALL MESAGE(15, 3, 0,0)
-               O(X)=O(B)
-               B=B+1
+1590     IF(O_B>=O_E)GO TO 1591
+            IF (O(O_B)>=O(107)) GO TO 1610
+               O_X=O_X+1
+               IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
+               O(O_X)=O(O_B)
+               O_B=O_B+1
                GO TO 1590
 1610        CONTINUE
-            B=B+1
-            JMP=O(B-1)-O(106)
+            O_B=O_B+1
+            JMP=O(O_B-1)-O(106)
             GO TO (1620,1630,1640,1650),JMP
-1630        IF (1>O(B).OR.O(B)>O(S-1)) GO TO 1670
-               A=O(S-2*(O(B))-1)
-               N=O(S-2*(O(B))-2)
+1630        IF (1>O(O_B).OR.O(O_B)>O(O_S-1)) GO TO 1670
+               A=O(O_S-2*(O(O_B))-1)
+               N=O(O_S-2*(O(O_B))-2)
 1680           IF(A>=N)GO TO 1681
-                  X=X+1
-                  IF(X>O(40))CALL MESAGE(15, 3, 0,0)
-                  O(X)=O(A)
+                  O_X=O_X+1
+                  IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
+                  O(O_X)=O(A)
                   A=A+1
                GO TO 1680
 1681           CONTINUE
                GO TO 1690
 1670        CONTINUE
-            CALL MESAGE(15, 4, B,E)
-1620        IF (O(B)/= 12) GO TO 1710
-               B=B+1
-               IF (O(B)/= 23) GO TO 1730
+            CALL MESAGE(15, 4, O_B,O_E)
+1620        IF (O(O_B)/= 12) GO TO 1710
+               O_B=O_B+1
+               IF (O(O_B)/= 23) GO TO 1730
                   IF (O(68)/= 0) GO TO 1750
                      KGN=1
                      O(68)=1
@@ -774,12 +770,12 @@ CCDGHILM
 1750                 KGN=KGN+1
 1740              CONTINUE
                   GO TO 1720
-1730              IF  (O(B)/= 16)GO TO 1760
+1730              IF  (O(O_B)/= 16)GO TO 1760
                   IF (O(68)/= 1) GO TO 1780
                      KGN=KGN+1
 1780              CONTINUE
                   GO TO 1720
-1760              IF  (O(B)/= 14)GO TO 1790
+1760              IF  (O(O_B)/= 14)GO TO 1790
                   KGN=KGN-1
                   IF(KGN<=0)O(68)=0
 1720           CONTINUE
@@ -792,34 +788,34 @@ CCDGHILM
 1710        CONTINUE
             IF(O(68)==0)CALL KAT
             GO TO 1690
-1640        IF (O(B)/= 10) GO TO 1830
-               B=B+1
-               IF(1>O(B).OR.O(B)>O(S-1) )CALL MESAGE(15, 4, B,E)
-               X=X+LLONG(X,O(S-2*(O(B))-2)-O(S-2*(O(B))-1),10,0)
-               IF(X>O(40))CALL MESAGE(15, 3, 0,0)
-               B=B+2
+1640        IF (O(O_B)/= 10) GO TO 1830
+               O_B=O_B+1
+               IF(1>O(O_B).OR.O(O_B)>O(O_S-1) )CALL MESAGE(15, 4, O_B,O_E)
+               O_X=O_X+LLONG(O_X,O(O_S-2*(O(O_B))-2)-O(O_S-2*(O(O_B))-1),10,0)
+               IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
+               O_B=O_B+2
                GO TO 1590
 1830        CONTINUE
-            IF (O(B)/= 13) GO TO 1850
-               B=B+1
+            IF (O(O_B)/= 13) GO TO 1850
+               O_B=O_B+1
                T=1
 1860           CONTINUE
-                  IF( O(109) ==O(B))T=T+1
-                  IF( O(110) ==O(B))T=T-1
+                  IF( O(109) ==O(O_B))T=T+1
+                  IF( O(110) ==O(O_B))T=T-1
                   IF(T==0)GO TO 1861
-                  X=X+1
-                  IF(X>O(40))CALL MESAGE(15, 3, 0,0)
-                  O(X)=O(B)
-                  B=B+1
+                  O_X=O_X+1
+                  IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
+                  O(O_X)=O(O_B)
+                  O_B=O_B+1
                GO TO 1860
 1861           CONTINUE
                GO TO 1690
 1850        CONTINUE
-            IF (O(B)/= 15) GO TO 1880
-               X=X+1
-               O(X)=O(97)
-               X=X+1
-               KRAP=X
+            IF (O(O_B)/= 15) GO TO 1880
+               O_X=O_X+1
+               O(O_X)=O(97)
+               O_X=O_X+1
+               KRAP=O_X
                KRAQ=O(23)
                GO TO 1690
 1880        CONTINUE
@@ -829,56 +825,56 @@ CCDGHILM
             O(51)=O(51)+1
             O(O(51))=O(32)
             O(51)=O(51)+1
-            O(O(51))=W
+            O(O(51))=O_W
             O(51)=O(51)+1
-            O(O(51))=B
+            O(O(51))=O_B
             IF(O(51)>2554)CALL MESAGE(15, 34, 0,0)
-            W=X
+            O_W=O_X
             GO TO 1690
 1650        IF (KRAP==0.OR.KRAQ/= O(23)) GO TO 1900
-               X=X+1
-               O(S)=O(96)
-               O(KRAP)=X-KRAP-1
+               O_X=O_X+1
+               O(O_S)=O(96)
+               O(KRAP)=O_X-KRAP-1
                KRAP=0
                GO TO 1590
 1900        CONTINUE
             DO 1911 K = 1,6
                O(O(40)-K)=O(K)
 1911        CONTINUE
-            U=O(40)-7
-            V=U+1
+            O_U=O(40)-7
+            O_V=O_U+1
             Z=O(O(51))
             Y=O(Z)
             IF(O(Z+2)==O(105))Y=0
             IF((9<Y).AND.(Y<15))Y=O(31)
-            IF( 0>Y.OR.Y>=8 )CALL MESAGE(15, 17, B,E)
+            IF( 0>Y.OR.Y>=8 )CALL MESAGE(15, 17, O_B,O_E)
             O(32)=Y*120+1145
             GO TO 1591
-1690        B=B+1
+1690        O_B=O_B+1
          GO TO 1590
 1591     CONTINUE
          IF(O(23)>0)GO TO 1581
          IF (.NOT.((O(44)==2105))) GO TO 1930
-            IF(R<=0)GO TO 1581
-            B=R+4
-            E=O(R+3)
-            R=O(R)
+            IF(O_R<=0)GO TO 1581
+            O_B=O_R+4
+            O_E=O(O_R+3)
+            O_R=O(O_R)
             GO TO 1920
-1930        E=O(O(44))
+1930        O_E=O(O(44))
             O(44)=O(44)-1
-            B=O(O(44))
+            O_B=O(O(44))
             O(44)=O(44)-1
 1920     CONTINUE
       GO TO 1580
 1581  CONTINUE
-      IF(O(29)>=2) CALL MACTRC(33,W,X)
-1940  IF(X<=W)GO TO 1941
-         V=V-1
-         O(V)=O(X)
-         X=X-1
+      IF(O(29)>=2) CALL MACTRC(33,O_W,O_X)
+1940  IF(O_X<=O_W)GO TO 1941
+         O_V=O_V-1
+         O(O_V)=O(O_X)
+         O_X=O_X-1
       GO TO 1940
 1941  CONTINUE
-      S=V
+      O_S=O_V
 99999 RETURN
       END
 CTO EXPAND
@@ -892,45 +888,43 @@ C________________________________________
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-      integer b,e,r,s,v,u,w,x,l,m
-      EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
-     *(O(7),W),(O(8),X)
+      integer l,m
       EQUIVALENCE (O(47),L),(O(48),M)
       integer llong,nib
       integer jmp,t,ibg,z,iuni,nba
       save    jmp,t,ibg,z,iuni,nba
 CFGHIJKLPQ  YZ
-      IF(O(B)<19.OR.O(B)>30) CALL MESAGE(15, 7, B-2,E)
-      B=B+1
-      JMP=O(B-1)-18
+      IF(O(O_B)<19.OR.O(O_B)>30) CALL MESAGE(15, 7, O_B-2,O_E)
+      O_B=O_B+1
+      JMP=O(O_B-1)-18
       GO TO (1950,1960,1970,1390,1980,1990,2000,2010,2020,2030,2040,2050),
      *JMP
-1950  T=O(B)+78
-      X=X+1
-      O(X)=O(T)
+1950  T=O(O_B)+78
+      O_X=O_X+1
+      O(O_X)=O(T)
       GO TO 99999
 1960  CALL KRUNC(0)
       GO TO 99999
-1970  IF (O(B)/= 12) GO TO 2070
-         X=X+LLONG(X,O(L-O(B+1))+O(B+2),10,1)
-         B=B+2
+1970  IF (O(O_B)/= 12) GO TO 2070
+         O_X=O_X+LLONG(O_X,O(L-O(O_B+1))+O(O_B+2),10,1)
+         O_B=O_B+2
          GO TO 99999
 2070  CONTINUE
-      IF (O(B)/= 16) GO TO 2090
+      IF (O(O_B)/= 16) GO TO 2090
          O(16)=O(16)+10
-         X=X+LLONG(X,O(16),10,0)
+         O_X=O_X+LLONG(O_X,O(16),10,0)
          GO TO 99999
 2090  CONTINUE
-      IF (O(B)/= 28) GO TO 2110
-         B=B+1
+      IF (O(O_B)/= 28) GO TO 2110
+         O_B=O_B+1
          O(47)=O(47)+1
-         O(O(47))=NIB(X,10)
+         O(O(47))=NIB(O_X,10)
          IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
          GO TO 2120
 2110  CONTINUE
-      IF (O(B)/= 30) GO TO 2140
-         B=B+1
-         IF(O(B)==1)O(L-1)=O(L)
+      IF (O(O_B)/= 30) GO TO 2140
+         O_B=O_B+1
+         IF(O(O_B)==1)O(L-1)=O(L)
          L=L-1
          IF (L>=2255) GO TO 2160
             CALL MESAGE(14, 7, 0,0)
@@ -938,22 +932,22 @@ CFGHIJKLPQ  YZ
 2160     CONTINUE
          GO TO 1300
 2140  CONTINUE
-      CALL MESAGE(15, 7, B-2,E)
-1390  IF (O(B)/= 28) GO TO 2180
-         B=B+1
+      CALL MESAGE(15, 7, O_B-2,O_E)
+1390  IF (O(O_B)/= 28) GO TO 2180
+         O_B=O_B+1
          O(48)=O(48)+1
-         O(O(48))=O(B)
+         O(O(48))=O(O_B)
          IF(O(48)>2354)CALL MESAGE(15, 22, 0,0)
          GO TO 99999
 2180  CONTINUE
-      IF (O(B)/= 27) GO TO 2200
-         B=B+1
-         O(M)=O(B)
+      IF (O(O_B)/= 27) GO TO 2200
+         O_B=O_B+1
+         O(M)=O(O_B)
          GO TO 99999
 2200  CONTINUE
-      IF (O(B)/= 30) GO TO 2220
-         X=X+1
-         O(X)=O(M)
+      IF (O(O_B)/= 30) GO TO 2220
+         O_X=O_X+1
+         O(O_X)=O(M)
          M=M-1
          IF (M>=2305) GO TO 2240
             CALL MESAGE(14, 8, 0,0)
@@ -961,73 +955,73 @@ CFGHIJKLPQ  YZ
 2240     CONTINUE
          GO TO 99999
 2220  CONTINUE
-      CALL MESAGE(15, 7, B-2,E)
-1980  IBG=O(X)
-      X=X-1+LLONG(X-1,IBG,10,1)
+      CALL MESAGE(15, 7, O_B-2,O_E)
+1980  IBG=O(O_X)
+      O_X=O_X-1+LLONG(O_X-1,IBG,10,1)
       GO TO 99999
-1990  CALL DEFINE(S)
+1990  CALL DEFINE(O_S)
       GO TO 99999
 2000  O(58)=1
-      B=B+4
-      O(67)=B+O(B-1)
-      O(66)=B+O(B-2)
-      O(65)=B+O(B-3)
-      O(64)=B+O(B-4)
-      B=B-1
+      O_B=O_B+4
+      O(67)=O_B+O(O_B-1)
+      O(66)=O_B+O(O_B-2)
+      O(65)=O_B+O(O_B-3)
+      O(64)=O_B+O(O_B-4)
+      O_B=O_B-1
       GO TO 99999
 2010  O(16)=O(16)+10
       O(47)=O(47)+1
       O(O(47))=O(16)
       IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
-2120  IF (O(B)/= 1) GO TO 2260
+2120  IF (O(O_B)/= 1) GO TO 2260
          Z=O(L-1)
          O(L-1)=O(L)
          O(L)=Z
 2260  CONTINUE
-1300  IF(O(B)/= 1.AND.O(B)/= 0) then
+1300  IF(O(O_B)/= 1.AND.O(O_B)/= 0) then
         !write(6,*) ' Mortran compilation error (stop 18)'
         write(6,*) 'compilation error (stop 18)'
         call exit(18) !stop 18
       endif
       GO TO 99999
-2020  IUNI=O(B)
+2020  IUNI=O(O_B)
       REWIND IUNI
       GO TO 99999
-2040  IF(O(29)>=1) CALL MACTRC(22,O(22),S)
-      B=B-1
+2040  IF(O(29)>=1) CALL MACTRC(22,O(22),O_S)
+      O_B=O_B-1
       GO TO 99999
-2030  T=O(B)
-      B=B+1
-      IF (0>=O(B).OR.O(B)>=5) GO TO 2280
-         T=T+26*O(B)
-         B=B+1
+2030  T=O(O_B)
+      O_B=O_B+1
+      IF (0>=O(O_B).OR.O(O_B)>=5) GO TO 2280
+         T=T+26*O(O_B)
+         O_B=O_B+1
 2280  CONTINUE
       NBA=0
       GO TO 2290
-2050  T=121+O(B)
-      B=B+1
-      NBA=O(X)
-      X=X-1
-2290  IF (O(B)/= 43) GO TO 2310
+2050  T=121+O(O_B)
+      O_B=O_B+1
+      NBA=O(O_X)
+      O_X=O_X-1
+2290  IF (O(O_B)/= 43) GO TO 2310
          O(T)=O(T)+1
          GO TO 99999
 2310  CONTINUE
-      IF (O(B)/= 42) GO TO 2330
+      IF (O(O_B)/= 42) GO TO 2330
          O(T)=O(T)-1
          GO TO 99999
 2330  CONTINUE
-      IF (O(B)/= 41) GO TO 2350
-         O(T)=O(X)
-         X=X-1
+      IF (O(O_B)/= 41) GO TO 2350
+         O(T)=O(O_X)
+         O_X=O_X-1
          GO TO 99999
 2350  CONTINUE
-      IF (O(B)/= 12) GO TO 2370
-         X=X+1
-         O(X)=O(T)
-         IF (NBA>1) X=X-1+LLONG(X-1,O(T),NBA,1)
+      IF (O(O_B)/= 12) GO TO 2370
+         O_X=O_X+1
+         O(O_X)=O(T)
+         IF (NBA>1) O_X=O_X-1+LLONG(O_X-1,O(T),NBA,1)
          GO TO 99999
 2370  CONTINUE
-      CALL MESAGE(15, 7, B-3,E)
+      CALL MESAGE(15, 7, O_B-3,O_E)
 99999 RETURN
       END
 C_______________________________________________________________________
@@ -1040,14 +1034,11 @@ C__________________________________________
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-      integer  b,e,r,s,v,u,w,x
-      EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
-     *(O(7),W),(O(8),X)
       integer linf
       integer t,nerd
       save    t,nerd
-      T=S
-2380  IF(T>V)GO TO 2381
+      T=O_S
+2380  IF(T>O_V)GO TO 2381
          IF (O(T)/= O(97)) GO TO 2400
             NERD=LINF(T+2,T+O(T+1)+1,12)
             T=T+O(T+1)+2
@@ -2546,9 +2537,6 @@ C________________________________________
       common /junk/ verbose
       logical verbose
       integer kount,k,iuni
-      integer b,e,r,s,v,u,w,x
-      EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
-     *(O(7),W),(O(8),X)
       save    kount,k,iuni,count
       IF (IND/= 2) GO TO 5200
          O(59)=1
@@ -2565,12 +2553,12 @@ C________________________________________
       DO 5211 K = 7,600000
          O(K)=0
 5211  CONTINUE
-      O(9)=B
-      O(56)=E
-      O(57)=R
+      O(9)=O_B
+      O(56)=O_E
+      O(57)=O_R
       IUNI=O(9)
 C     O(14)=O(4)   THIS IS NO LONGER USED IN FORTRAN 77 VERSIONS
-      O(16)=U
+      O(16)=O_U
       READ(IUNI,2)COUNT
       REWIND IUNI
       IF (COUNT=='C') GO TO 5230
@@ -2602,9 +2590,9 @@ C
       O(89)=-12
       O(75)=-13
       O(70)=-14
-      O(U)=O(79)
-      W=450741-1
-      O(W)=O(79)
+      O(O_U)=O(79)
+      O_W=450741-1
+      O(O_W)=O(79)
       CALL DUMDUM(44,2105,2155,2205,2255,2305,2355,2455,2505,0,0)
       CALL NXTCRD
 99999 RETURN
@@ -2619,16 +2607,13 @@ C__________________________________________
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-      integer b,e,r,s,v,u,w,x
-      EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
-     *(O(7),W),(O(8),X)
       integer   p
       DIMENSION P(100)
       EQUIVALENCE(O(2555),P(1))
       integer  k,j
       save     k,j
-      O(37)=V
-      O(41)=V
+      O(37)=O_V
+      O(41)=O_V
       O(38)=324+O(37)
       O(36)=456+O(37)
       O(43)=456+O(41)
@@ -2686,7 +2671,6 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
       O(31)=6
 99999 RETURN
       END
-
 
       subroutine open_units
 
