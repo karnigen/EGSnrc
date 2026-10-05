@@ -274,14 +274,16 @@ C
          IF(F==0)GO TO 80
 400      CONTINUE
             IF(O(T)==O(106))GO TO 80
-            IF (KD<=0) GO TO 420
-430            IF( O(99) ==O(T))KD=KD+1
+            IF (KD>0) THEN
+            DO
+               IF( O(99) ==O(T))KD=KD+1
                IF( O(98) ==O(T))KD=KD-1
-               IF(KD==0)GO TO 440
+               IF(KD==0)EXIT
                T=T+1
                IF(T>O_U)GO TO 80
-               GO TO 430
-420         CONTINUE
+            END DO
+            GO TO 440
+            END IF
             IF (O(T)==O(105)) THEN
                NB=1
                DO
