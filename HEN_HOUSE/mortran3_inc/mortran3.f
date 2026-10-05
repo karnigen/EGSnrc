@@ -2074,9 +2074,9 @@ CCEFGLMNPQRS UVWXY
       KUT=KUT-1
       KIT=1
 430   CONTINUE
-      DO 4661 J = 175,254
+      DO J = 175,254
          O(J)=O(76)
-4661  CONTINUE
+      END DO
       IF (IND/= linf_rule_diagnostic_mode) GO TO 4680
 4690     IF(I>=181.OR.B>Z)GO TO 4691
             IF (O(B)/= O(76)) GO TO 4710
