@@ -514,7 +514,10 @@ CADEFGHIJKLRSXYZ
             IF(O(45)>2204)CALL MESAGE(15, 19, 0,0)
             GO TO 1130
          END IF
-            IF  (O(P)>=O(106))GO TO 1150
+            IF (O(P)>=O(106)) THEN
+               CALL MESAGE(14, 19, P,Q+11)
+               GO TO 90
+            END IF
             P=P+1
             JMP=O(P-1)-100
             SELECT CASE (JMP)
@@ -596,8 +599,6 @@ CADEFGHIJKLRSXYZ
 1300        IF(M==1)GO TO 1070
             IF(O(P)/= O(101) .AND. O(P)/= O(104))GO TO 90
             GO TO 1130
-1150        CALL MESAGE(14, 19, P,Q+11)
-            GO TO 90
 1130     CONTINUE
       GO TO 1070
 1071  CONTINUE
