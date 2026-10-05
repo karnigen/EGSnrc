@@ -1690,33 +1690,29 @@ C________________________________________
             I=MOD(MAX0(O(53)*O(11),0),90)
             L=457
             M=O(43)
-4040        IF(O(L)/= O(76).OR.L==M)GO TO 4041
+            DO WHILE(O(L)==O(76).AND.L/=M)
                L=L+1
-            GO TO 4040
-4041        CONTINUE
-4050        IF(O(M)/= O(76).OR.L==M)GO TO 4051
+            END DO
+            DO WHILE(O(M)==O(76).AND.L/=M)
                M=M-1
-            GO TO 4050
-4051        CONTINUE
-4060        CONTINUE
+            END DO
+            DO
                W=175
                DO 4071 Y = 1,I
                   O(W)=O(76)
                   W=W+1
 4071           CONTINUE
-4080           IF(W>288 .OR. L>M)GO TO 4081
+               DO WHILE(W<=288.AND.L<=M)
                   O(W)=O(L)
                   W=W+1
                   L=L+1
-               GO TO 4080
-4081           CONTINUE
+               END DO
                CALL RW(18,O(56),157,W-1)
-               IF(L>M)GO TO 4061
+               IF(L>M)EXIT
                DO 4091 K = 157,175
                   O(K)=O(76)
 4091           CONTINUE
-            GO TO 4060
-4061        CONTINUE
+            END DO
         END IF
       END IF
       IF (O(15)/= 1) GO TO 4110
