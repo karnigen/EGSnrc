@@ -417,11 +417,11 @@ C
                O_C=O_C+1
             END DO
          END IF
-         IF (KX/= 0) GO TO 890
+         IF (KX==0) THEN
             IF(O(O_U)==O(79))GO TO 621
             IF( O(82) ==O(O_U))O(11)=O(11)+1
             IF( O(83) ==O(O_U))O(11)=O(11)-1
-890      CONTINUE
+         END IF
       GO TO 620
 621   CONTINUE
       GO TO 30
