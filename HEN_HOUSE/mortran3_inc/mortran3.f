@@ -460,14 +460,14 @@ C
 1020        IF  (O(68)/= 0)GO TO 1030
             O_W=O_W+1
             O(O_W)=O(O_S)
-            IF (O(O_W)/= O(105)) GO TO 1050
-1060           IF(O(O_W)==O(106))GO TO 1061
+            IF (O(O_W)==O(105)) THEN
+               DO
+                  IF(O(O_W)==O(106))EXIT
                   O_W=O_W+1
                   O_S=O_S+1
                   O(O_W)=O(O_S)
-               GO TO 1060
-1061           CONTINUE
-1050        CONTINUE
+               END DO
+            END IF
 960      CONTINUE
 1030     CONTINUE
          O_S=O_S+1
