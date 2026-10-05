@@ -568,11 +568,11 @@ CADEFGHIJKLRSXYZ
             CASE (2)
             P=P+2
             M=0
-            IF (O(P-2)>O(V).OR.O(V)>O(P-1)) GO TO 1320
+            IF (O(P-2)<=O(V).AND.O(V)<=O(P-1)) THEN
                M=1
                V=V+1
                IF(V>U)GO TO 1120
-1320        CONTINUE
+            END IF
             GO TO 1300
             CASE (5)
             W=V
