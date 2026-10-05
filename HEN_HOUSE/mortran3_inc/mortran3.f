@@ -259,7 +259,7 @@ C
             IF(O(69)/= 0)IA=0
             IRE=ISPEC(P,Q,O_V,O_U,IA)
             IF(IRE==1)GO TO 101
-            IF (IRE/= 3) GO TO 350
+            IF (IRE==3) THEN
                A=A+1
                IF(F/= 0)O(O_S-2*(A-1)-2)=T
                IF(IA/= 0)O(O_S-2*(A)-1)=IA
@@ -267,7 +267,7 @@ C
                D=Q
                MQ=0
                GO TO 240
-350         CONTINUE
+            END IF
 130      CONTINUE
          IF (O(O_V)==O(76).AND.MQ==1) THEN
             O_V=O_V+1
