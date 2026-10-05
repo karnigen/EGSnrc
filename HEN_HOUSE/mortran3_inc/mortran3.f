@@ -230,30 +230,29 @@ C
                   GO TO 100
 280            CONTINUE
 260         CONTINUE
-            IF (O(D)/= O(107)) GO TO 300
+            IF (O(D)==O(107)) THEN
                D=D+1
                N=O(D)
                N1=N/4
                N2=(N-4*N1)/2
                N3=N-4*N1-2*N2
-               GO TO 310
-300         CONTINUE
-            IF (O(D)/= O(108)) GO TO 330
+            ELSE IF (O(D)==O(108)) THEN
                N1=1
                N2=1
                N3=O(59)
-310            T=O_V
-               O(O_S-2*(A+1)-1)=O_V
-               O(O_S-2*(A+1)-2)=O_V
-               A=A+1
-               D=D+1
-               F=D
-               KC=0
-               KB=0
-               KP=0
-               GO TO 100
-330         CONTINUE
-            GO TO 130
+            ELSE
+               GO TO 130
+            END IF
+            T=O_V
+            O(O_S-2*(A+1)-1)=O_V
+            O(O_S-2*(A+1)-2)=O_V
+            A=A+1
+            D=D+1
+            F=D
+            KC=0
+            KB=0
+            KP=0
+            GO TO 100
 140         P=IP
             Q=IQ
             IA=O_V
