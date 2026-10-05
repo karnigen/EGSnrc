@@ -331,7 +331,7 @@ C
       END IF
 10    O(55)=O(76)
       KX=0
-620   CONTINUE
+      DO
          O_U=O_U+1
          IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
          O(O_U)=O(O_C)
@@ -420,7 +420,8 @@ C
             IF( O(82) ==O(O_U))O(11)=O(11)+1
             IF( O(83) ==O(O_U))O(11)=O(11)-1
          END IF
-      GO TO 620
+      CYCLE
+      END DO
 90    IF (O(23)>0) THEN
          O_X=O_X+1
          IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
