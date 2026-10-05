@@ -1511,31 +1511,31 @@ CFGHIJKLMQRSUVWY
                GO TO 3380
 3390           IF  (X/= 89)GO TO 3400
                X=29
-               IF (O(T)/= 41) GO TO 3420
+               IF (O(T)==41) THEN
                   T=T+1
                   X=16
-3420           CONTINUE
+               END IF
                GO TO 3380
 3400           IF  (X/= 85)GO TO 3430
                X=30
-               IF (O(T)/= 41) GO TO 3450
+               IF (O(T)==41) THEN
                   T=T+1
                   X=14
-3450           CONTINUE
+               END IF
                GO TO 3380
 3430           IF  (X/= 41)GO TO 3460
                X=18
-               IF (O(T)/= 86) GO TO 3480
+               IF (O(T)==86) THEN
                   T=T+1
                   X=11
-3480           CONTINUE
+               END IF
                GO TO 3380
 3460           IF  (X/= 86)GO TO 3490
                X=23
-               IF (O(T)/= 41) GO TO 3510
+               IF (O(T)==41) THEN
                   T=T+1
                   X=11
-3510           CONTINUE
+               END IF
                GO TO 3380
 3490           IF  (X/= (87))GO TO 3520
                X=32
