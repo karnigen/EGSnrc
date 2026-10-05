@@ -681,7 +681,7 @@ CCDGHILM
             O(K)=O(6+O_U+1-K)
          END DO
          J=O(O(O(51)))
-         IF (11>J.OR.J>12) GO TO 1470
+         IF (J>=11 .AND. J<=12) THEN
             JV=LEXP(O_W+1,O_X)
             IF (O(58)==0) THEN
                IF (J==12) THEN
@@ -709,7 +709,7 @@ CCDGHILM
                O_B=P
                O_E=Q
             END IF
-1470     CONTINUE
+               END IF
          NUL=O(O(51))
          O(51)=O(51)-1
          O_W=O(O(51))
