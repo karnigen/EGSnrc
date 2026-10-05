@@ -1557,10 +1557,10 @@ CFGHIJKLMQRSUVWY
                B=T
                CYCLE
 3550        CONTINUE
-            IF (N/= MNN) GO TO 3570
+            IF (N==MNN) THEN
                LEXP=O(N)
                GO TO 99999
-3570        CONTINUE
+            END IF
             K=P(O(N-1))
             O(20)=1
             JMP=K-((K/100)*100)-1
