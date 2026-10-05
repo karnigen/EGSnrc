@@ -151,12 +151,12 @@ C
 
       call open_units
 
-      write(O(2),'(a,T55,$)') 'Mortran 3.2',' '
-      call egs_fdate(O(2))
-      write(O(2),*)
+      write(E,'(a,T55,$)') 'Mortran 3.2',' '
+      call egs_fdate(E)
+      write(E,*)
 
-      O(5)=100
-      O(6)=1000
+      V=100
+      U=1000
       CALL INITAL(1)
       IW=450741
       X=W
@@ -2496,12 +2496,12 @@ C________________________________________
       DO 5211 K = 7,600000
          O(K)=0
 5211  CONTINUE
-      O(9)=O(1)
-      O(56)=O(2)
-      O(57)=O(3)
+      O(9)=B
+      O(56)=E
+      O(57)=R
       IUNI=O(9)
 C     O(14)=O(4)   THIS IS NO LONGER USED IN FORTRAN 77 VERSIONS
-      O(16)=O(6)
+      O(16)=U
       READ(IUNI,2)COUNT
       REWIND IUNI
       IF (COUNT=='C') GO TO 5230
@@ -2555,8 +2555,8 @@ C__________________________________________
       EQUIVALENCE(O(2555),P(1))
       integer  k,j
       save     k,j
-      O(37)=O(5)
-      O(41)=O(5)
+      O(37)=V
+      O(41)=V
       O(38)=324+O(37)
       O(36)=456+O(37)
       O(43)=456+O(41)
