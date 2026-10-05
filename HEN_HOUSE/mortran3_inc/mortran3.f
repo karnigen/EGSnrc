@@ -1669,15 +1669,13 @@ C________________________________________
          DO 3961 J = 158,174
             O(J)=O(76)
 3961     CONTINUE
-         IF (O(30)/= 1) GO TO 3980
+         IF (O(30)==1) THEN
             J=LLONG(158,O(19),10,0)
-            GO TO 3970
-3980        IF  (O(30)/= 2)GO TO 3990
+         ELSE IF (O(30)==2) THEN
             DO 4001 J = 1,8
                O(157+J)=O(O(43)+J)
 4001        CONTINUE
-3970     CONTINUE
-3990     CONTINUE
+         END IF
          IF(O(68)/= 0)O(167)=33
          O(169)=O(55)
          J=LLONG(170,O(11),10,0)
