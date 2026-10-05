@@ -2297,8 +2297,9 @@ C
 50       continue
          endif
          !write(44,1) (CH(M),M=1,NR)
-         DO 99 M=1,NR
-99       O(J+M-1)=ICHAR(CH(M))
+         DO M=1,NR
+            O(J+M-1)=ICHAR(CH(M))
+         END DO
          GO TO 99999
 5120  CONTINUE
        KOF=589
