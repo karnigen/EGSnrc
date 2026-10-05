@@ -519,19 +519,19 @@ CADEFGHIJKLRSXYZ
             JMP=O(P-1)-100
             SELECT CASE (JMP)
             CASE (1)
-            IF (M/= 0) GO TO 1220
-               V=O(O(46)-1)
-               GO TO 1210
-1220           N=1
-1230           IF(N==0)GO TO 1231
-                  IF( O(103) ==O(P))N=N+1
-                  IF( O(104) ==O(P))N=N-1
-                  P=P+1
-                  IF(P>Q)CALL MESAGE(14, 27, 0,0)
-               GO TO 1230
-1231           CONTINUE
-               P=P-1
-1210        CONTINUE
+               IF (M/= 0) THEN
+                  N=1
+                  DO
+                     IF(N==0)EXIT
+                     IF( O(103) ==O(P))N=N+1
+                     IF( O(104) ==O(P))N=N-1
+                     P=P+1
+                     IF(P>Q)CALL MESAGE(14, 27, 0,0)
+                  END DO
+                  P=P-1
+               ELSE
+                  V=O(O(46)-1)
+               END IF
             GO TO 1070
             CASE (3)
             O(46)=O(46)+1
