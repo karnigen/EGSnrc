@@ -187,10 +187,11 @@ C
       O_V=O_S
       IF(O(29)>=4) CALL MACTRC(2,D,MXD)
       IF(O(29)>=4) CALL MACTRC(5,O_V,O_U+1)
-100   IF(O_V>O_U)GO TO 101
+      TOKEN_SCAN: DO
+         IF(O_V>O_U)EXIT TOKEN_SCAN
          IF (O(O_V)==O(97)) THEN
             O_V=O_V+O(O_V+1)+3
-            GO TO 100
+            CYCLE TOKEN_SCAN
          END IF
          IF (MQ/= 0) GO TO 140
             IF (O(D)==O(84)) THEN
@@ -209,7 +210,7 @@ C
                      CALL MESAGE(14, 20, 0,0)
                      CYCLE MACRO_SCAN
                   END DO
-                  GO TO 100
+                  CYCLE TOKEN_SCAN
                END IF
             END IF
             IF (O(D)/= O(O_V).OR.O(O_V)>=O(107)) GO TO 230
@@ -225,11 +226,11 @@ C
                   CALL EXPAND(A)
                   GO TO 30
                END IF
-               GO TO 100
+               CYCLE TOKEN_SCAN
 230         CONTINUE
             IF (O(O_V)==O(76).AND.O(69)+KD==0) THEN
                   O_V=O_V+1
-                  GO TO 100
+                  CYCLE TOKEN_SCAN
             END IF
             IF (O(D)==O(107)) THEN
                D=D+1
@@ -253,13 +254,13 @@ C
             KC=0
             KB=0
             KP=0
-            GO TO 100
+            CYCLE TOKEN_SCAN
 140         P=IP
             Q=IQ
             IA=O_V
             IF(O(69)/= 0)IA=0
             IRE=ISPEC(P,Q,O_V,O_U,IA)
-            IF(IRE==1)GO TO 101
+            IF(IRE==1)EXIT TOKEN_SCAN
             IF (IRE==3) THEN
                A=A+1
                IF(F/= 0)O(O_S-2*(A-1)-2)=T
@@ -272,7 +273,7 @@ C
 130      CONTINUE
          IF (O(O_V)==O(76).AND.MQ==1) THEN
             O_V=O_V+1
-            GO TO 100
+            CYCLE TOKEN_SCAN
          END IF
                   IF(F==0)CYCLE MACRO_SCAN
          DO
@@ -324,8 +325,7 @@ C
          END DO
          O_V=T
          O(O_S-2*(A)-2)=O_V
-         GO TO 100
-101   CONTINUE
+      END DO TOKEN_SCAN
       IF(O(15)==1)CYCLE MACRO_SCAN
       IF (O_S==O_U) THEN
          O_S=525371
