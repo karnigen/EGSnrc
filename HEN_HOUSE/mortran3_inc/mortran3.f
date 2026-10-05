@@ -2586,9 +2586,9 @@ C__________________________________________
       CALL RW(0,O(9),689,689+73)
       CALL RW(0,O(9),325,O(38))
       CALL RW(0,O(9),689+74,789+70)
-      DO 5251 K = 689,788
+      DO K = 689,788
          O(K-100)=O(K)
-5251  CONTINUE
+      END DO
 CMAKE INPUT AND OUTPUT SAME
 C .(MNOSET+54)=.(MNOSET+41);     OUT-TRANSLATE L-ARROW TO =
       CALL RW(23,O(56),325+41,404)
