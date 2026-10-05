@@ -1025,14 +1025,14 @@ C__________________________________________
       integer t,nerd
       save    t,nerd
       T=O_S
-2380  IF(T>O_V)GO TO 2381
-         IF (O(T)/= O(97)) GO TO 2400
+      DO
+         IF(T>O_V)EXIT
+         IF (O(T)==O(97)) THEN
             NERD=LINF(T+2,T+O(T+1)+1,12)
             T=T+O(T+1)+2
-2400     CONTINUE
+         END IF
          T=T+1
-      GO TO 2380
-2381  CONTINUE
+      END DO
       RETURN
       END
 C_______________________________________________________________________
