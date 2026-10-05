@@ -352,7 +352,7 @@ C
             END DO
             O(55)=O(76)
          END IF
-         IF (O(O_U)/= O(87)) GO TO 670
+         IF (O(O_U)==O(87)) THEN
          DO
             IF(O(26)/= 1)O(55)=O(87)
             O(O_U)=O(97)
@@ -387,7 +387,7 @@ C
                CYCLE
             END IF
          END DO
-670      CONTINUE
+         END IF
          IF (O(O_U)==O(86).AND.O(28)>0) THEN
             O(55)=O(O_U)
             O(O_U)=O(105)
