@@ -724,10 +724,10 @@ CCDGHILM
          O_E=O(O_R+3)
          O_R=O(O_R)
          O(62)=O(62)+1
-         IF (O(62)<=1000) GO TO 1570
+         IF (O(62)>1000) THEN
             CALL MESAGE(14, 4, 0,0)
             O(29)=2
-1570     CONTINUE
+         END IF
          IF(O(29)>=2) CALL MACTRC(22,O(22),O_S)
          IF( O(23)==0 )O_X=O_W
 1430  CONTINUE
