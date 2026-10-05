@@ -414,13 +414,11 @@ C
             END DO
          END IF
          IF (KX==0) THEN
-            IF(O(O_U)==O(79))GO TO 621
+            IF(O(O_U)==O(79))GO TO 30
             IF( O(82) ==O(O_U))O(11)=O(11)+1
             IF( O(83) ==O(O_U))O(11)=O(11)-1
          END IF
       GO TO 620
-621   CONTINUE
-      GO TO 30
 90    IF (O(23)>0) THEN
          O_X=O_X+1
          IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
