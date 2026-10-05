@@ -687,10 +687,10 @@ CCDGHILM
                IF (J==12) THEN
                   O_X=O_W+LLONG(O_W,JV,10,0)
                END IF
-               IF (J/= 11) GO TO 1530
+               IF (J==11) THEN
                   O_X=O_W+1
                   O(O_X)=JV
-1530           CONTINUE
+               END IF
                GO TO 1480
 1490           O_X=O_W
                O(58)=O(58)-1
