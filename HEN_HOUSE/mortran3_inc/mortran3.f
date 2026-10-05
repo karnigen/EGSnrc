@@ -684,9 +684,9 @@ CCDGHILM
          IF (11>J.OR.J>12) GO TO 1470
             JV=LEXP(O_W+1,O_X)
             IF (O(58)/= 0) GO TO 1490
-               IF (J/= 12) GO TO 1510
+               IF (J==12) THEN
                   O_X=O_W+LLONG(O_W,JV,10,0)
-1510           CONTINUE
+               END IF
                IF (J/= 11) GO TO 1530
                   O_X=O_W+1
                   O(O_X)=JV
