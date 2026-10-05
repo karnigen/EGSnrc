@@ -364,13 +364,13 @@ C
             O(O_U)=O(97)
             O_U=O_U+1
             Y=O_U
-690         IF(O(O_C)==O(87).OR.O_C>O(43))GO TO 691
+            DO
+               IF(O(O_C)==O(87).OR.O_C>O(43))EXIT
                O_U=O_U+1
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
                O(O_U)=O(O_C)
                O_C=O_C+1
-            GO TO 690
-691         CONTINUE
+            END DO
             O_U=O_U+1
             O(O_U)=O(96)
             O(Y)=O_U-Y-1
