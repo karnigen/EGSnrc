@@ -769,12 +769,12 @@ CCDGHILM
 1620        IF (O(O_B)/= 12) GO TO 1710
                O_B=O_B+1
                IF (O(O_B)/= 23) GO TO 1730
-                  IF (O(68)/= 0) GO TO 1750
+                  IF (O(68)==0) THEN
                      KGN=1
                      O(68)=1
-                     GO TO 1740
-1750                 KGN=KGN+1
-1740              CONTINUE
+                  ELSE
+                     KGN=KGN+1
+                  END IF
                   GO TO 1720
 1730              IF  (O(O_B)/= 16)GO TO 1760
                   IF (O(68)/= 1) GO TO 1780
