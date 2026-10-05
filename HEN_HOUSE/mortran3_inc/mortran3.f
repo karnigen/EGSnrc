@@ -139,11 +139,11 @@ C##############################################################################
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-      integer c,mxc,m
+      integer O_C,O_MXC,O_M
       integer iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia,
      &        ire,nb,kx,y,nerd
       integer ispec,linf
-      EQUIVALENCE(O(12),C),(O(43),MXC),(O(22),M)
+      EQUIVALENCE(O(12),O_C),(O(43),O_MXC),(O(22),O_M)
 C
       common/nrcc/ oflag
       integer      oflag
@@ -174,11 +174,11 @@ C
          O_U=O_S-1
          GO TO 10
 50    CONTINUE
-      M=O(32)+O(O_S)
-80    IF(O(M)==0)GO TO 90
-      M=O(M)
-      D=M+4
-      MXD=O(M+3)
+      O_M=O(32)+O(O_S)
+80    IF(O(O_M)==0)GO TO 90
+      O_M=O(O_M)
+      D=O_M+4
+      MXD=O(O_M+3)
       KD=0
       O(69)=0
       MQ=0
@@ -342,18 +342,18 @@ C
 620   CONTINUE
          O_U=O_U+1
          IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
-         O(O_U)=O(C)
-         C=C+1
-         IF(C>O(43))CALL NXTCRD
+         O(O_U)=O(O_C)
+         O_C=O_C+1
+         IF(O_C>O(43))CALL NXTCRD
          IF (O(O_U)/= O(84)) GO TO 640
             O(55)=O(O_U)
             KX=1
 650         IF(KX==0)GO TO 651
                O_U=O_U+1
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
-               O(O_U)=O(C)
-               C=C+1
-               IF(C>O(43))CALL NXTCRD
+               O(O_U)=O(O_C)
+               O_C=O_C+1
+               IF(O_C>O(43))CALL NXTCRD
                IF( O(84) ==O(O_U))KX=KX+1
                IF( O(85) ==O(O_U))KX=KX-1
             GO TO 650
@@ -365,11 +365,11 @@ C
             O(O_U)=O(97)
             O_U=O_U+1
             Y=O_U
-690         IF(O(C)==O(87).OR.C>O(43))GO TO 691
+690         IF(O(O_C)==O(87).OR.O_C>O(43))GO TO 691
                O_U=O_U+1
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
-               O(O_U)=O(C)
-               C=C+1
+               O(O_U)=O(O_C)
+               O_C=O_C+1
             GO TO 690
 691         CONTINUE
             O_U=O_U+1
@@ -379,7 +379,7 @@ C
                O_U=O_U-2
                O(O_U)=O(76)
 710         CONTINUE
-            IF (C<=MXC) GO TO 730
+            IF (O_C<=O_MXC) GO TO 730
                IF (O(26)/= 1) GO TO 750
                   O(55)=O(76)
                   CALL NXTCRD
@@ -390,8 +390,8 @@ C
                GO TO 680
 730         CONTINUE
             O(55)=O(76)
-            C=C+1
-            IF(C>O(43))CALL NXTCRD
+            O_C=O_C+1
+            IF(O_C>O(43))CALL NXTCRD
             GO TO 10
 670      CONTINUE
          IF (O(O_U)/= O(86).OR.O(28)<=0) GO TO 770
@@ -400,17 +400,17 @@ C
 780         CONTINUE
                O_U=O_U+1
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
-               O(O_U)=O(C)
-               C=C+1
-               IF(C>O(43))CALL NXTCRD
+               O(O_U)=O(O_C)
+               O_C=O_C+1
+               IF(O_C>O(43))CALL NXTCRD
                IF (O(O_U)/= O(86)) GO TO 800
-                  IF (O(C)==O(86)) GO TO 820
+                  IF (O(O_C)==O(86)) GO TO 820
                      O(O_U)=O(106)
                      O(55)=O(76)
                      GO TO 781
 820               CONTINUE
-                  C=C+1
-                  IF(C>O(43))CALL NXTCRD
+                  O_C=O_C+1
+                  IF(O_C>O(43))CALL NXTCRD
 800            CONTINUE
             GO TO 780
 781         CONTINUE
@@ -420,8 +420,8 @@ C
                IF(O(O_U-1)==O(76))O_U=O_U-1
 860         CONTINUE
 870         CONTINUE
-               IF(C==MXC .OR.O(C)/= O(76))GO TO 871
-               C=C+1
+               IF(O_C==O_MXC .OR.O(O_C)/= O(76))GO TO 871
+               O_C=O_C+1
             GO TO 870
 871         CONTINUE
 840      CONTINUE
