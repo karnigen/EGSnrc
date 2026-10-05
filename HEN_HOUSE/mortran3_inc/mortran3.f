@@ -311,10 +311,10 @@ C
                IF (O(T)==O(79).AND.N3>0)GO TO 80
             END IF
             T=T+1
-            IF (T<=O_U) GO TO 570
+            IF (T>O_U) THEN
                IF(O(15)==1)GO TO 80
                GO TO 10
-570         CONTINUE
+            END IF
             IF (KC+KP+KB/= 0) GO TO 590
                IF(MQ==0)D=F
 440            O_V=T
