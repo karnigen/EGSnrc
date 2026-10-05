@@ -2179,10 +2179,10 @@ CCEFGLMNPQRS UVWXY
             GO TO 5040
 5041        CONTINUE
 5030     CONTINUE
-         DO 5051 K = 175,254
+         DO K = 175,254
             IF(0>O(K).OR.O(K)>100-1)O(K)=100-1
             O(K)=O(689+O(K))
-5051     CONTINUE
+         END DO
 C   LOOKOUT
          CALL RW(23,O(57),175,254)
          DO 5061 K = 175,254
