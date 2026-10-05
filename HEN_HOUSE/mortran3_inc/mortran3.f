@@ -757,13 +757,12 @@ CCDGHILM
 1630        IF (1>O(O_B).OR.O(O_B)>O(O_S-1)) GO TO 1670
                A=O(O_S-2*(O(O_B))-1)
                N=O(O_S-2*(O(O_B))-2)
-1680           IF(A>=N)GO TO 1681
+               DO WHILE (A<N)
                   O_X=O_X+1
                   IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                   O(O_X)=O(A)
                   A=A+1
-               GO TO 1680
-1681           CONTINUE
+               END DO
                GO TO 1690
 1670        CONTINUE
             CALL MESAGE(15, 4, O_B,O_E)
