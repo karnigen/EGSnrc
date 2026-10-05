@@ -373,20 +373,20 @@ C
                O_U=O_U-2
                O(O_U)=O(76)
 710         CONTINUE
-            IF (O_C<=O_MXC) GO TO 730
-               IF (O(26)/= 1) GO TO 750
-                  O(55)=O(76)
-                  CALL NXTCRD
-                  GO TO 10
-750            CONTINUE
+            IF (O_C<=O_MXC) THEN
+               O(55)=O(76)
+               O_C=O_C+1
+               IF(O_C>O(43))CALL NXTCRD
+               GO TO 10
+            ELSE IF (O(26)==1) THEN
+               O(55)=O(76)
+               CALL NXTCRD
+               GO TO 10
+            ELSE
                CALL NXTCRD
                O_U=O_U+1
                GO TO 680
-730         CONTINUE
-            O(55)=O(76)
-            O_C=O_C+1
-            IF(O_C>O(43))CALL NXTCRD
-            GO TO 10
+            END IF
 670      CONTINUE
          IF (O(O_U)/= O(86).OR.O(28)<=0) GO TO 770
             O(55)=O(O_U)
