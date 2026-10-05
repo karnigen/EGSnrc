@@ -825,9 +825,9 @@ CCDGHILM
                KRAP=0
                GO TO 1590
 1900        CONTINUE
-            DO 1911 K = 1,6
+            DO K = 1,6
                O(O(40)-K)=O(K)
-1911        CONTINUE
+            END DO
             O_U=O(40)-7
             O_V=O_U+1
             Z=O(O(51))
