@@ -347,7 +347,8 @@ C
          IF (O(O_U)/= O(84)) GO TO 640
             O(55)=O(O_U)
             KX=1
-650         IF(KX==0)GO TO 651
+            DO
+               IF(KX==0)EXIT
                O_U=O_U+1
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
                O(O_U)=O(O_C)
@@ -355,8 +356,7 @@ C
                IF(O_C>O(43))CALL NXTCRD
                IF( O(84) ==O(O_U))KX=KX+1
                IF( O(85) ==O(O_U))KX=KX-1
-            GO TO 650
-651         CONTINUE
+            END DO
             O(55)=O(76)
 640      CONTINUE
          IF (O(O_U)/= O(87)) GO TO 670
