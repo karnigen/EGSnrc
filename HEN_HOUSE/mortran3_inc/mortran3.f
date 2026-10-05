@@ -683,7 +683,7 @@ CCDGHILM
          J=O(O(O(51)))
          IF (11>J.OR.J>12) GO TO 1470
             JV=LEXP(O_W+1,O_X)
-            IF (O(58)/= 0) GO TO 1490
+            IF (O(58)==0) THEN
                IF (J==12) THEN
                   O_X=O_W+LLONG(O_W,JV,10,0)
                END IF
@@ -691,8 +691,8 @@ CCDGHILM
                   O_X=O_W+1
                   O(O_X)=JV
                END IF
-               GO TO 1480
-1490           O_X=O_W
+            ELSE
+               O_X=O_W
                O(58)=O(58)-1
                IF (JV==0) THEN
                   P=O(65)
@@ -708,7 +708,7 @@ CCDGHILM
                IF(O(44)>2154)CALL MESAGE(15, 18, 0,0)
                O_B=P
                O_E=Q
-1480        CONTINUE
+            END IF
 1470     CONTINUE
          NUL=O(O(51))
          O(51)=O(51)-1
