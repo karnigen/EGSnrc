@@ -1478,7 +1478,8 @@ CFGHIJKLMQRSUVWY
       O(N-1)=38
       O(N)=0
       B=A
-3270  IF(B>Z)GO TO 3271
+      DO
+         IF(B>Z)EXIT
          IF (0>O(B).OR.O(B)>9) GO TO 3290
             O(N)=0
             O(20)=1
@@ -1487,10 +1488,10 @@ CFGHIJKLMQRSUVWY
                B=B+1
             GO TO 3300
 3301        CONTINUE
-            GO TO 3280
+            CYCLE
 3290        IF  (O(B)/= O(76))GO TO 3310
             B=B+1
-            GO TO 3280
+            CYCLE
 3310        T=B
             IF (10>O(T).OR.O(T)>29) GO TO 3330
                X=O(T)*O(T+1)
@@ -1555,7 +1556,7 @@ CFGHIJKLMQRSUVWY
                O(O(49))=0
                IF(O(49)>2454)CALL MESAGE(15, 23, 0,0)
                B=T
-               GO TO 3270
+               CYCLE
 3550        CONTINUE
             IF (N/= MNN) GO TO 3570
                LEXP=O(N)
@@ -1605,9 +1606,7 @@ CFGHIJKLMQRSUVWY
             GO TO 3740
 3760        O(N-2)=0
 3740        N=N-2
-3280     CONTINUE
-      GO TO 3270
-3271  CONTINUE
+      END DO
 3370  CALL MESAGE(14, 23, A,Z+1)
 99999 RETURN
       END
