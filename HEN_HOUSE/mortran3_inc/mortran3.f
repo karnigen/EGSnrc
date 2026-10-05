@@ -369,10 +369,10 @@ C
             O_U=O_U+1
             O(O_U)=O(96)
             O(Y)=O_U-Y-1
-            IF (O(Y)/= 0) GO TO 710
+            IF (O(Y)==0) THEN
                O_U=O_U-2
                O(O_U)=O(76)
-710         CONTINUE
+            END IF
             IF (O_C<=O_MXC) THEN
                O(55)=O(76)
                O_C=O_C+1
