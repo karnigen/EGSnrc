@@ -766,29 +766,28 @@ CCDGHILM
                GO TO 1690
 1670        CONTINUE
             CALL MESAGE(15, 4, O_B,O_E)
-1620        IF (O(O_B)/= 12) GO TO 1710
+1620        IF (O(O_B)==12) THEN
                O_B=O_B+1
-               IF (O(O_B)/= 23) GO TO 1730
+               IF (O(O_B)==23) THEN
                   IF (O(68)==0) THEN
                      KGN=1
                      O(68)=1
                   ELSE
                      KGN=KGN+1
                   END IF
-                  GO TO 1720
-1730              IF (O(O_B)==16 .AND. O(68)==1) KGN=KGN+1
-                  IF (O(O_B)==14) THEN
+               ELSE IF (O(O_B)==16) THEN
+                  IF (O(68)==1) KGN=KGN+1
+               ELSE IF (O(O_B)==14) THEN
                   KGN=KGN-1
                   IF(KGN<=0)O(68)=0
                   END IF
-1720           CONTINUE
                IF (O(71)/=0) THEN
                   IF(O(68)==0)O(32)=1625
                   IF(O(68)/= 0)O(32)=1145
                END IF
-               GO TO 1690
-1710        CONTINUE
+            ELSE
             IF(O(68)==0)CALL KAT
+            END IF
             GO TO 1690
 1640        IF (O(O_B)/= 10) GO TO 1830
                O_B=O_B+1
