@@ -493,13 +493,14 @@ C__________________________________________
       O(45)=2155
 CADEFGHIJKLRSXYZ
       O(46)=2205
-1070  IF(P<Q) THEN
+         ISPEC_SCAN: DO
+      IF(P<Q) THEN
          IF (O(V)==O(76)) THEN
             IF (V==T) THEN
                V=V+1
                T=T+1
                IF(V>U)GO TO 1120
-               GO TO 1070
+               CYCLE ISPEC_SCAN
             END IF
          END IF
          IF (O(P)<=100) THEN
@@ -512,7 +513,7 @@ CADEFGHIJKLRSXYZ
             O(45)=O(45)+1
             O(O(45))=NP
             IF(O(45)>2204)CALL MESAGE(15, 19, 0,0)
-            GO TO 1070
+            CYCLE ISPEC_SCAN
          END IF
             IF (O(P)>=O(106)) THEN
                CALL MESAGE(14, 19, P,Q+11)
@@ -535,7 +536,7 @@ CADEFGHIJKLRSXYZ
                ELSE
                   V=O(O(46)-1)
                END IF
-            GO TO 1070
+            CYCLE ISPEC_SCAN
             CASE (3)
             O(46)=O(46)+1
             O(O(46))=C
@@ -545,14 +546,14 @@ CADEFGHIJKLRSXYZ
             O(O(46))=P
             IF(O(46)>2254)CALL MESAGE(15, 20, 0,0)
             C=0
-            GO TO 1070
+            CYCLE ISPEC_SCAN
             CASE (4)
                P=P+2
                IF (M==1) THEN
                   C=C+1
                   IF (C<O(P-1)) THEN
                      P=O(O(46))
-                     GO TO 1070
+                     CYCLE ISPEC_SCAN
                   END IF
                END IF
                IF(C>=O(P-2))M=1
@@ -596,17 +597,19 @@ CADEFGHIJKLRSXYZ
             P=P+1
             IF(M==1)V=W
             END SELECT
-1300        IF(M==1)GO TO 1070
+1300        IF(M==1)CYCLE ISPEC_SCAN
             IF(O(P)/= O(101) .AND. O(P)/= O(104))GO TO 90
-      GO TO 1070
+         CYCLE ISPEC_SCAN
          END IF
             IF (O(45)/=2155) THEN
          P=O(O(45))
          O(45)=O(45)-1
          Q=O(O(45))
          O(45)=O(45)-1
-         GO TO 1070
+            CYCLE ISPEC_SCAN
             END IF
+         EXIT ISPEC_SCAN
+      END DO ISPEC_SCAN
       IV=V
       ISPEC=3
       GO TO 99999
