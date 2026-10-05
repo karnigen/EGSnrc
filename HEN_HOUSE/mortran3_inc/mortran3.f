@@ -754,7 +754,7 @@ CCDGHILM
             CASE DEFAULT
                GO TO 1630
             END SELECT
-1630        IF (1>O(O_B).OR.O(O_B)>O(O_S-1)) GO TO 1670
+1630        IF (O(O_B)>=1 .AND. O(O_B)<=O(O_S-1)) THEN
                A=O(O_S-2*(O(O_B))-1)
                N=O(O_S-2*(O(O_B))-2)
                DO WHILE (A<N)
@@ -764,8 +764,9 @@ CCDGHILM
                   A=A+1
                END DO
                GO TO 1690
-1670        CONTINUE
+            ELSE
             CALL MESAGE(15, 4, O_B,O_E)
+            END IF
 1620        IF (O(O_B)==12) THEN
                O_B=O_B+1
                IF (O(O_B)==23) THEN
