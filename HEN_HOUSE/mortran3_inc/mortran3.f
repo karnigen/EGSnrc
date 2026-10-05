@@ -308,9 +308,7 @@ C
                   IF( O(83) ==O(T))KB=KB-1
                   IF(KB<0)GO TO 80
                END IF
-               IF (O(T)/= O(79)) GO TO 550
-                  IF(N3>0)GO TO 80
-550            CONTINUE
+               IF (O(T)==O(79).AND.N3>0)GO TO 80
 490         CONTINUE
             T=T+1
             IF (T<=O_U) GO TO 570
