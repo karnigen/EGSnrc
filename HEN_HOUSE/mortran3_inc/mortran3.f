@@ -298,11 +298,11 @@ C
                IF( O(84) ==O(T))KC=KC+1
                IF( O(85) ==O(T))KC=KC-1
                IF(KC<0)GO TO 80
-               IF (N1/= 1) GO TO 510
+               IF (N1==1) THEN
                   IF(38==O(T))KP=KP+1
                   IF(46==O(T))KP=KP-1
                   IF(KP<0)GO TO 80
-510            CONTINUE
+               END IF
                IF (N2/= 1) GO TO 530
                   IF( O(82) ==O(T))KB=KB+1
                   IF( O(83) ==O(T))KB=KB-1
