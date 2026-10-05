@@ -1397,29 +1397,27 @@ C__________________________________________
       L=LOC
       I=N/B
       J=1
-      IF (IND/= 0) GO TO 3170
+      IF (IND== 0) THEN
          L=L+1
          O(L)=O(76)
-3170  CONTINUE
-3180  IF(I<=0)GO TO 3181
+      END IF
+      DO WHILE(I>0)
          I=I/B
          J=J+1
-      GO TO 3180
-3181  CONTINUE
+      END DO
 CCOUNT DIGITS IN EXPANSION
-      IF (NUM>=0) GO TO 3200
+      IF (NUM<0) THEN
          L=L+1
          O(L)=42
-3200  CONTINUE
+      END IF
       LLONG=L-LOC+J
-3210  CONTINUE
+      DO
          K=N/B
          O(L+J)=N-K*B
          N=K
          J=J-1
-         IF(J<=0)GO TO 3211
-      GO TO 3210
-3211  CONTINUE
+         IF(J<=0)EXIT
+      END DO
 99999 RETURN
       END
 C_______________________________________________________________________
