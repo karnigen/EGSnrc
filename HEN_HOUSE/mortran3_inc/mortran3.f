@@ -270,12 +270,10 @@ C
                GO TO 240
 350         CONTINUE
 130      CONTINUE
-         IF (O(O_V)/= O(76)) GO TO 370
-            IF (MQ/= 1) GO TO 390
-               O_V=O_V+1
-               GO TO 100
-390         CONTINUE
-370      CONTINUE
+         IF (O(O_V)==O(76).AND.MQ==1) THEN
+            O_V=O_V+1
+            GO TO 100
+         END IF
          IF(F==0)GO TO 80
 400      CONTINUE
             IF(O(T)==O(106))GO TO 80
