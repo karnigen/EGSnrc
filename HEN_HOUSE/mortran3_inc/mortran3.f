@@ -294,7 +294,7 @@ C
                   IF( O(106) ==O(T))NB=NB-1
               END DO
             END IF
-            IF (O(69)/= 0) GO TO 490
+            IF (O(69)==0) THEN
                IF( O(84) ==O(T))KC=KC+1
                IF( O(85) ==O(T))KC=KC-1
                IF(KC<0)GO TO 80
@@ -309,7 +309,7 @@ C
                   IF(KB<0)GO TO 80
                END IF
                IF (O(T)==O(79).AND.N3>0)GO TO 80
-490         CONTINUE
+            END IF
             T=T+1
             IF (T<=O_U) GO TO 570
                IF(O(15)==1)GO TO 80
