@@ -418,11 +418,10 @@ C
             IF (O_S==O_U) GO TO 860
                IF(O(O_U-1)==O(76))O_U=O_U-1
 860         CONTINUE
-870         CONTINUE
-               IF(O_C==O_MXC .OR.O(O_C)/= O(76))GO TO 871
+            DO
+               IF(O_C==O_MXC .OR.O(O_C)/= O(76))EXIT
                O_C=O_C+1
-            GO TO 870
-871         CONTINUE
+            END DO
 840      CONTINUE
          IF (KX/= 0) GO TO 890
             IF(O(O_U)==O(79))GO TO 621
