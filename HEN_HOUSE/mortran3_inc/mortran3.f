@@ -388,7 +388,7 @@ C
                GO TO 680
             END IF
 670      CONTINUE
-         IF (O(O_U)/= O(86).OR.O(28)<=0) GO TO 770
+         IF (O(O_U)==O(86).AND.O(28)>0) THEN
             O(55)=O(O_U)
             O(O_U)=O(105)
             DO
@@ -407,7 +407,7 @@ C
                O(55)=O(76)
                EXIT
             END DO
-770      CONTINUE
+         END IF
          IF (O(O_U)/= O(76)) GO TO 840
             IF (O_S==O_U) GO TO 860
                IF(O(O_U-1)==O(76))O_U=O_U-1
