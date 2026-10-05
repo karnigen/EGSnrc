@@ -2593,12 +2593,12 @@ CMAKE INPUT AND OUTPUT SAME
 C .(MNOSET+54)=.(MNOSET+41);     OUT-TRANSLATE L-ARROW TO =
       CALL RW(23,O(56),325+41,404)
       CALL RW(23,O(57),325+41,404)
-      DO 5261 K = 1,100
+      DO K = 1,100
             J=O(589+K-1)
          O(889+J)=K-1
 C     WRITE(6,1) J,K-1
-1     FORMAT(2I5)
-5261  CONTINUE
+      END DO
+   1     FORMAT(2I5)
       O(31)=4
       O(34)=2655
       DO 5291 K = 1,10
