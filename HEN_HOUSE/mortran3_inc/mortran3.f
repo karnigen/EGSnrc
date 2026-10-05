@@ -1362,20 +1362,20 @@ C__________________________________________
       save    m,n
       M=1
       N=0
-3120  IF(O(L)/= O(76))GO TO 3121
+      DO
+         IF(O(L)/= O(76))EXIT
          L=L-1
-      GO TO 3120
-3121  CONTINUE
-3130  IF(0>O(L).OR.O(L)>=B)GO TO 3131
+      END DO
+      DO
+         IF(0>O(L).OR.O(L)>=B)EXIT
          N=N+O(L)*M
          M=M*B
          L=L-1
-      GO TO 3130
-3131  CONTINUE
-      IF (O(L)/= 42) GO TO 3150
+      END DO
+      IF (O(L)==42) THEN
          L=L-1
          N=-N
-3150  CONTINUE
+      END IF
       NIB=N
 99999 RETURN
       END
