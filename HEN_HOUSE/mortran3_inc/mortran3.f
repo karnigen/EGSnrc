@@ -133,7 +133,7 @@ C##############################################################################
 
 
       implicit none
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer b,e,r,s,v,u,w,x,c,mxc,m
@@ -488,7 +488,7 @@ C__________________________________________
       integer FUNCTION ISPEC(P,Q,IV,U,T)
       implicit none
       integer p,q,iv,u,t
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer mini
@@ -622,7 +622,7 @@ C__________________________________________
       integer FUNCTION MINI(S,U,W,KCT)
       implicit none
       integer s,u,w,kct
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer m,l,v,p,q
@@ -658,7 +658,7 @@ C________________________________________
       SUBROUTINE EXPAND (F)
       implicit none
       integer  f
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer b,e,r,s,v,u,w,x
@@ -874,7 +874,7 @@ C_______________________________________________________________________
 C________________________________________
       SUBROUTINE KAT
       implicit none
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer b,e,r,s,v,u,w,x,l,m
@@ -1019,7 +1019,7 @@ C_______________________________________________________________________
 C__________________________________________
       SUBROUTINE COUT
       implicit none
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer  b,e,r,s,v,u,w,x
@@ -1044,7 +1044,7 @@ C________________________________________
       SUBROUTINE DEFINE(S)
       implicit none
       integer s
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
 CGHQUVWXYZ
@@ -1236,7 +1236,7 @@ C__________________________________________
       SUBROUTINEDOIT(A,Z)
       implicit none
       integer a,z
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer   s,x,t,p
@@ -1291,7 +1291,7 @@ C__________________________________________
       SUBROUTINE KRUNC(R)
       implicit none
       integer    r
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
 CABEFGHIJKLQTUVWXYZ
       COMMON /IBM/O
       integer O
@@ -1347,7 +1347,7 @@ C__________________________________________
       integer FUNCTION NIB(L,B)
       implicit none
       integer  l,b
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer m,n
@@ -1376,7 +1376,7 @@ C__________________________________________
       integer FUNCTION LLONG(LOC,NUM,B,IND)
       implicit none
       integer  loc,num,b,ind
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer n,l,i,j,k
@@ -1416,7 +1416,7 @@ C________________________________________
       integer FUNCTION LEXP(A,Z)
       implicit none
       integer  a,z
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer   p,n
@@ -1605,7 +1605,7 @@ C_______________________________________________________________________
 C________________________________________
       SUBROUTINE NXTCRD
       implicit none
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer mxr,mxt,mxn
@@ -1767,7 +1767,7 @@ C________________________________________
       SUBROUTINE CCCARD(K)
       implicit none
       integer k
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer n5
@@ -1821,7 +1821,7 @@ C__________________________________________
       integer FUNCTION N5(L,M,K)
       implicit none
       integer  l,m,k
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer nib
@@ -1840,7 +1840,7 @@ C________________________________________
       SUBROUTINE MACTRC(W,R,S)
       implicit none
       integer  w,r,s
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer k,m,t,n
@@ -1914,7 +1914,7 @@ C__________________________________________
       SUBROUTINE CRIT(A,Z)
       implicit none
       integer  a,z
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer b,c
@@ -1943,7 +1943,7 @@ C________________________________________
       SUBROUTINE MESAGE (LEVEL,NO,K1,K2)
       implicit none
       integer level,no,k1,k2
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       common/junk/ verbose
@@ -1990,7 +1990,7 @@ C__________________________________________
       SUBROUTINE FIND(L,N,V)
       implicit none
       integer l,n,v
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer llong
@@ -2032,7 +2032,7 @@ C________________________________________
       integer FUNCTION LINF(A,Z,IND)
       implicit none
       integer  a,z,ind
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer llong
@@ -2196,7 +2196,7 @@ C__________________________________________
       SUBROUTINE DUMDUM(L,A,B,C,D,E,F,G,H,I,J)
       implicit none
       integer L,A,B,C,D,E,F,G,H,I,J
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       O( L )=A
@@ -2218,7 +2218,7 @@ C__________________________________________
       integer  N,I,J,K
       CHARACTER*1 CH(200)
       INTEGER     HC(200)
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
 C  IN RW
@@ -2471,7 +2471,7 @@ C________________________________________
       implicit none
       integer  ind
       CHARACTER*1 COUNT
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       common /junk/ verbose
@@ -2544,7 +2544,7 @@ C_______________________________________________________________________
 C__________________________________________
       SUBROUTINE RAW
       implicit none
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer b,e,r,s,v,u,w,x
@@ -2619,7 +2619,7 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
       subroutine open_units
 
       implicit none
-      DIMENSIONO(600000)
+      DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       common/nrcc/ oflag
