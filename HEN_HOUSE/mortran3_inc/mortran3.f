@@ -189,10 +189,10 @@ C
       IF(O(29)>=4) CALL MACTRC(2,D,MXD)
       IF(O(29)>=4) CALL MACTRC(5,O_V,O_U+1)
 100   IF(O_V>O_U)GO TO 101
-         IF (O(O_V)/= O(97)) GO TO 120
+        IF (O(O_V)==O(97)) THEN
             O_V=O_V+O(O_V+1)+3
             GO TO 100
-120      CONTINUE
+        END IF
          IF (MQ/= 0) GO TO 140
             IF (O(D)==O(84)) THEN
                IF (O(D+1)<=100.AND.O(32)>1505) THEN
