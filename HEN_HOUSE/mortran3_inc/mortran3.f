@@ -602,13 +602,13 @@ CADEFGHIJKLRSXYZ
 1130     CONTINUE
       GO TO 1070
 1071  CONTINUE
-      IF (.NOT.(.NOT.(O(45)==2155))) GO TO 1380
+            IF (O(45)/=2155) THEN
          P=O(O(45))
          O(45)=O(45)-1
          Q=O(O(45))
          O(45)=O(45)-1
          GO TO 1070
-1380  CONTINUE
+            END IF
       IV=V
       ISPEC=3
       GO TO 99999
