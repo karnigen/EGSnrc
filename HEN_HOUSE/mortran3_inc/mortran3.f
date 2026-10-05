@@ -1724,7 +1724,7 @@ C________________________________________
       IF (O(14)<2) GO TO 99999
       J=456
       K=457
-4130  IF(K>MXT)GO TO 4131
+      DO WHILE(K<=MXT)
          J=J+1
          O(J)=O(K)
          K=K+1
@@ -1751,8 +1751,7 @@ C________________________________________
 4220        CONTINUE
 4140     CONTINUE
 4190     CONTINUE
-      GO TO 4130
-4131  CONTINUE
+      END DO
       DO WHILE(J<=MXT)
          J=J+1
          O(J)=90
