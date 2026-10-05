@@ -136,6 +136,9 @@ C##############################################################################
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,e,r,s,v,u,w,x,c,mxc,m
       integer iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia,
      &        ire,nb,kx,y,nerd
@@ -491,6 +494,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer mini
       integer c,m,b,v,iq,i,np,jmp,n,nul,w
       save    c,m,b,v,iq,i,np,jmp,n,nul,w
@@ -625,6 +631,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,l,v,p,q
       save    m,l,v,p,q
       MINI=0
@@ -661,6 +670,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,e,r,s,v,u,w,x
       EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
      *(O(7),W),(O(8),X)
@@ -877,6 +889,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,e,r,s,v,u,w,x,l,m
       EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
      *(O(7),W),(O(8),X)
@@ -1022,6 +1037,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer  b,e,r,s,v,u,w,x
       EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
      *(O(7),W),(O(8),X)
@@ -1047,6 +1065,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
 CGHQUVWXYZ
       integer   l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       save      l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
@@ -1239,6 +1260,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   s,x,t,p
       DIMENSION S(200)
       save      s,x,t,p
@@ -1295,6 +1319,9 @@ C__________________________________________
 CABEFGHIJKLQTUVWXYZ
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,n,d,p,s,c,i
       save    m,n,d,p,s,c,i
       IF (O(35)==0) GO TO 3040
@@ -1350,6 +1377,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,n
       save    m,n
       M=1
@@ -1379,6 +1409,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer n,l,i,j,k
       save    n,l,i,j,k
       IF(O(68)/= 0)GO TO 99999
@@ -1419,6 +1452,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   p,n
       DIMENSION P(100)
 CFGHIJKLMQRSUVWY
@@ -1608,6 +1644,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer mxr,mxt,mxn
       EQUIVALENCE(O(38),MXR),(O(36),MXT),(O(37),MXN)
       integer llong,linf
@@ -1770,6 +1809,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer n5
       integer jmp,i
       save    jmp,i
@@ -1824,6 +1866,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer nib
       integer j
       save    j
@@ -1843,6 +1888,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer k,m,t,n
       save    k,m,t,n
       IF (O(23)>0.AND.O(29)<3.AND.W/= 4)GO TO 99999
@@ -1917,6 +1965,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,c
       save    b,c
       B=A
@@ -1946,6 +1997,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common/junk/ verbose
       logical verbose
       IF(LEVEL==14 .OR. LEVEL==15)O(63)=O(63)+1
@@ -1993,6 +2047,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer llong
       integer a,c,q,r,s,nerd,k
       save    a,c,q,r,s,nerd,k
@@ -2035,6 +2092,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer llong
       integer last,kur,kit,kut,kst,h,b,i,j,npl,d,koff,c,limc,k
 C     LINF modes: packed comments and rule diagnostics.
@@ -2199,6 +2259,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       O( L )=A
       O(L+1)=B
       O(L+2)=C
@@ -2221,6 +2284,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
 C  IN RW
 C
       common/nrcc/ oflag
@@ -2474,6 +2540,9 @@ C________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common /junk/ verbose
       logical verbose
       integer kount,k,iuni
@@ -2547,6 +2616,9 @@ C__________________________________________
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,e,r,s,v,u,w,x
       EQUIVALENCE(O(1),B),(O(2),E),(O(3),R),(O(4),S), (O(5),V),(O(6),U),
      *(O(7),W),(O(8),X)
@@ -2622,6 +2694,9 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
+      integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
+     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common/nrcc/ oflag
       integer      oflag
       common/junk/verbose
@@ -2655,9 +2730,9 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
 4       OPEN(UNIT=4,file='fort.4',STATUS='OLD',ERR=8)
 8       OPEN(UNIT=8,file='fort.8',STATUS='OLD',ERR=9)
 9       CONTINUE
-        O(1)=1   ! hex/raw data unit number
-        O(2)=6   ! listing unit number
-        O(3)=7   ! fortran/hex output unit number
+        O_B=1   ! hex/raw data unit number
+        O_E=6   ! listing unit number
+        O_R=7   ! fortran/hex output unit number
         oflag = 6
         if( verbose ) then
           write(6,'(a)') 'mortran3.exe: using standard fort.* units'
@@ -2885,9 +2960,9 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
         if( verbose )write(6,'(a)') '  mortlst output: fort.8'
         open(8,file='fort.8',status='unknown')
       endif
-      O(1)=1   ! hex/raw data unit number
-      O(2)=8   ! listing unit number
-      O(3)=7   ! fortran/hex output unit number
+      O_B=1   ! hex/raw data unit number
+      O_E=8   ! listing unit number
+      O_R=7   ! fortran/hex output unit number
       if( verbose ) write(6,'(/a,$)') '  Mortran compiling ... '
       oflag = 8
       return
