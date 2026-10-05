@@ -408,15 +408,15 @@ C
                EXIT
             END DO
          END IF
-         IF (O(O_U)/= O(76)) GO TO 840
-            IF (O_S==O_U) GO TO 860
+         IF (O(O_U)==O(76)) THEN
+            IF (O_S/=O_U) THEN
                IF(O(O_U-1)==O(76))O_U=O_U-1
-860         CONTINUE
+            END IF
             DO
                IF(O_C==O_MXC .OR.O(O_C)/= O(76))EXIT
                O_C=O_C+1
             END DO
-840      CONTINUE
+         END IF
          IF (KX/= 0) GO TO 890
             IF(O(O_U)==O(79))GO TO 621
             IF( O(82) ==O(O_U))O(11)=O(11)+1
