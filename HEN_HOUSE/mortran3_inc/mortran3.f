@@ -396,23 +396,22 @@ C
          IF (O(O_U)/= O(86).OR.O(28)<=0) GO TO 770
             O(55)=O(O_U)
             O(O_U)=O(105)
-780         CONTINUE
+            DO
                O_U=O_U+1
                IF(O_U>600000)CALL MESAGE(15, 1, 0,0)
                O(O_U)=O(O_C)
                O_C=O_C+1
                IF(O_C>O(43))CALL NXTCRD
-               IF (O(O_U)/= O(86)) GO TO 800
-                  IF (O(O_C)==O(86)) GO TO 820
-                     O(O_U)=O(106)
-                     O(55)=O(76)
-                     GO TO 781
-820               CONTINUE
+               IF (O(O_U)/= O(86))CYCLE
+               IF (O(O_C)==O(86)) THEN
                   O_C=O_C+1
                   IF(O_C>O(43))CALL NXTCRD
-800            CONTINUE
-            GO TO 780
-781         CONTINUE
+                  CYCLE
+               END IF
+               O(O_U)=O(106)
+               O(55)=O(76)
+               EXIT
+            END DO
 770      CONTINUE
          IF (O(O_U)/= O(76)) GO TO 840
             IF (O_S==O_U) GO TO 860
