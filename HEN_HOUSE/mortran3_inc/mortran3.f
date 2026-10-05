@@ -1220,9 +1220,9 @@ C      D-LINK PAT         CAT PTR   MARK PAT
       K=L(3)
       IF (K==0) GO TO 2920
          CALL DOIT(E-K,E)
-         DO 2931 J = 1,K
+         DO J = 1,K
             O(F-J)=O(E-J)
-2931     CONTINUE
+         END DO
 2920  CONTINUE
       IF (O(13)>0) CALL MACTRC(15,P,R)
       O(34)= P +NEED
