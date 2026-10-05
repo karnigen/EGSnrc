@@ -1453,22 +1453,21 @@ CFGHIJKLMQRSUVWY
          END DO
          D=C+1
          E=D+1
-         IF (O(E)==O(105)) GO TO 3260
+         IF (O(E)==O(105)) THEN
+            DO WHILE(E<=Z-1)
+               IF(O(B)/= O(E))LEXP=0
+               B=B+1
+               E=E+1
+            END DO
+            IF(B/= D) LEXP=0
+         ELSE
             LONE=1
             MP=E
             MQ=Z
             MV=B+1
             MU=C
             IF(ISPEC(MP,MQ,MV,MU,LONE)/= 3)LEXP=0
-            GO TO 3250
-3260        IF(E>Z-1)GO TO 3261
-               IF(O(B)/= O(E))LEXP=0
-               B=B+1
-               E=E+1
-            GO TO 3260
-3261        CONTINUE
-            IF(B/= D) LEXP=0
-3250     CONTINUE
+         END IF
          IF(O(D)==89) LEXP=1-LEXP
          GO TO 99999
 3230  CONTINUE
