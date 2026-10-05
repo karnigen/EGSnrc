@@ -166,13 +166,13 @@ C
 20    CALL COUT
       CALL EXPAND(A)
 30    IF (O_S<=O_U) GO TO 50
-         IF (O(23)<=0) GO TO 70
-            CALL EXPAND(-1)
-            GO TO 30
-70       CONTINUE
-         O_S=525371
-         O_U=O_S-1
-         GO TO 10
+      IF (O(23)>0) THEN
+         CALL EXPAND(-1)
+         GO TO 30
+      END IF
+      O_S=525371
+      O_U=O_S-1
+      GO TO 10
 50    CONTINUE
       O_M=O(32)+O(O_S)
 80    IF(O(O_M)==0)GO TO 90
