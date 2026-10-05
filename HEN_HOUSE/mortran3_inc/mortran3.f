@@ -1681,10 +1681,10 @@ C________________________________________
          J=LLONG(170,O(11),10,0)
          IF (O(53)==0) THEN
             W=174
-            DO 4031 K = 1,MXN
+            DO K = 1,MXN
                W=W+1
                O(W)=O(456+K)
-4031        CONTINUE
+            END DO
             CALL RW(18,O(56),157,W)
          ELSE
             I=MOD(MAX0(O(53)*O(11),0),90)
