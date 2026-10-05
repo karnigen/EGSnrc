@@ -2514,9 +2514,9 @@ C________________________________________
          if( verbose ) write(6,*) 'OK'
          call exit(0) !stop 0
 5200  CONTINUE
-      DO 5211 K = 7,600000
+      DO K = 7,600000
          O(K)=0
-5211  CONTINUE
+      END DO
       O(9)=O_B
       O(56)=O_E
       O(57)=O_R
