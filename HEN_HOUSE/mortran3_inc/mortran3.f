@@ -425,7 +425,7 @@ C
       GO TO 620
 621   CONTINUE
       GO TO 30
-90    IF (O(23)<=0) GO TO 910
+90    IF (O(23)>0) THEN
          O_X=O_X+1
          IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
          O(O_X)=O(O_S)
@@ -440,7 +440,7 @@ C
             END DO
          END IF
          GO TO 30
-910   CONTINUE
+      END IF
 950   CONTINUE
          IF (O(O_S)/= O(79)) GO TO 970
             IF (O_W>=IW) O_W=LINF (IW,O_W,15)
