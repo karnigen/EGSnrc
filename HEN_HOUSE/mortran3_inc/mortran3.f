@@ -1698,10 +1698,10 @@ C________________________________________
             END DO
             DO
                W=175
-               DO 4071 Y = 1,I
+               DO Y = 1,I
                   O(W)=O(76)
                   W=W+1
-4071           CONTINUE
+               END DO
                DO WHILE(W<=288.AND.L<=M)
                   O(W)=O(L)
                   W=W+1
