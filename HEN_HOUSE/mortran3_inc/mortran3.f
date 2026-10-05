@@ -1172,9 +1172,9 @@ C      D-LINK PAT         CAT PTR   MARK PAT
          O(34)=O(34)+NEED
          A=O(S-2*(3)-2)
          K=L(3)
-         DO 2831 J = 1,K
+         DO J = 1,K
             O(O(34)-J)=O(A-J)
-2831     CONTINUE
+         END DO
          IF(O(13)>0)CALL MACTRC(12,0,S)
          GO TO 99999
 2680  CONTINUE
