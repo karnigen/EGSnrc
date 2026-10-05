@@ -512,7 +512,7 @@ CADEFGHIJKLRSXYZ
             O(45)=O(45)+1
             O(O(45))=NP
             IF(O(45)>2204)CALL MESAGE(15, 19, 0,0)
-            GO TO 1130
+            GO TO 1070
          END IF
             IF (O(P)>=O(106)) THEN
                CALL MESAGE(14, 19, P,Q+11)
@@ -598,8 +598,6 @@ CADEFGHIJKLRSXYZ
             END SELECT
 1300        IF(M==1)GO TO 1070
             IF(O(P)/= O(101) .AND. O(P)/= O(104))GO TO 90
-            GO TO 1130
-1130     CONTINUE
       GO TO 1070
 1071  CONTINUE
             IF (O(45)/=2155) THEN
