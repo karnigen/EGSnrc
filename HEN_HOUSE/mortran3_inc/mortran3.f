@@ -493,7 +493,7 @@ C__________________________________________
       O(45)=2155
 CADEFGHIJKLRSXYZ
       O(46)=2205
-1070  IF(P>=Q)GO TO 1071
+1070  IF(P<Q) THEN
          IF (O(V)==O(76)) THEN
             IF (V==T) THEN
                V=V+1
@@ -599,7 +599,7 @@ CADEFGHIJKLRSXYZ
 1300        IF(M==1)GO TO 1070
             IF(O(P)/= O(101) .AND. O(P)/= O(104))GO TO 90
       GO TO 1070
-1071  CONTINUE
+         END IF
             IF (O(45)/=2155) THEN
          P=O(O(45))
          O(45)=O(45)-1
