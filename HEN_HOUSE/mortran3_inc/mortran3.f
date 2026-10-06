@@ -1285,46 +1285,43 @@
       X=0
 !BCDEFGHIJKLMNQRUVWY
       T=Z
- 2940 IF(T<A)GO TO 2941
-         IF (O(T)/= O(95)) GO TO 2960
-            IF (O(T-1)/= O(94)) GO TO 2980
+      DO WHILE (T>=A)
+         IF (O(T)==O(95)) THEN
+            IF (O(T-1)==O(94)) THEN
                S(X+1)=T+1
                S(X+2)=O(T)
                X=X+2
                T=T-1
-               GO TO 2970
- 2980          S(X+1)= T+1
+            ELSE
+               S(X+1)=T+1
                X=X+1
- 2990          IF(O(T)==O(107).AND.O(T+1)==25)GO TO 2991
+               DO
+                  IF(O(T)==O(107).AND.O(T+1)==25)EXIT
                   T=T-1
                   IF(T<A)RETURN
-               GO TO 2990
- 2991          CONTINUE
+               END DO
                P=T+6
-               O(P-1)= S(X)-P
+               O(P-1)=S(X)-P
                X=X-1
-               IF (S(X)/= O(95)) GO TO 3010
+               IF (S(X)==O(95)) THEN
                   O(P-4)= S(X-2)-P
                   O(P-3)= S(X-1)-P
                   O(P-2)= O(P-3)-2
                   X=X-3
-                  GO TO 3000
- 3010             O(P-2)=S(X)-P
+               ELSE
+                  O(P-2)=S(X)-P
                   O(P-3)=S(X)-P
                   O(P-4)=S(X)-P
                   X=X-1
- 3000          CONTINUE
- 2970       CONTINUE
-            GO TO 2950
- 2960       IF  (O(T)/= O(94))GO TO 3020
-            S(X+1)= T
+               END IF
+            END IF
+         ELSE IF (O(T)==O(94)) THEN
+            S(X+1)=T
             X=X+1
- 2950    CONTINUE
- 3020    CONTINUE
+         END IF
          T=T-1
-      GO TO 2940
- 2941 CONTINUE
- RETURN
+      END DO
+      RETURN
       END
 !_______________________________________________________________________
 !__________________________________________
