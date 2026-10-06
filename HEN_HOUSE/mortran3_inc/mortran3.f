@@ -138,10 +138,10 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer O_C,O_MXC,O_M
       integer iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
-      &        ire,nb,kx,y,nerd
+              ire,nb,kx,y,nerd
       integer ispec,linf
       EQUIVALENCE(O(12),O_C),(O(43),O_MXC),(O(22),O_M)
 !
@@ -149,7 +149,7 @@
       integer      oflag
 
       save    iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
-      &        ire,nb,kx,y,nerd
+              ire,nb,kx,y,nerd
 
       call open_units
 
@@ -482,7 +482,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer mini
       integer c,m,b,v,iq,i,np,jmp,n,nul,w
       save    c,m,b,v,iq,i,np,jmp,n,nul,w
@@ -638,7 +638,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,l,v,p,q
       save    m,l,v,p,q
       MINI=0
@@ -680,7 +680,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer lexp,llong
       integer kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
       DATA KGN/0/
@@ -901,7 +901,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer l,m
       EQUIVALENCE (O(47),L),(O(48),M)
       integer llong,nib
@@ -1058,7 +1058,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer linf
       integer t,nerd
       save    t,nerd
@@ -1083,7 +1083,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
 !GHQUVWXYZ
       integer   l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       logical found
@@ -1271,7 +1271,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   s,x,t,p
       DIMENSION S(200)
       save      s,x,t,p
@@ -1327,7 +1327,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,n,d,p,s,c,i
       save    m,n,d,p,s,c,i
       IF (O(35)/=0) THEN
@@ -1383,7 +1383,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,n
       save    m,n
       M=1
@@ -1415,7 +1415,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer n,l,i,j,k
       save    n,l,i,j,k
       IF(O(68)/= 0)RETURN
@@ -1456,7 +1456,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   p,n
       DIMENSION P(100)
 !FGHIJKLMQRSUVWY
@@ -1570,7 +1570,7 @@
             END IF
             IF(P(X)==0)EXIT
             IF(X<10.OR.X>O(81) .OR. (X==O(81).AND.O(20)==0)) &
-         &      EXIT
+               EXIT
             IF (P(X)/100>P(O(N-1))/100 .OR. X==O(80)) THEN
                O(20)=0
                O(49)=O(49)+1
@@ -1677,7 +1677,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer mxr,mxt,mxn
       EQUIVALENCE(O(38),MXR),(O(36),MXT),(O(37),MXN)
       integer llong,linf
@@ -1826,7 +1826,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer n5
       integer jmp,i
       save    jmp,i
@@ -1886,7 +1886,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer nib
       integer j
       save    j
@@ -1908,7 +1908,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer k,m,t,n
       save    k,m,t,n
       IF (O(23)>0.AND.O(29)<3.AND.W/= 4)RETURN
@@ -1977,7 +1977,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,c
       save    b,c
             B=A
@@ -2007,7 +2007,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common/junk/ verbose
       logical verbose
       IF(LEVEL==14 .OR. LEVEL==15)O(63)=O(63)+1
@@ -2056,7 +2056,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer llong
       integer a,c,q,r,s,nerd,k
       save    a,c,q,r,s,nerd,k
@@ -2101,7 +2101,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer llong
       integer last,kur,kit,kut,kst,h,b,i,j,npl,d,koff,c,limc,k
 !     LINF modes: packed comments and rule diagnostics.
@@ -2113,7 +2113,7 @@
 !CEFGLMNPQRS UVWXY
       O(62)=0
       IF (IND==linf_comment_mode .AND. (O(25)==0.OR.O(10)==1 &
-      & .OR.O(96)==O(A)))RETURN
+       .OR.O(96)==O(A)))RETURN
       KST=0
       H=0
       B=A
@@ -2223,7 +2223,7 @@
             END IF
          END DO
       IF (I<=246.OR.IND/= linf_rule_diagnostic_mode &
-      &    .OR.KST/= 0) GO TO 5030
+          .OR.KST/= 0) GO TO 5030
  5040       IF(O(I-1)>=38.OR.KST<=0)GO TO 5041
                B=B-1
                I=I-1
@@ -2266,7 +2266,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       O( L )=A
       O(L+1)=B
       O(L+2)=C
@@ -2291,7 +2291,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
 !  IN RW
 !
       common/nrcc/ oflag
@@ -2303,7 +2303,7 @@
       character tmp_string*8, tmp1_string*6, f_buffer(8192)
       equivalence (ch,tmp_string)
       data nn6,nn7,nfl/0,0,0/, &
-      &     skip_input/.false./, is_format/.false./, is_quote/.false./
+           skip_input/.false./, is_format/.false./, is_quote/.false./
       data nformat/0/
       save nn6,nn7,hc,ch,nformat,nfl
       save nr,m,kof,l,nrr,skip_input,is_format,is_quote
@@ -2549,7 +2549,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common /junk/ verbose
       logical verbose
       integer kount,k,iuni
@@ -2622,7 +2622,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   p
       DIMENSION P(100)
       EQUIVALENCE(O(2555),P(1))
@@ -2695,7 +2695,7 @@
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
       equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
-      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+                  (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common/nrcc/ oflag
       integer      oflag
       common/junk/verbose
@@ -2748,49 +2748,49 @@
       call getarg(1,arg)
       if( arg(1:)=='-help' ) then
         write(6,'(/a/,a/)') &
-      & 'Mortran version 3.2 by Ray F. Cowan with modifications by ', &
-      & 'Dave Rogers, Alex Bielajew and Iwan Kawrakow'
+       'Mortran version 3.2 by Ray F. Cowan with modifications by ', &
+       'Dave Rogers, Alex Bielajew and Iwan Kawrakow'
         write(6,'(/a/)') 'Usage: mortran3.exe [ options ]'
         write(6,'(a)') &
-      & ' If no options are given, mortran3 will attempt to use the ', &
-      & ' following units (fort.*) files:', &
-      & '   1:  Read raw or hex mortran data ', &
-      & '   5:  Read mortran job file ', &
-      & '   7:  Write hex data (if data creation) or fortran output', &
-      & '   8:  Write listing (useful for debuging)'
+       ' If no options are given, mortran3 will attempt to use the ', &
+       ' following units (fort.*) files:', &
+       '   1:  Read raw or hex mortran data ', &
+       '   5:  Read mortran job file ', &
+       '   7:  Write hex data (if data creation) or fortran output', &
+       '   8:  Write listing (useful for debuging)'
         write(6,'(a)') &
-      & ' Symbolik links to the raw or hex data and to the mortran job', &
-      & ' file must therefore have been made prior to invoking the ', &
-      & ' mortran3 command. It is also useful to link unit 7 and 8 to ', &
-      & ' the Desired fortran and listing output files. '
+       ' Symbolik links to the raw or hex data and to the mortran job', &
+       ' file must therefore have been made prior to invoking the ', &
+       ' mortran3 command. It is also useful to link unit 7 and 8 to ', &
+       ' the Desired fortran and listing output files. '
         write(6,'(a)') &
-      & ' Note that the concept of symbolik links does not exist under', &
-      & ' Windows and so, one has to either copy the input files to ', &
-      & ' fort.1 and fort.5 or to use mortran3 with the options ', &
-      & ' described below.'
+       ' Note that the concept of symbolik links does not exist under', &
+       ' Windows and so, one has to either copy the input files to ', &
+       ' fort.1 and fort.5 or to use mortran3 with the options ', &
+       ' described below.'
         write(6,*)
         write(6,'(a)') &
-      & ' The current version recognizes the following options:', &
-      & '   -d file_name  use file name as the name of the raw or hex', &
-      & '                 data file', &
-      & '   -c file_name  use file name as the name of a configuration', &
-      & '                 file. This file must contain file names, one', &
-      & '                 per line, that will be concatenated in the ', &
-      & '                 order given and the result will be used as a', &
-      & '                 mortran job input.', &
-      & '   -f f1 f2 ...  similar as the -c option, but now the files ', &
-      & '                 to be concatenated are given directly on the ', &
-      & '                 command line as f1 f2 etc.'
+       ' The current version recognizes the following options:', &
+       '   -d file_name  use file name as the name of the raw or hex', &
+       '                 data file', &
+       '   -c file_name  use file name as the name of a configuration', &
+       '                 file. This file must contain file names, one', &
+       '                 per line, that will be concatenated in the ', &
+       '                 order given and the result will be used as a', &
+       '                 mortran job input.', &
+       '   -f f1 f2 ...  similar as the -c option, but now the files ', &
+       '                 to be concatenated are given directly on the ', &
+       '                 command line as f1 f2 etc.'
         write(6,'(a)') &
-      & '   -o7 fname     write mortran3 output to the file fname', &
-      & '                 this is either the hex data file in the ', &
-      & '                 case of hex data generation or the fortran ', &
-      & '                 result of the mortran compilation.', &
-      & '   -o8 fname     write listing output to the file fname', &
-      & '   -help         print this message and exit', &
-      & '   -s            make the pre-processor run silently', &
-      & '   -i            ignore missing files specified via -c or -f', &
-      & '                 instead of aborting, as in the case without -i'
+       '   -o7 fname     write mortran3 output to the file fname', &
+       '                 this is either the hex data file in the ', &
+       '                 case of hex data generation or the fortran ', &
+       '                 result of the mortran compilation.', &
+       '   -o8 fname     write listing output to the file fname', &
+       '   -help         print this message and exit', &
+       '   -s            make the pre-processor run silently', &
+       '   -i            ignore missing files specified via -c or -f', &
+       '                 instead of aborting, as in the case without -i'
         write(6,'(//)')
         call exit(0) !stop 0
       end if
@@ -2875,17 +2875,17 @@
               inquire(file=next_file,exist=is_there)
               if( is_there ) then
                 if( verbose ) write(6,'(a,a)') '  -> appending ', &
-      &                        next_file(1:lnblnk1(next_file))
+                              next_file(1:lnblnk1(next_file))
                 call add_file(12,next_file)
               else
                 if( ignore_missing ) then
                   if( verbose ) write(6,'(a,a,a)') '  file "', &
-      &              next_file(1:lnblnk1(next_file)), &
-      &              '" does not exist. Ignoring it.'
+                    next_file(1:lnblnk1(next_file)), &
+                    '" does not exist. Ignoring it.'
                 else
                   write(6,'(a,a,a)') '  file "', &
-      &              next_file(1:lnblnk1(next_file)), &
-      &              '" does not exist. Quiting now.'
+                    next_file(1:lnblnk1(next_file)), &
+                    '" does not exist. Quiting now.'
                   call exit(99) !stop 99
                 end if
               end if
@@ -2904,7 +2904,7 @@
             call getarg(nfs,next_file)
             if( verbose ) then
             write(6,'(a,a)') '  command line file: ', &
-      &         next_file(1:lnblnk1(next_file))
+               next_file(1:lnblnk1(next_file))
             end if
             open(5,file=next_file,status='old',err=101)
           else
@@ -2918,17 +2918,17 @@
               inquire(file=next_file,exist=is_there)
               if( is_there ) then
                 if( verbose ) write(6,'(a,a)') '  -> appending ', &
-      &                        next_file(1:lnblnk1(next_file))
+                              next_file(1:lnblnk1(next_file))
                 call add_file(12,next_file)
               else
                 if( ignore_missing ) then
                   if( verbose ) write(6,'(a,a,a)') '  file "', &
-      &              next_file(1:lnblnk1(next_file)), &
-      &              '" does not exist. Ignoring it.'
+                    next_file(1:lnblnk1(next_file)), &
+                    '" does not exist. Ignoring it.'
                 else
                   write(6,'(a,a,a)') '  file "', &
-      &              next_file(1:lnblnk1(next_file)), &
-      &              '" does not exist. Quiting now.'
+                    next_file(1:lnblnk1(next_file)), &
+                    '" does not exist. Quiting now.'
                   call exit(99) !stop 99
                 end if
               end if
@@ -2944,7 +2944,7 @@
       if( no7>0 ) then
         call getarg(no7,arg)
         if( verbose ) write(6,'(a,a)') '  fortran output: ', &
-      &      arg(1:lnblnk1(arg))
+            arg(1:lnblnk1(arg))
         open(7,file=arg(1:lnblnk1(arg)))
       else
         if( verbose ) write(6,'(a)') '  fortran output: fort.7'
@@ -2953,7 +2953,7 @@
       if( no8>0 ) then
         call getarg(no8,arg)
         if( verbose )write(6,'(a,a)') '  mortlst output: ', &
-      &      arg(1:lnblnk1(arg))
+            arg(1:lnblnk1(arg))
         open(8,file=arg(1:lnblnk1(arg)),err=101)
       else
         if( verbose )write(6,'(a)') '  mortlst output: fort.8'
@@ -2983,8 +2983,8 @@
         lineno = lineno + 1
         if( lnblnk1(line)>80 ) then
           write(6,'(a,i5,a,a,a)') &
-      &      '*** Warning: line ',lineno,' in file ', &
-      &     the_file(1:lnblnk1(the_file)),' is longer than 80 chars!'
+            '*** Warning: line ',lineno,' in file ', &
+           the_file(1:lnblnk1(the_file)),' is longer than 80 chars!'
         end if
         ! remove tabs
         do j=1,lnblnk1(line)
@@ -3004,7 +3004,7 @@
 
  100 continue
       write(6,'(a,a)') 'add_file: could not open file ', &
-      &  the_file(1:lnblnk1(the_file))
+        the_file(1:lnblnk1(the_file))
       call exit(4) !stop 4
       end
 
