@@ -732,13 +732,13 @@ CCDGHILM
          IF( O(23)==0 )O_X=O_W
 1430  CONTINUE
 1580  CONTINUE
-1590     IF(O_B>=O_E)GO TO 1591
+      DO WHILE (O_B<O_E)
          IF (O(O_B)<O(107)) THEN
                O_X=O_X+1
                IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                O(O_X)=O(O_B)
                O_B=O_B+1
-               GO TO 1590
+               CYCLE
          END IF
             O_B=O_B+1
             JMP=O(O_B-1)-O(106)
@@ -762,7 +762,7 @@ CCDGHILM
                   IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                   O(O_X)=O(A)
                   A=A+1
-               END DO
+                  END DO
                GO TO 1690
             ELSE
             CALL MESAGE(15, 4, O_B,O_E)
@@ -796,7 +796,7 @@ CCDGHILM
                O_X=O_X+LLONG(O_X,O(O_S-2*(O(O_B))-2)-O(O_S-2*(O(O_B))-1),10,0)
                IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                O_B=O_B+2
-               GO TO 1590
+               CYCLE
             ELSE IF (O(O_B)==13) THEN
                O_B=O_B+1
                T=1
@@ -836,7 +836,7 @@ CCDGHILM
                O(O_S)=O(96)
                O(KRAP)=O_X-KRAP-1
                KRAP=0
-               GO TO 1590
+               CYCLE
             END IF
             DO K = 1,6
                O(O(40)-K)=O(K)
@@ -849,10 +849,10 @@ CCDGHILM
             IF((9<Y).AND.(Y<15))Y=O(31)
             IF( 0>Y.OR.Y>=8 )CALL MESAGE(15, 17, O_B,O_E)
             O(32)=Y*120+1145
-            GO TO 1591
+            EXIT
 1690        O_B=O_B+1
-         GO TO 1590
-1591     CONTINUE
+         CYCLE
+      END DO
          IF (O(23)<=0) THEN
             IF (O(44)==2105) THEN
                IF (O_R>0) THEN
