@@ -2534,7 +2534,7 @@
       logical verbose
       integer kount,k,iuni
       save    kount,k,iuni,count
-      IF (IND/= 2) GO TO 5200
+      IF (IND==2) THEN
          O(59)=1
          O(19)=5
          KOUNT=O(34)+1
@@ -2545,7 +2545,7 @@
  2    FORMAT(A1)
          if( verbose ) write(6,*) 'OK'
          call exit(0) !stop 0
- 5200 CONTINUE
+         END IF
       DO K = 7,600000
          O(K)=0
       END DO
@@ -2557,7 +2557,9 @@
       O(16)=O_U
       READ(IUNI,2)COUNT
       REWIND IUNI
-      IF (COUNT=='C') GO TO 5230
+      IF (COUNT=='C') THEN
+         CALL RAW()
+      ELSE
          READ (IUNI,1) KOUNT,(O(K),K=1,KOUNT)
 !
 !     The following line
@@ -2573,9 +2575,7 @@
          CALL RW(23,O(57),325+3,325+79)
          CALL RW(23,O(56),325+2,325+79)
          REWIND IUNI
-         GO TO 5220
- 5230    CALL RAW()
- 5220 CONTINUE
+         END IF
       O(55)=O(76)
       O(40)=525371
       O(32)=1625
