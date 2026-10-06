@@ -1989,36 +1989,35 @@
       IF(LEVEL==14 .OR. LEVEL==15)O(63)=O(63)+1
       CALL FIND(LEVEL,NO,K1)
       IF(K2/= 0)CALL MACTRC(4,K1,K2)
-      IF (LEVEL/= 13) GO TO 4500
+            IF (LEVEL==13) THEN
          CALL FIND(13,2,O(60))
          CALL FIND(13,3,O(61))
- 4500 CONTINUE
-      IF (LEVEL>14) GO TO 4520
+            END IF
+            IF (LEVEL<=14) THEN
          IF(O(63)<100)RETURN
          CALL FIND(15,10,0)
- 4520 CONTINUE
-      IF (O(55)/= O(86).AND.O(55)/= O(87)) GO TO 4540
+            END IF
+            IF (O(55)==O(86) .OR. O(55)==O(87)) THEN
          O(63)=O(63)+1
          IF(O(55)==O(86)) CALL FIND(16,5,0)
          IF(O(55)==O(87))CALL FIND(16,4,0)
- 4540 CONTINUE
+            END IF
       IF(O(47)>2255.OR.O(48)>2305)O(63)=O(63)+1
-      IF (O(48)<=2305) GO TO 4560
+            IF (O(48)>2305) THEN
          CALL FIND(16,3,O(48)-2305)
- 4560 CONTINUE
- 4570 IF(O(47)<=2255)GO TO 4571
+            END IF
+            DO WHILE (O(47)>2255)
          CALL FIND(16,2,O(O(47)))
          O(47)=O(47)-1
-      GO TO 4570
- 4571 CONTINUE
+            END DO
       CALL FIND(13,3,O(61))
-      IF (O(63)/= 0) GO TO 4590
+            IF (O(63)==0) THEN
          CALL FIND(16,6,0)
-         GO TO 4580
- 4590    CALL FIND(16,7,O(63))
+            ELSE
+          CALL FIND(16,7,O(63))
          write(6,*) 'compilation error (stop 12)'
          call exit(12) !stop 12
- 4580 CONTINUE
+            END IF
       IF (O(59)==0)CALL INITAL(2)
       if( verbose ) write(6,*) 'OK'
       call exit(0) !stop 0
