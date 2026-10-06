@@ -853,27 +853,28 @@ CCDGHILM
 1690        O_B=O_B+1
          GO TO 1590
 1591     CONTINUE
-         IF(O(23)>0)GO TO 1581
-         IF (.NOT.((O(44)==2105))) GO TO 1930
-            IF(O_R<=0)GO TO 1581
-            O_B=O_R+4
-            O_E=O(O_R+3)
-            O_R=O(O_R)
-            GO TO 1920
-1930        O_E=O(O(44))
-            O(44)=O(44)-1
-            O_B=O(O(44))
-            O(44)=O(44)-1
-1920     CONTINUE
-      GO TO 1580
-1581  CONTINUE
+         IF (O(23)<=0) THEN
+            IF (O(44)==2105) THEN
+               IF (O_R>0) THEN
+                  O_B=O_R+4
+                  O_E=O(O_R+3)
+                  O_R=O(O_R)
+                  GO TO 1580
+               END IF
+            ELSE
+               O_E=O(O(44))
+               O(44)=O(44)-1
+               O_B=O(O(44))
+               O(44)=O(44)-1
+               GO TO 1580
+            END IF
+         END IF
       IF(O(29)>=2) CALL MACTRC(33,O_W,O_X)
-1940  IF(O_X<=O_W)GO TO 1941
+      DO WHILE (O_X>O_W)
          O_V=O_V-1
          O(O_V)=O(O_X)
          O_X=O_X-1
-      GO TO 1940
-1941  CONTINUE
+      END DO
       O_S=O_V
 99999 RETURN
       END
