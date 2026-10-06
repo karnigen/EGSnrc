@@ -161,7 +161,7 @@
       o_v=100
       o_u=1000
       call inital(1)
-      iw=450741
+      iw=ox_mnxbf_base
       o_x=o_w
       go to 10
  30 if (o_s>o_u) then
@@ -169,7 +169,7 @@
             call expand(-1)
             go to 30
          end if
-         o_s=525371
+         o_s=ox_home_base
          o_u=o_s-1
          go to 10
       end if
@@ -196,7 +196,7 @@
          end if
          if (mq/= 0) go to 140
             if (o(d)==o(ox_lcb)) then
-               if (o(d+1)<=100.and.o(ox_base)>1505) then
+               if (o(d+1)<=100.and.o(ox_base)>ox_ct3_base) then
                   o(o_s-2*(a+1)-1)=o_v
                   o(o_s-2*(a+1)-2)=o_v
                   d=d+1
@@ -329,7 +329,7 @@
       end do token_scan
       if(o(ox_frt)==1)cycle macro_scan
       if (o_s==o_u) then
-         o_s=525371
+         o_s=ox_home_base
          o(o_s)=o(o_u)
          o_u=o_s
       end if
@@ -433,7 +433,7 @@
          if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
          o(o_x)=o(o_s)
          o_s=o_s+1
-         if (o(o_x)==o(ox_lns).and.o(ox_base)/=1265) then
+         if (o(o_x)==o(ox_lns).and.o(ox_base)/=ox_ct1_base) then
             do
                o_x=o_x+1
                if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
@@ -492,9 +492,9 @@
       m=0
       b=0
       v=iv
-      o(ox_jsk)=2155
+      o(ox_jsk)=ox_jsk_base
 !ADEFGHIJKLRSXYZ
-      o(ox_ksk)=2205
+      o(ox_ksk)=ox_ksk_base
          ispec_scan: do
       if(p<q) then
          if (o(v)==o(ox_bla)) then
@@ -567,7 +567,7 @@
                end if
                if(c>=o(p-2))m=1
                if( m==0 ) v=o(o(ox_ksk)-1)
-               if (o(ox_ksk)==2205) then
+               if (o(ox_ksk)==ox_ksk_base) then
                   call mesage(14, 17, 0,0)
                   ispec=2
                   return
@@ -617,7 +617,7 @@
             end if
          cycle ispec_scan
          end if
-            if (o(ox_jsk)/=2155) then
+            if (o(ox_jsk)/=ox_jsk_base) then
          p=o(o(ox_jsk))
          o(ox_jsk)=o(ox_jsk)-1
          q=o(o(ox_jsk))
@@ -735,7 +735,7 @@
          o(ox_ysk)=o(ox_ysk)-1
          go to 1430
  1440    o(o_s-1)=f
-         o(ox_mxx) = o_s-2*f-3
+         o(ox_mxx)=o_s-2*f-3
          o_r=o(o(ox_mcom)+2)
          o_b=o_r+4
          o_e=o(o_r+3)
@@ -800,8 +800,8 @@
                   if(kgn<=0)o(ox_ngn)=0
                   end if
                if (o(ox_geo)/=0) then
-                  if(o(ox_ngn)==0)o(ox_base)=1625
-                  if(o(ox_ngn)/= 0)o(ox_base)=1145
+                  if(o(ox_ngn)==0)o(ox_base)=ox_ct4_base
+                  if(o(ox_ngn)/= 0)o(ox_base)=ox_ct0_base
                end if
             else
             if(o(ox_ngn)==0)call kat
@@ -865,13 +865,13 @@
             if(o(z+2)==o(ox_lq))y=0
             if((9<y).and.(y<15))y=o(ox_dflt)
             if( 0>y.or.y>=8 )call mesage(15, 17, o_b,o_e)
-            o(ox_base)=y*120+1145
+            o(ox_base)=y*120+ox_ct0_base
             exit
  1690       o_b=o_b+1
          cycle
       end do
          if (o(ox_nest)<=0) then
-            if (o(ox_isk)==2105) then
+            if (o(ox_isk)==ox_isk_base) then
                if (o_r>0) then
                   o_b=o_r+4
                   o_e=o(o_r+3)
@@ -948,7 +948,7 @@
             o_b=o_b+1
             if(o(o_b)==1)o(l-1)=o(l)
             l=l-1
-            if (l<2255) then
+            if (l<ox_lsk_base) then
                call mesage(14, 7, 0,0)
                l=l+1
             end if
@@ -974,7 +974,7 @@
             o_x=o_x+1
             o(o_x)=o(m)
             m=m-1
-            if (m<2305) then
+            if (m<ox_msk_base) then
                call mesage(14, 8, 0,0)
                m=m+1
             end if
@@ -1155,9 +1155,9 @@
          b=o(s-2*(1)-1)
          e=o(s-2*(1)-2)
          if (o(ox_typ)==14) then
-            m=1505+o(b)
+            m=ox_ct3_base+o(b)
          else
-            m=1625+o(b)
+            m=ox_ct4_base+o(b)
          end if
          found=.false.
          define_lookup: do
@@ -1197,7 +1197,7 @@
                return
             end if
             need=4+l(3)
-            if(need>450740-o(ox_free)) call krunc(need)
+            if(need>ox_mnxbf_base-1-o(ox_free)) call krunc(need)
             c=o(m+2)
             do while (o(c)/=0)
                c=o(c)
@@ -1218,7 +1218,7 @@
          end if
       end if
       need=l(1)+l(3)+2*4
-      if (need>450740-o(ox_free)) call krunc(2+need)
+      if (need>ox_mnxbf_base-1-o(ox_free)) call krunc(2+need)
       a=o(s-2*(1)-1)
       z=a+l(1)-1
       p=o(ox_free)
@@ -1241,7 +1241,7 @@
          call mesage(14, 12, o(s-2*(1)-1),o(s-2*(1)-2))
          return
       end if
-      i=o(i) + 1145 + o(ox_typ)*120
+      i=o(i)+ox_ct0_base + o(ox_typ)*120
       o(p)=o(i)
       if(o(p)/= 0)o((o(p))+1)=p
       o(p+1)=i
@@ -1264,8 +1264,8 @@
       end if
       if (o(ox_mdef)>0) call mactrc(15,p,r)
       o(ox_free)= p +need
-      o(ox_locs)=450740-o(ox_free)
-      o(ox_left)=(100*o(ox_locs))/(450740-2655)
+      o(ox_locs)=ox_mnxbf_base-1-o(ox_free)
+      o(ox_left)=(100*o(ox_locs))/(ox_mnxbf_base-1-ox_mbf_base)
  return
       end subroutine define
 !_______________________________________________________________________
@@ -1350,7 +1350,7 @@
             m=o(m+3)
          end do
       end if
-      n=2655
+      n=ox_mbf_base
       m=o(n+3)
       d=0
 ! PREDECESSOR  SUCCESSOR    CONCAT
@@ -1377,8 +1377,8 @@
       o(ox_free)=o(ox_free)-d
       o(o(ox_free))=0
       if (r>d)call mesage(15, 6, 0,0)
-      o(ox_locs)=450740-o(ox_free)
-      o(ox_left)=(100*o(ox_locs))/(450740-2655)
+      o(ox_locs)=ox_mnxbf_base-1-o(ox_free)
+      o(ox_left)=(100*o(ox_locs))/(ox_mnxbf_base-1-ox_mbf_base)
       call mesage(13,1,d,0)
        return
       end subroutine krunc
@@ -1472,7 +1472,7 @@
       integer   p,n
       dimension p(100)
 !FGHIJKLMQRSUVWY
-      equivalence(o(ox_nsk),n),( o(2555),p(1) )
+      equivalence(o(ox_nsk),n),( o(ox_pjt_base),p(1) )
       integer ispec
       integer b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
       save    b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
@@ -1511,7 +1511,7 @@
          end if
       lexp=0
       o(ox_nflg)=0
-      n=2355
+      n=ox_nsk_base
       mnn=n+2
       o(n-1)=38
       o(n)=0
@@ -1699,7 +1699,7 @@
       o(ox_mcnt)=0
       if(o(ox_eof)==2) call mesage(16,1,0,0)
       do
-      call rw(0,o(ox_unit),325,mxr)
+      call rw(0,o(ox_unit),ox_rbf_base,mxr)
       if (o(ox_eof)==1) then
          o(ox_eof)=0
          o(ox_unit)=o(o(ox_usk))
@@ -1712,56 +1712,56 @@
             return
          end if
       end if
-      do k= 325,mxr
-         o(k+132)=o(889+o(k))
+      do k=ox_rbf_base,mxr
+         o(k+132)=o(ox_trt_base+o(k))
       end do
       o(ox_seqn)=o(ox_seqn)+1
-      o(ox_crs)=457
-      o(157)=o(ox_bla)
-      if (o(457) == 93) then
-         if (o(458)==14) then
-            o(157)=1
-            o(325)=o(689+o(ox_bla))
-            o(325+1)=o(325)
-            o(ox_crs)=458+1
-         else if (o(458)==93) then
+      o(ox_crs)=ox_tbf_base
+      o(ox_gbf_base)=o(ox_bla)
+      if (o(ox_tbf_base) == 93) then
+         if (o(ox_t2_base)==14) then
+            o(ox_gbf_base)=1
+            o(ox_rbf_base)=o(ox_oset_base+o(ox_bla))
+            o(ox_rbf_base+1)=o(ox_rbf_base)
+            o(ox_crs)=ox_t2_base+1
+         else if (o(ox_t2_base)==93) then
                o(ox_eof)=1
                o(ox_frt)=1
-         else if (o(458)>=10.and.o(458)<=30) then
-               call cccard(o(458)-9)
+         else if (o(ox_t2_base)>=10.and.o(ox_t2_base)<=30) then
+               call cccard(o(ox_t2_base)-9)
                o(ox_crs)=o(ox_sigt)
                o(o(ox_crs))=o(ox_trm)
          end if
-         if (o(ox_eof)==1.or.o(458)==22.or.o(458)==15) then
+         if (o(ox_eof)==1.or.o(ox_t2_base)==22.or.o(ox_t2_base)==15) then
             o(ox_crs)=o(ox_sigt)
             o(o(ox_crs))=o(ox_trm)
             return
          end if
       end if
       if (o(ox_list)==1) then
-         do j = 158,174
+         do j=ox_g2_base,ox_w0_base
             o(j)=o(ox_bla)
          end do
          if (o(ox_seqf)==1) then
-            j=llong(158,o(ox_seqn),10,0)
+            j=llong(ox_g2_base,o(ox_seqn),10,0)
          else if (o(ox_seqf)==2) then
             do j = 1,8
-               o(157+j)=o(o(ox_sigt)+j)
+               o(ox_gbf_base+j)=o(o(ox_sigt)+j)
             end do
          end if
-         if(o(ox_ngn)/= 0)o(167)=33
-         o(169)=o(ox_qfl)
-         j=llong(170,o(ox_lvl),10,0)
+         if(o(ox_ngn)/= 0)o(ox_g11_base)=33
+         o(ox_g13_base)=o(ox_qfl)
+         j=llong(ox_g14_base,o(ox_lvl),10,0)
          if (o(ox_indm)==0) then
-            w=174
+            w=ox_w0_base
             do k = 1,mxn
                w=w+1
-               o(w)=o(456+k)
+               o(w)=o(ox_t0_base+k)
             end do
-            call rw(18,o(ox_mlst),157,w)
+            call rw(18,o(ox_mlst),ox_gbf_base,w)
          else
             i=mod(max0(o(ox_indm)*o(ox_lvl),0),90)
-            l=457
+            l=ox_tbf_base
             m=o(ox_sigt)
             do while(o(l)==o(ox_bla).and.l/=m)
                l=l+1
@@ -1770,7 +1770,7 @@
                m=m-1
             end do
             do
-               w=175
+               w=ox_wbf_base
                do y = 1,i
                   o(w)=o(ox_bla)
                   w=w+1
@@ -1780,23 +1780,23 @@
                   w=w+1
                   l=l+1
                end do
-               call rw(18,o(ox_mlst),157,w-1)
+               call rw(18,o(ox_mlst),ox_gbf_base,w-1)
                if(l>m)exit
-               do k = 157,175
+               do k=ox_gbf_base,ox_wbf_base
                   o(k)=o(ox_bla)
                end do
             end do
         end if
       end if
       if (o(ox_frt)==1) then
-         if (o(457)/= 93) call rw(23,o(ox_flst),325,404)
+         if (o(ox_tbf_base)/= 93) call rw(23,o(ox_flst),ox_rbf_base,ox_r8_base)
       else if (o(ox_ano)==1) then
-         nerd=linf(457,mxt,10)
+         nerd=linf(ox_tbf_base,mxt,10)
       end if
       if(o(ox_frt)==1)cycle
       if (o(ox_cset)<2) return
-      j=456
-      k=457
+      j=ox_t0_base
+      k=ox_tbf_base
       do while(k<=mxt)
          j=j+1
          o(j)=o(k)
@@ -1851,12 +1851,12 @@
          o(ox_ano)=n5(0,2,1)
       case (2)
          o(ox_nmx)=n5(0,132,132)
-         o(ox_rmx)=324+o(ox_nmx)
-         o(ox_tmx)=456+o(ox_nmx)
+         o(ox_rmx)=ox_r0_base+o(ox_nmx)
+         o(ox_tmx)=ox_t0_base+o(ox_nmx)
       case (3)
          o(ox_sign)=n5(10,132,132)
-         o(ox_sigt)=456+o(ox_sign)
-         o(ox_sigr)=324+o(ox_sign)
+         o(ox_sigt)=ox_t0_base+o(ox_sign)
+         o(ox_sigr)=ox_r0_base+o(ox_sign)
       case (4)
          o(ox_mdef)=n5(0,2,0)
       case (6)
@@ -1905,7 +1905,7 @@
       integer nib
       integer j
       save    j
-      j=457+4
+      j=ox_tbf_base+4
       n5=nib(j,10)
       if (.not.((l<=n5).and.(n5<=m))) then
          call mesage(14, 3, 0,0)
@@ -1930,52 +1930,52 @@
       if (o(ox_nest)>0.and.o(ox_mtrc)<3.and.w/= 4)return
       select case (w)
       case (2)
-         call dumdum(175,90,37,37,37,22,42,29,27,34,90)
-         o(175+4)=(o(ox_base)-1145)/120
+         call dumdum(ox_wbf_base,90,37,37,37,22,42,29,27,34,90)
+         o(ox_wbf_base+4)=(o(ox_base)-ox_ct0_base)/120
          call crit(r,s)
       case (4)
-         call dumdum(175,90,45,28,29,27,10,23,16,14,90)
+         call dumdum(ox_wbf_base,90,45,28,29,27,10,23,16,14,90)
          call crit(r,s)
       case (5)
-         call dumdum(175,90,37,10,16,10,18,23,28,29,90)
+         call dumdum(ox_wbf_base,90,37,10,16,10,18,23,28,29,90)
          call crit(r,s)
       end select
       select case (w)
       case (33)
          if (o(ox_nest)==0) then
-            call dumdum(175,90,90,27,14,13,30,12,14,13,90)
+            call dumdum(ox_wbf_base,90,90,27,14,13,30,12,14,13,90)
          else
-            call dumdum(175,90,90,90,90,90,23,14,28,29,90)
-            o(175+3)=o(ox_nest)
+            call dumdum(ox_wbf_base,90,90,90,90,90,23,14,28,29,90)
+            o(ox_wbf_base+3)=o(ox_nest)
          end if
          call crit(r+1,s+1)
       case (15)
-         call dumdum(175,90,90,13,14,15,18,23,14,13,90)
+         call dumdum(ox_wbf_base,90,90,13,14,15,18,23,14,13,90)
          call crit(r+4,o(r+3))
          if (r+4>=o(r+3)) then
-            call dumdum(175,90,23,30,21,21,90,31,10,21,90)
+            call dumdum(ox_wbf_base,90,23,30,21,21,90,31,10,21,90)
             call crit(s,s)
          else
-            call dumdum(175,90,90,90,90,31,10,21,30,14,90)
-            o(175+2)=o(ox_typ)
+            call dumdum(ox_wbf_base,90,90,90,90,31,10,21,30,14,90)
+            o(ox_wbf_base+2)=o(ox_typ)
             call crit(s+4,o(s+3))
          end if
       case (12)
-         call dumdum(175,90,10,25,25,14,23,13,14,13,90)
+         call dumdum(ox_wbf_base,90,10,25,25,14,23,13,14,13,90)
          call crit(o(s-2*(3)-1),o(s-2*(3)-2) )
-         call dumdum(175,90,90,90,90,90,90,90,29,24,90)
+         call dumdum(ox_wbf_base,90,90,90,90,90,90,90,29,24,90)
          call crit(o(s-2*(1)-1),o(s-2*(1)-2) )
       case (13)
-         call dumdum(175,90,90,27,14,22,24,31,14,13,90)
+         call dumdum(ox_wbf_base,90,90,27,14,22,24,31,14,13,90)
          call crit(o(s-2*(1)-1),o(s-2*(1)-2) )
       case (22)
          if(o(r+4)<0)return
-         call dumdum(175,90,90,22,10,29,12,17,14,13,90)
+         call dumdum(ox_wbf_base,90,90,22,10,29,12,17,14,13,90)
          call crit(r+4,o(r+3) )
          k=o(s-1)
          do m = 1,k
-            call dumdum(175,90,90,90,90,10,27,16,90,90,90)
-            o(175+8)=m
+            call dumdum(ox_wbf_base,90,90,90,90,10,27,16,90,90,90)
+            o(ox_wbf_base+8)=m
             t=o(s-2*(m)-1)
             n=o(s-2*(m)-2)
             if (t/= n) call crit(t,n)
@@ -1999,8 +1999,8 @@
       save    b,c
             b=a
             do while (b<z)
-         c=175+9
-          do while (c<246.and.b<z)
+         c=ox_wbf_base+9
+          do while (c<ox_w72_base.and.b<z)
             c=c+1
             o(c)=o(b)
             b=b+1
@@ -2009,8 +2009,8 @@
             if(o(c)==-1)o(c)=74
             if(o(c)==-2)o(c)=82
          end do
-         call rw(33,o(ox_mlst),175,c)
-         call dumdum(175,90,90,90,90,90,90,90,90,90,90)
+         call rw(33,o(ox_mlst),ox_wbf_base,c)
+         call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90)
       end do
       return
       end subroutine crit
@@ -2044,11 +2044,11 @@
          if(o(ox_qfl)==o(ox_bq)) call find(16,5,0)
          if(o(ox_qfl)==o(ox_dq))call find(16,4,0)
             end if
-      if(o(ox_lsk)>2255.or.o(ox_msk)>2305)o(ox_merr)=o(ox_merr)+1
-            if (o(ox_msk)>2305) then
-         call find(16,3,o(ox_msk)-2305)
+      if(o(ox_lsk)>ox_lsk_base.or.o(ox_msk)>ox_msk_base)o(ox_merr)=o(ox_merr)+1
+            if (o(ox_msk)>ox_msk_base) then
+         call find(16,3,o(ox_msk)-ox_msk_base)
             end if
-            do while (o(ox_lsk)>2255)
+            do while (o(ox_lsk)>ox_lsk_base)
          call find(16,2,o(o(ox_lsk)))
          o(ox_lsk)=o(ox_lsk)-1
             end do
@@ -2079,9 +2079,9 @@
       integer llong
       integer a,c,q,r,s,nerd,k
       save    a,c,q,r,s,nerd,k
-      a=175
+      a=ox_wbf_base
       c=a+9
-      q=1865+l
+      q=ox_ct6_base+l
  680 if (o(q)==0) go to 4610
          q=o(q)
          if(o(q+5)/= n)go to 680
@@ -2096,10 +2096,10 @@
          go to 4600
  4610    c=c+llong(c,n,10,0)
  4600 continue
-      if(l==15) call dumdum(175,90,45,45,45,15,10,29,10,21,90)
-      if(l==14) call dumdum(175,90,45,32,10,27,23,18,23,16,90)
+      if(l==15) call dumdum(ox_wbf_base,90,45,45,45,15,10,29,10,21,90)
+      if(l==14) call dumdum(ox_wbf_base,90,45,32,10,27,23,18,23,16,90)
       if (l/= 13.and.l/= 16) go to 4640
-         call dumdum(175,90,90,90,90,90,90,90,90,90,90)
+         call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90)
          if(v/= 0) nerd=llong(a,v,10,0)
  4640 continue
       call rw(33,o(ox_mlst),a,c)
@@ -2107,7 +2107,7 @@
       do k = a,c
          o(k)=o(ox_bla)
       end do
-      c=175+8
+      c=ox_wbf_base+8
       return
       end subroutine find
 !_______________________________________________________________________
@@ -2137,7 +2137,7 @@
       kst=0
       h=0
       b=a
-      i=175
+      i=ox_wbf_base
       kut=kur
       if(o(b)==o(ox_icur)) then
          b=b+2
@@ -2149,11 +2149,11 @@
             kit=1
          end if
       end if
-      do j = 175,254
+      do j = ox_wbf_base,ox_w80_base
          o(j)=o(ox_bla)
       end do
       if (ind==linf_rule_diagnostic_mode) then
-         do while (i<181 .and. b<=z)
+         do while (i<ox_w7_base .and. b<=z)
             if (o(b)==o(ox_bla)) then
                b=b+1
                cycle
@@ -2172,25 +2172,25 @@
       else
          npl=71
          d=12
-         o(175)=d
+         o(ox_wbf_base)=d
          koff=max(min(80,o(ox_indc)),2)
       end if
-      if (b>z .and. i>175) then
-         call rw(33,o(ox_flst),175,181)
+      if (b>z .and. i>ox_wbf_base) then
+         call rw(33,o(ox_flst),ox_wbf_base,ox_w7_base)
          if(ind==linf_rule_diagnostic_mode)call mesage(14, 14, 0,0)
          return
       end if
-      c=174+koff+kut*o(ox_indf)
+      c=ox_w0_base+koff+kut*o(ox_indf)
       if(kut>last)c=c-o(ox_indf)
-      if(c>174+50)c=174+7
+      if(c>ox_w0_base+50)c=ox_w0_base+7
       i=c
       do while (b<=z)
          limc=min0(b+npl,z)
-         do while (b<=limc .and. i<=246)
+         do while (b<=limc .and. i<=ox_w72_base)
             if (ind==linf_rule_diagnostic_mode) then
                if (o(ox_holr)==1) then
                   if (o(b)==o(ox_lq)) then
-                     if (i>246-4) exit
+                     if (i>ox_w72_base-4) exit
                      h=1
                      do while (o(b+h)/=o(ox_rq))
                         h=h+1
@@ -2221,12 +2221,12 @@
          end do
          if (o(ox_seqf)==1) then
             do k = 1,8
-               o(254-k+1)=o(o(ox_tmx)-k+1)
+               o(ox_w80_base-k+1)=o(o(ox_tmx)-k+1)
             end do
          else if (o(ox_seqf)==2) then
-            k=llong(247,o(ox_seqn),10,0)
+            k=llong(ox_w73_base,o(ox_seqn),10,0)
          end if
-         do k = 175,246
+         do k=ox_wbf_base,ox_w72_base
             if (o(k)==o(ox_lq)) then
                o(k)=o(ox_bq)
                kst=1
@@ -2236,7 +2236,7 @@
                kst=0
             end if
          end do
-        if (i>246 .and. ind==linf_rule_diagnostic_mode &
+        if (i>ox_w72_base .and. ind==linf_rule_diagnostic_mode &
            .and. kst==0) then
           do while (o(i-1)<38 .and. kst>0)
                b=b-1
@@ -2244,24 +2244,24 @@
                o(i)=o(ox_bla)
           end do
         end if
-         do k = 175,254
+         do k = ox_wbf_base,ox_w80_base
             if(0>o(k).or.o(k)>100-1)o(k)=100-1
-            o(k)=o(689+o(k))
+            o(k)=o(ox_oset_base+o(k))
          end do
 !   LOOKOUT
-         call rw(23,o(ox_flst),175,254)
-         do k = 175,254
+         call rw(23,o(ox_flst),ox_wbf_base,ox_w80_base)
+         do k = ox_wbf_base,ox_w80_base
             o(k)=o(ox_bla)
          end do
          i=c
          if (ind==linf_rule_diagnostic_mode) then
-            o(175+5)=d
+            o(ox_wbf_base+5)=d
          else
-            o(175)=d
+            o(ox_wbf_base)=d
          end if
          if (kst>0) then
-            i=181
-            o(181-1)=45
+            i=ox_w7_base
+            o(ox_w7_base-1)=45
          end if
       end do
       last=kur
@@ -2367,7 +2367,7 @@
          end do
          return
          end if
-       kof=589
+       kof=ox_iset_base
       if (n==33) kof=100+kof
       if (n==23) kof=0
          do l=1,nr
@@ -2607,24 +2607,25 @@
 !     distribution.
 !     Alex Bielajew 88/09/20
 !
-         call rw(23,o(ox_flst),325+3,325+79)
-         call rw(23,o(ox_mlst),325+2,325+79)
+         call rw(23,o(ox_flst),ox_rbf_base+3,ox_rbf_base+79)
+         call rw(23,o(ox_mlst),ox_rbf_base+2,ox_rbf_base+79)
          rewind iuni
          end if
       o(ox_qfl)=o(ox_bla)
-      o(ox_mxx)=525371
-      o(ox_base)=1625
+      o(ox_mxx)=ox_home_base
+      o(ox_base)=ox_ct4_base
       do k = 1,6
-         o(k)=525371
+         o(k)=ox_home_base
       end do
       o(ox_rtt)=-11
       o(ox_ltt)=-12
       o(ox_icur)=-13
       o(ox_eol)=-14
       o(o_u)=o(ox_trm)
-      o_w=450741-1
+      o_w=ox_mnxbf_base-1
       o(o_w)=o(ox_trm)
-      call dumdum(44,2105,2155,2205,2255,2305,2355,2455,2505,0,0)
+      call dumdum(44,ox_isk_base,ox_jsk_base,ox_ksk_base,ox_lsk_base, &
+            ox_msk_base,ox_nsk_base,ox_usk_base,ox_ysk_base,0,0)
       call nxtcrd()
        return
       end subroutine inital
@@ -2641,33 +2642,33 @@
                   (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
       integer   p
       dimension p(100)
-      equivalence(o(2555),p(1))
+      equivalence(o(ox_pjt_base),p(1))
       integer  k,j
       save     k,j
       o(ox_nmx)=o_v
       o(ox_sign)=o_v
-      o(ox_rmx)=324+o(ox_nmx)
-      o(ox_tmx)=456+o(ox_nmx)
-      o(ox_sigt)=456+o(ox_sign)
-      o(ox_sigr)=324+o(ox_sign)
-      call rw(0,o(ox_unit),325,o(ox_rmx))
-      call rw(0,o(ox_unit),689,689+73)
-      call rw(0,o(ox_unit),325,o(ox_rmx))
-      call rw(0,o(ox_unit),689+74,789+70)
-      do k = 689,788
+      o(ox_rmx)=ox_r0_base+o(ox_nmx)
+      o(ox_tmx)=ox_t0_base+o(ox_nmx)
+      o(ox_sigt)=ox_t0_base+o(ox_sign)
+      o(ox_sigr)=ox_r0_base+o(ox_sign)
+      call rw(0,o(ox_unit),ox_rbf_base,o(ox_rmx))
+      call rw(0,o(ox_unit),ox_oset_base,ox_oset_base+73)
+      call rw(0,o(ox_unit),ox_rbf_base,o(ox_rmx))
+      call rw(0,o(ox_unit),ox_oset_base+74,ox_morf_base+70)
+      do k=ox_oset_base,ox_oset_base+99
          o(k-100)=o(k)
       end do
 !MAKE INPUT AND OUTPUT SAME
 ! .(MNOSET+54)=.(MNOSET+41);     OUT-TRANSLATE L-ARROW TO =
-      call rw(23,o(ox_mlst),325+41,404)
-      call rw(23,o(ox_flst),325+41,404)
+      call rw(23,o(ox_mlst),ox_rbf_base+41,ox_r8_base)
+      call rw(23,o(ox_flst),ox_rbf_base+41,ox_r8_base)
       do k = 1,100
-            j=o(589+k-1)
-         o(889+j)=k-1
+            j=o(ox_iset_base+k-1)
+         o(ox_trt_base+j)=k-1
 !     WRITE(6,1) J,K-1
       end do
       o(ox_dflt)=4
-      o(ox_free)=2655
+      o(ox_free)=ox_mbf_base
       do k = 1,10
          o(k+100)=k+100
          o(k+110)=k+110
