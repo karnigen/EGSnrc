@@ -1,135 +1,135 @@
 
-C##############################################################################
-C
-C  Mortran3 source code
-C  Copyright (C) 1993 Stanford Linear Accelerator Center
-C  Copyright (C) 2015 National Research Council Canada
-C
-C  This file is part of EGSnrc.
-C
-C  EGSnrc is free software: you can redistribute it and/or modify it under
-C  the terms of the GNU Affero General Public License as published by the
-C  Free Software Foundation, either version 3 of the License, or (at your
-C  option) any later version.
-C
-C  EGSnrc is distributed in the hope that it will be useful, but WITHOUT ANY
-C  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-C  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for
-C  more details.
-C
-C  You should have received a copy of the GNU Affero General Public License
-C  along with EGSnrc. If not, see <http://www.gnu.org/licenses/>.
-C
-C##############################################################################
-C
-C  Author:          Stanford Linear Accelerator Center
-C
-C  Contributors:    Ray Cowan
-C                   Dave Rogers
-C                   Alex Bielajew
-C                   Iwan Kawrakow
-C
-C##############################################################################
-C
-C  Mortran3 is originally copyright by SLAC and is distributed by NRC under
-C  the terms of the AGPL 3.0 licence, in agreement with SLAC. Mortran has a
-C  long history  dating back to the 1970s, and certainly involving many
-C  contributors. The contributors named above are only those who could be
-C  identified from this file's revision history.
-C
-C
-C  Iwan Kawrakow, 2003:
-C
-C  Changes for EGSnrc Version 4. Make use of command line arguments to open
-C  input/output files. After these changes Mortran 3 can be run without first
-C  making symbolik links to the necessary files, e.g., mortran3.exe -d
-C
-C
-C  Dave Rogers, 1996:
-C
-C  Added a few explicit file=fort.n statements to make HP port
-C
-C  On Sept 21, 1996 the 128K buffer version of mortran3.f (SID 1.8) was
-C  replaced with the 300K buffer version which had previously been maintained
-C  as big_mortran3.f. Given the fact that memories are so much bigger now, we
-C  are just going to maintain the bigger version, now called mortran3.f
-C
-C  At NRC, to recover the old 128K version: sccs get -r1.8 mortran3.f to see
-C  the minor changes to big_mortran3.f made prior to renaming it as mortran3.f,
-C  see the residual big_mortran3.f file.
-C
-C  Note that this version uses the DNTIME routine consistently since this is
-C  what the compilers either handle, or the extra routines for the RS6000 and
-C  Linux system work with.
-C
-C
-C  Ray F. Cowan, 1993:
-C
-C  Development version of mortran3.f, the "frozen" egs Fortran implementation
-C  of mortran3 for EGS users.
-C
-C
-C  Rev. 2.  Attempt to increase buffer spaces so that mortran3 does not run out
-C  -------  of "Rule space".  Mods are to globally change all occurrences of
-C           the following constants:
-C
-C  Name    Old value   New value  Comment
-C  ----    ---------   ---------  -------
-C  MXU     300000      600000     Max size of buffer O.
-C  MNXBF   225739      450741     Minimum (low end) of X-buffer.
-C  ?????   225738      450740     Apparently MNXBF-1, found in code.
-C  HOME    112369      525371     Location halfway between X-buffer start
-C                                 (MNXBF) and top end of O (MXU).
-C
-C  This fix provided was provided by Thies Schoenborn
-C
-C  The previous revision increased buffer size to 300k from 128k
-C
-C  Note that:  MNXBF = MXMBF + 1 + 76, where MXMBF is top end of MBF, the
-C  "main" buffer, which starts at MNMBF=2655.  See constants at beginning of
-C  code below.  MXMBF = MNMBF + ((MXU-MXPJT)*3/4) - 1, where MXPJT is top end
-C  of the PJT buffer, which precedes MBF in O, so MXPJT=2654.  HOME is given
-C  by HOME = MNXBF + (MXU - MNXBF)/2.  Apparently MBF is assigned 3/4 of the
-C  space remaining in O at the time of its definition, and XBF is assigned the
-C  remaining 1/4 of O, and HOME is a pointer halfway through XBF.  In general,
-C  buffers have names like PBF, MBF, XBF, etc., and the low (min) and high
-C  (max) ends of each buffer are denoted by names like MNMBF and MXMBF.
-C
-C  WARNING:  none of this is absolutely certain at this time.
-C
-C
-C -----------------------------------------------------------------------------
-C MORSOR77 BITNET FRON SLAC APRIL 3 1985  D.W.O.R.
-C Copyright Stanford University Mortran 3.1 (FORTRAN 77)
-C UNIT(9)_ANO(10)_LVL(11)_CRS(12)_MDEF(13)_CSET(14)_FRT(15)
-C LABL(16)_HOLR(17)_INDF(18)_SEQN(19)_NFLG(20)_LIST(21)_MCOM(22)
-C NEST(23)_NSCN(24)_PCOM(25)_LAZY(26)_MRKL(27)_STNG(28)_MTRC(29)
-C SEQF(30)_DFLT(31)_BASE(32)_BLGR(33)_FREE(34)_MRKF(35)_TMX(36)
-C NMX(37)_RMX(38)_INDC(39)_MXX(40)_SIGN(41)_SIGR(42)_SIGT(43)
-C ISK(44)_JSK(45)_KSK(46)_LSK(47)_MSK(48)_NSK(49)_USK(50)
-C YSK(51)_EOF(52)_INDM(53)_TYP(54)_QFL(55)_MLST(56)_FLST(57)
-C IFL(58)_MODE(59)_LOCS(60)_LEFT(61)_MCNT(62)_MERR(63)_KFE(64)
-C KFB(65)_KTE(66)_KTB(67)_NGN(68)_SQ(69)_EOL(70)_GEO(71)
-C XTR(72)_XTR(73)_XTR(74)_ICUR(75)_BLA(76)_BAT(77)_BLB(78)
-C TRM(79)_LPR(80)_RPR(81)_LSB(82)_RSB(83)_LCB(84)_RCB(85)
-C BQ(86)_DQ(87)_RTT(88)_LTT(89)_DED(90)_NIL(91)_LNS(92)
-C RNS(93)_RIF(94)_LIF(95)_RDQ(96)_LDQ(97)_RMB(98)_LMB(99)
-C ZRO(100)_ALT(101)_RNG(102)_LIP(103)_RIP(104)_LQ(105)_RQ(106)
-C GA(107)_GP(108)_LGB(109)_RGB(110)_NAT(111)_NLB(112)_XTR(113)
-C MF1(114)_MF2(115)_MF3(116)_MF4(117)_MF5(118)_MF6(119)_MF7(120)
-C _MF8(121)_MF9(122)_MFA(123)_MFB(124)_MFC(125)_MFD(126)
-C NODE4_NSM100_SLOP20_NSX120_BFF132_MXU600000_MNXBF450741
-C HOME525371_EVLIM1000_MXERR100_G1157_G0156_G2158_G11167
-C G13169_G14170_R1325_R0324_R80404_T1457_T0456
-C _T2458_T72528_W1175_W0174_W7181_W72246_W73247_W80254
-C SREG1_UREG121_GBF157_WBF175_RBF325_TBF457_ISET589
-C OSET689_MORF789_TRT889_0CT1145_1CT1265_2CT1385_3CT1505
-C 4CT1625_5CT1745_6CT1865_7CT1985_ISK2105_JSK2155_KSK2205
-C _LSK2255_MSK2305_NSK2355_USK2455_YSK2505_PJT2555_MBF2655
-C -----------------------------------------------------------------------------
-C
-C
-C##############################################################################
+!##############################################################################
+!
+!  Mortran3 source code
+!  Copyright (C) 1993 Stanford Linear Accelerator Center
+!  Copyright (C) 2015 National Research Council Canada
+!
+!  This file is part of EGSnrc.
+!
+!  EGSnrc is free software: you can redistribute it and/or modify it under
+!  the terms of the GNU Affero General Public License as published by the
+!  Free Software Foundation, either version 3 of the License, or (at your
+!  option) any later version.
+!
+!  EGSnrc is distributed in the hope that it will be useful, but WITHOUT ANY
+!  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+!  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for
+!  more details.
+!
+!  You should have received a copy of the GNU Affero General Public License
+!  along with EGSnrc. If not, see <http://www.gnu.org/licenses/>.
+!
+!##############################################################################
+!
+!  Author:          Stanford Linear Accelerator Center
+!
+!  Contributors:    Ray Cowan
+!                   Dave Rogers
+!                   Alex Bielajew
+!                   Iwan Kawrakow
+!
+!##############################################################################
+!
+!  Mortran3 is originally copyright by SLAC and is distributed by NRC under
+!  the terms of the AGPL 3.0 licence, in agreement with SLAC. Mortran has a
+!  long history  dating back to the 1970s, and certainly involving many
+!  contributors. The contributors named above are only those who could be
+!  identified from this file's revision history.
+!
+!
+!  Iwan Kawrakow, 2003:
+!
+!  Changes for EGSnrc Version 4. Make use of command line arguments to open
+!  input/output files. After these changes Mortran 3 can be run without first
+!  making symbolik links to the necessary files, e.g., mortran3.exe -d
+!
+!
+!  Dave Rogers, 1996:
+!
+!  Added a few explicit file=fort.n statements to make HP port
+!
+!  On Sept 21, 1996 the 128K buffer version of mortran3.f (SID 1.8) was
+!  replaced with the 300K buffer version which had previously been maintained
+!  as big_mortran3.f. Given the fact that memories are so much bigger now, we
+!  are just going to maintain the bigger version, now called mortran3.f
+!
+!  At NRC, to recover the old 128K version: sccs get -r1.8 mortran3.f to see
+!  the minor changes to big_mortran3.f made prior to renaming it as mortran3.f,
+!  see the residual big_mortran3.f file.
+!
+!  Note that this version uses the DNTIME routine consistently since this is
+!  what the compilers either handle, or the extra routines for the RS6000 and
+!  Linux system work with.
+!
+!
+!  Ray F. Cowan, 1993:
+!
+!  Development version of mortran3.f, the "frozen" egs Fortran implementation
+!  of mortran3 for EGS users.
+!
+!
+!  Rev. 2.  Attempt to increase buffer spaces so that mortran3 does not run out
+!  -------  of "Rule space".  Mods are to globally change all occurrences of
+!           the following constants:
+!
+!  Name    Old value   New value  Comment
+!  ----    ---------   ---------  -------
+!  MXU     300000      600000     Max size of buffer O.
+!  MNXBF   225739      450741     Minimum (low end) of X-buffer.
+!  ?????   225738      450740     Apparently MNXBF-1, found in code.
+!  HOME    112369      525371     Location halfway between X-buffer start
+!                                 (MNXBF) and top end of O (MXU).
+!
+!  This fix provided was provided by Thies Schoenborn
+!
+!  The previous revision increased buffer size to 300k from 128k
+!
+!  Note that:  MNXBF = MXMBF + 1 + 76, where MXMBF is top end of MBF, the
+!  "main" buffer, which starts at MNMBF=2655.  See constants at beginning of
+!  code below.  MXMBF = MNMBF + ((MXU-MXPJT)*3/4) - 1, where MXPJT is top end
+!  of the PJT buffer, which precedes MBF in O, so MXPJT=2654.  HOME is given
+!  by HOME = MNXBF + (MXU - MNXBF)/2.  Apparently MBF is assigned 3/4 of the
+!  space remaining in O at the time of its definition, and XBF is assigned the
+!  remaining 1/4 of O, and HOME is a pointer halfway through XBF.  In general,
+!  buffers have names like PBF, MBF, XBF, etc., and the low (min) and high
+!  (max) ends of each buffer are denoted by names like MNMBF and MXMBF.
+!
+!  WARNING:  none of this is absolutely certain at this time.
+!
+!
+! -----------------------------------------------------------------------------
+! MORSOR77 BITNET FRON SLAC APRIL 3 1985  D.W.O.R.
+! Copyright Stanford University Mortran 3.1 (FORTRAN 77)
+! UNIT(9)_ANO(10)_LVL(11)_CRS(12)_MDEF(13)_CSET(14)_FRT(15)
+! LABL(16)_HOLR(17)_INDF(18)_SEQN(19)_NFLG(20)_LIST(21)_MCOM(22)
+! NEST(23)_NSCN(24)_PCOM(25)_LAZY(26)_MRKL(27)_STNG(28)_MTRC(29)
+! SEQF(30)_DFLT(31)_BASE(32)_BLGR(33)_FREE(34)_MRKF(35)_TMX(36)
+! NMX(37)_RMX(38)_INDC(39)_MXX(40)_SIGN(41)_SIGR(42)_SIGT(43)
+! ISK(44)_JSK(45)_KSK(46)_LSK(47)_MSK(48)_NSK(49)_USK(50)
+! YSK(51)_EOF(52)_INDM(53)_TYP(54)_QFL(55)_MLST(56)_FLST(57)
+! IFL(58)_MODE(59)_LOCS(60)_LEFT(61)_MCNT(62)_MERR(63)_KFE(64)
+! KFB(65)_KTE(66)_KTB(67)_NGN(68)_SQ(69)_EOL(70)_GEO(71)
+! XTR(72)_XTR(73)_XTR(74)_ICUR(75)_BLA(76)_BAT(77)_BLB(78)
+! TRM(79)_LPR(80)_RPR(81)_LSB(82)_RSB(83)_LCB(84)_RCB(85)
+! BQ(86)_DQ(87)_RTT(88)_LTT(89)_DED(90)_NIL(91)_LNS(92)
+! RNS(93)_RIF(94)_LIF(95)_RDQ(96)_LDQ(97)_RMB(98)_LMB(99)
+! ZRO(100)_ALT(101)_RNG(102)_LIP(103)_RIP(104)_LQ(105)_RQ(106)
+! GA(107)_GP(108)_LGB(109)_RGB(110)_NAT(111)_NLB(112)_XTR(113)
+! MF1(114)_MF2(115)_MF3(116)_MF4(117)_MF5(118)_MF6(119)_MF7(120)
+! _MF8(121)_MF9(122)_MFA(123)_MFB(124)_MFC(125)_MFD(126)
+! NODE4_NSM100_SLOP20_NSX120_BFF132_MXU600000_MNXBF450741
+! HOME525371_EVLIM1000_MXERR100_G1157_G0156_G2158_G11167
+! G13169_G14170_R1325_R0324_R80404_T1457_T0456
+! _T2458_T72528_W1175_W0174_W7181_W72246_W73247_W80254
+! SREG1_UREG121_GBF157_WBF175_RBF325_TBF457_ISET589
+! OSET689_MORF789_TRT889_0CT1145_1CT1265_2CT1385_3CT1505
+! 4CT1625_5CT1745_6CT1865_7CT1985_ISK2105_JSK2155_KSK2205
+! _LSK2255_MSK2305_NSK2355_USK2455_YSK2505_PJT2555_MBF2655
+! -----------------------------------------------------------------------------
+!
+!
+!##############################################################################
 
 
       implicit none
@@ -137,19 +137,19 @@ C##############################################################################
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer O_C,O_MXC,O_M
-      integer iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia,
-     &        ire,nb,kx,y,nerd
+      integer iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
+      &        ire,nb,kx,y,nerd
       integer ispec,linf
       EQUIVALENCE(O(12),O_C),(O(43),O_MXC),(O(22),O_M)
-C
+!
       common/nrcc/ oflag
       integer      oflag
 
-      save    iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia,
-     &        ire,nb,kx,y,nerd
+      save    iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
+      &        ire,nb,kx,y,nerd
 
       call open_units
 
@@ -163,7 +163,7 @@ C
       IW=450741
       O_X=O_W
       GO TO 10
-30    IF (O_S>O_U) THEN
+ 30 IF (O_S>O_U) THEN
          IF (O(23)>0) THEN
             CALL EXPAND(-1)
             GO TO 30
@@ -220,14 +220,14 @@ C
                IF(O(D)==O(98))KD=0
                O_V=O_V+1
                T=O_V
-240            D=D+1
+ 240          D=D+1
                IF(D>=MXD) THEN
                   CALL COUT()
                   CALL EXPAND(A)
                   GO TO 30
                END IF
                CYCLE TOKEN_SCAN
-230         CONTINUE
+ 230       CONTINUE
             IF (O(O_V)==O(76).AND.O(69)+KD==0) THEN
                   O_V=O_V+1
                   CYCLE TOKEN_SCAN
@@ -255,7 +255,7 @@ C
             KB=0
             KP=0
             CYCLE TOKEN_SCAN
-140         P=IP
+ 140       P=IP
             Q=IQ
             IA=O_V
             IF(O(69)/= 0)IA=0
@@ -270,7 +270,7 @@ C
                MQ=0
                GO TO 240
             END IF
-130      CONTINUE
+ 130    CONTINUE
          IF (O(O_V)==O(76).AND.MQ==1) THEN
             O_V=O_V+1
             CYCLE TOKEN_SCAN
@@ -332,7 +332,7 @@ C
          O(O_S)=O(O_U)
          O_U=O_S
       END IF
-10    O(55)=O(76)
+ 10 O(55)=O(76)
       KX=0
       DO
          O_U=O_U+1
@@ -472,8 +472,8 @@ C
       END DO
       GO TO 30
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       integer FUNCTION ISPEC(P,Q,IV,U,T)
       implicit none
       integer p,q,iv,u,t
@@ -481,8 +481,8 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer mini
       integer c,m,b,v,iq,i,np,jmp,n,nul,w
       save    c,m,b,v,iq,i,np,jmp,n,nul,w
@@ -491,7 +491,7 @@ C__________________________________________
       B=0
       V=IV
       O(45)=2155
-CADEFGHIJKLRSXYZ
+!ADEFGHIJKLRSXYZ
       O(46)=2205
          ISPEC_SCAN: DO
       IF(P<Q) THEN
@@ -608,7 +608,7 @@ CADEFGHIJKLRSXYZ
             P=P+1
             IF(M==1)V=W
             END SELECT
-1300        IF(M==1)CYCLE ISPEC_SCAN
+ 1300       IF(M==1)CYCLE ISPEC_SCAN
             IF(O(P)/= O(101) .AND. O(P)/= O(104))THEN
                ISPEC=2
                RETURN
@@ -628,8 +628,8 @@ CADEFGHIJKLRSXYZ
       ISPEC=3
       RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       integer FUNCTION MINI(S,U,W,KCT)
       implicit none
       integer s,u,w,kct
@@ -637,13 +637,13 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,l,v,p,q
       save    m,l,v,p,q
       MINI=0
       M=KCT+O(S)
-CABCDEFGHIJKNRTXYZ
+!ABCDEFGHIJKNRTXYZ
       L=U-S
       DO
          IF (O(M)==0) THEN
@@ -654,7 +654,7 @@ CABCDEFGHIJKNRTXYZ
          V=S
          P=M+4
          Q=O(M+3)
-C   IF Q-PnL jM;
+!   IF Q-PnL jM;
          IF(O(29)>=6) CALL MACTRC(2,P,Q)
          DO WHILE (P<Q)
             IF(O(P)/= O(V))EXIT
@@ -670,8 +670,8 @@ C   IF Q-PnL jM;
          END IF
       END DO
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE EXPAND (F)
       implicit none
       integer  f
@@ -679,13 +679,13 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer lexp,llong
       integer kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
       DATA KGN/0/
       save    kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
-CCDGHILM
+!CDGHILM
       T=0
       IF (F>=0) GO TO 1440
          O(23)=O(23)-1
@@ -730,7 +730,7 @@ CCDGHILM
          O(32)=O(O(51))
          O(51)=O(51)-1
          GO TO 1430
-1440     O(O_S-1)=F
+ 1440    O(O_S-1)=F
          O(40) = O_S-2*F-3
          O_R=O(O(22)+2)
          O_B=O_R+4
@@ -743,8 +743,8 @@ CCDGHILM
          END IF
          IF(O(29)>=2) CALL MACTRC(22,O(22),O_S)
          IF( O(23)==0 )O_X=O_W
-1430  CONTINUE
-1580  CONTINUE
+ 1430 CONTINUE
+ 1580 CONTINUE
       DO WHILE (O_B<O_E)
          IF (O(O_B)<O(107)) THEN
                O_X=O_X+1
@@ -767,7 +767,7 @@ CCDGHILM
             CASE DEFAULT
                GO TO 1630
             END SELECT
-1630        IF (O(O_B)>=1 .AND. O(O_B)<=O(O_S-1)) THEN
+ 1630       IF (O(O_B)>=1 .AND. O(O_B)<=O(O_S-1)) THEN
                A=O(O_S-2*(O(O_B))-1)
                N=O(O_S-2*(O(O_B))-2)
                DO WHILE (A<N)
@@ -780,7 +780,7 @@ CCDGHILM
             ELSE
             CALL MESAGE(15, 4, O_B,O_E)
             END IF
-1620        IF (O(O_B)==12) THEN
+ 1620       IF (O(O_B)==12) THEN
                O_B=O_B+1
                IF (O(O_B)==23) THEN
                   IF (O(68)==0) THEN
@@ -803,7 +803,7 @@ CCDGHILM
             IF(O(68)==0)CALL KAT
             END IF
             GO TO 1690
-1640        IF (O(O_B)==10) THEN
+ 1640       IF (O(O_B)==10) THEN
                O_B=O_B+1
                IF(1>O(O_B).OR.O(O_B)>O(O_S-1) )CALL MESAGE(15, 4, O_B,O_E)
                O_X=O_X+LLONG(O_X,O(O_S-2*(O(O_B))-2)-O(O_S-2*(O(O_B))-1),10,0)
@@ -844,7 +844,7 @@ CCDGHILM
             O_W=O_X
             GO TO 1690
             END IF
-1650        IF (KRAP/=0 .AND. KRAQ==O(23)) THEN
+ 1650       IF (KRAP/=0 .AND. KRAQ==O(23)) THEN
                O_X=O_X+1
                O(O_S)=O(96)
                O(KRAP)=O_X-KRAP-1
@@ -863,7 +863,7 @@ CCDGHILM
             IF( 0>Y.OR.Y>=8 )CALL MESAGE(15, 17, O_B,O_E)
             O(32)=Y*120+1145
             EXIT
-1690        O_B=O_B+1
+ 1690       O_B=O_B+1
          CYCLE
       END DO
          IF (O(23)<=0) THEN
@@ -889,53 +889,53 @@ CCDGHILM
          O_X=O_X-1
       END DO
       O_S=O_V
-99999 RETURN
+       RETURN
       END
-CTO EXPAND
-C_______________________________________________________________________
-C________________________________________
+!TO EXPAND
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE KAT
       implicit none
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer l,m
       EQUIVALENCE (O(47),L),(O(48),M)
       integer llong,nib
       integer jmp,t,ibg,z,iuni,nba
       save    jmp,t,ibg,z,iuni,nba
-CFGHIJKLPQ  YZ
+!FGHIJKLPQ  YZ
       IF(O(O_B)<19.OR.O(O_B)>30) CALL MESAGE(15, 7, O_B-2,O_E)
       O_B=O_B+1
       JMP=O(O_B-1)-18
-      GO TO (1950,1960,1970,1390,1980,1990,2000,2010,2020,2030,2040,2050),
-     *JMP
-1950  T=O(O_B)+78
+      GO TO (1950,1960,1970,1390,1980,1990,2000,2010,2020,2030,2040,2050), &
+      &JMP
+ 1950 T=O(O_B)+78
       O_X=O_X+1
       O(O_X)=O(T)
-      GO TO 99999
-1960  CALL KRUNC(0)
-      GO TO 99999
-1970  IF (O(O_B)/= 12) GO TO 2070
+      RETURN
+ 1960 CALL KRUNC(0)
+      RETURN
+ 1970 IF (O(O_B)/= 12) GO TO 2070
          O_X=O_X+LLONG(O_X,O(L-O(O_B+1))+O(O_B+2),10,1)
          O_B=O_B+2
-         GO TO 99999
-2070  CONTINUE
+         RETURN
+ 2070 CONTINUE
       IF (O(O_B)/= 16) GO TO 2090
          O(16)=O(16)+10
          O_X=O_X+LLONG(O_X,O(16),10,0)
-         GO TO 99999
-2090  CONTINUE
+         RETURN
+ 2090 CONTINUE
       IF (O(O_B)/= 28) GO TO 2110
          O_B=O_B+1
          O(47)=O(47)+1
          O(O(47))=NIB(O_X,10)
          IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
          GO TO 2120
-2110  CONTINUE
+ 2110 CONTINUE
       IF (O(O_B)/= 30) GO TO 2140
          O_B=O_B+1
          IF(O(O_B)==1)O(L-1)=O(L)
@@ -943,22 +943,22 @@ CFGHIJKLPQ  YZ
          IF (L>=2255) GO TO 2160
             CALL MESAGE(14, 7, 0,0)
             L=L+1
-2160     CONTINUE
+ 2160    CONTINUE
          GO TO 1300
-2140  CONTINUE
+ 2140 CONTINUE
       CALL MESAGE(15, 7, O_B-2,O_E)
-1390  IF (O(O_B)/= 28) GO TO 2180
+ 1390 IF (O(O_B)/= 28) GO TO 2180
          O_B=O_B+1
          O(48)=O(48)+1
          O(O(48))=O(O_B)
          IF(O(48)>2354)CALL MESAGE(15, 22, 0,0)
-         GO TO 99999
-2180  CONTINUE
+         RETURN
+ 2180 CONTINUE
       IF (O(O_B)/= 27) GO TO 2200
          O_B=O_B+1
          O(M)=O(O_B)
-         GO TO 99999
-2200  CONTINUE
+         RETURN
+ 2200 CONTINUE
       IF (O(O_B)/= 30) GO TO 2220
          O_X=O_X+1
          O(O_X)=O(M)
@@ -966,88 +966,88 @@ CFGHIJKLPQ  YZ
          IF (M>=2305) GO TO 2240
             CALL MESAGE(14, 8, 0,0)
             M=M+1
-2240     CONTINUE
-         GO TO 99999
-2220  CONTINUE
+ 2240    CONTINUE
+         RETURN
+ 2220 CONTINUE
       CALL MESAGE(15, 7, O_B-2,O_E)
-1980  IBG=O(O_X)
+ 1980 IBG=O(O_X)
       O_X=O_X-1+LLONG(O_X-1,IBG,10,1)
-      GO TO 99999
-1990  CALL DEFINE(O_S)
-      GO TO 99999
-2000  O(58)=1
+      RETURN
+ 1990 CALL DEFINE(O_S)
+      RETURN
+ 2000 O(58)=1
       O_B=O_B+4
       O(67)=O_B+O(O_B-1)
       O(66)=O_B+O(O_B-2)
       O(65)=O_B+O(O_B-3)
       O(64)=O_B+O(O_B-4)
       O_B=O_B-1
-      GO TO 99999
-2010  O(16)=O(16)+10
+      RETURN
+ 2010 O(16)=O(16)+10
       O(47)=O(47)+1
       O(O(47))=O(16)
       IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
-2120  IF (O(O_B)/= 1) GO TO 2260
+ 2120 IF (O(O_B)/= 1) GO TO 2260
          Z=O(L-1)
          O(L-1)=O(L)
          O(L)=Z
-2260  CONTINUE
-1300  IF(O(O_B)/= 1.AND.O(O_B)/= 0) then
+ 2260 CONTINUE
+ 1300 IF(O(O_B)/= 1.AND.O(O_B)/= 0) then
         !write(6,*) ' Mortran compilation error (stop 18)'
         write(6,*) 'compilation error (stop 18)'
         call exit(18) !stop 18
       endif
-      GO TO 99999
-2020  IUNI=O(O_B)
+      RETURN
+ 2020 IUNI=O(O_B)
       REWIND IUNI
-      GO TO 99999
-2040  IF(O(29)>=1) CALL MACTRC(22,O(22),O_S)
+      RETURN
+ 2040 IF(O(29)>=1) CALL MACTRC(22,O(22),O_S)
       O_B=O_B-1
-      GO TO 99999
-2030  T=O(O_B)
+      RETURN
+ 2030 T=O(O_B)
       O_B=O_B+1
       IF (0>=O(O_B).OR.O(O_B)>=5) GO TO 2280
          T=T+26*O(O_B)
          O_B=O_B+1
-2280  CONTINUE
+ 2280 CONTINUE
       NBA=0
       GO TO 2290
-2050  T=121+O(O_B)
+ 2050 T=121+O(O_B)
       O_B=O_B+1
       NBA=O(O_X)
       O_X=O_X-1
-2290  IF (O(O_B)/= 43) GO TO 2310
+ 2290 IF (O(O_B)/= 43) GO TO 2310
          O(T)=O(T)+1
-         GO TO 99999
-2310  CONTINUE
+         RETURN
+ 2310 CONTINUE
       IF (O(O_B)/= 42) GO TO 2330
          O(T)=O(T)-1
-         GO TO 99999
-2330  CONTINUE
+         RETURN
+ 2330 CONTINUE
       IF (O(O_B)/= 41) GO TO 2350
          O(T)=O(O_X)
          O_X=O_X-1
-         GO TO 99999
-2350  CONTINUE
+         RETURN
+ 2350 CONTINUE
       IF (O(O_B)/= 12) GO TO 2370
          O_X=O_X+1
          O(O_X)=O(T)
          IF (NBA>1) O_X=O_X-1+LLONG(O_X-1,O(T),NBA,1)
-         GO TO 99999
-2370  CONTINUE
+         RETURN
+ 2370 CONTINUE
       CALL MESAGE(15, 7, O_B-3,O_E)
-99999 RETURN
+      RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       SUBROUTINE COUT
       implicit none
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer linf
       integer t,nerd
       save    t,nerd
@@ -1062,8 +1062,8 @@ C__________________________________________
       END DO
       RETURN
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE DEFINE(S)
       implicit none
       integer s
@@ -1071,16 +1071,16 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-CGHQUVWXYZ
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+!GHQUVWXYZ
       integer   l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       save      l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       DIMENSION L(3)
       IF (O(S-2*(1)-1)/= O(S-2*(1)-2)) GO TO 2420
          CALL MESAGE(14, 1, 0,0)
-         GO TO 99999
-2420  CONTINUE
+         RETURN
+ 2420 CONTINUE
       O(54)=O(31)
       IF ( O(S-2*(2)-1)/= O(S-2*(2)-2) )O(54)=O(O(S-2*(2)-1))
       DO K = 1,3
@@ -1088,7 +1088,7 @@ CGHQUVWXYZ
          T=O(S-2*(K)-2)
          N=A-1
          Z=0
-2440     IF(A>T)GO TO 2441
+ 2440    IF(A>T)GO TO 2441
             N=N+1
             O(N)=O(A)
             A=A+1
@@ -1098,46 +1098,46 @@ CGHQUVWXYZ
                      O(N)=O(105)
                      Z=1
                      GO TO 2490
-2500                 IF (O(A)/= O(86).OR.A>T) GO TO 2520
+ 2500                IF (O(A)/= O(86).OR.A>T) GO TO 2520
                         A=A+1
                         GO TO 2510
-2520                    O(N)=O(106)
+ 2520                   O(N)=O(106)
                         Z=0
-2510                 CONTINUE
-2490              CONTINUE
-2480           CONTINUE
+ 2510                CONTINUE
+ 2490             CONTINUE
+ 2480          CONTINUE
                GO TO 2450
-2460           IF  (O(N)/= O(76))GO TO 2530
+ 2460          IF  (O(N)/= O(76))GO TO 2530
                IF (Z/= 0) GO TO 2550
-2560              IF(O(A)/= O(76).OR.A>=T)GO TO 2561
+ 2560             IF(O(A)/= O(76).OR.A>=T)GO TO 2561
                      A=A+1
                   GO TO 2560
-2561              CONTINUE
-2550           CONTINUE
+ 2561             CONTINUE
+ 2550          CONTINUE
                GO TO 2450
-2530           IF  (O(N)/= O(78))GO TO 2570
+ 2530          IF  (O(N)/= O(78))GO TO 2570
                IF (O(A)/= O(78)) GO TO 2590
                   A=A+1
                   GO TO 2580
-2590              O(N)=O(108)
-2580           CONTINUE
+ 2590             O(N)=O(108)
+ 2580          CONTINUE
                GO TO 2450
-2570           IF  (O(N)/= O(77))GO TO 2600
+ 2570          IF  (O(N)/= O(77))GO TO 2600
                IF (O(A)/= O(77)) GO TO 2620
                   A=A+1
                   GO TO 2610
-2620              O(N)=O(107)
-2610           CONTINUE
-2450        CONTINUE
-2600        CONTINUE
+ 2620             O(N)=O(107)
+ 2610          CONTINUE
+ 2450       CONTINUE
+ 2600       CONTINUE
             IF (O(33)/= 0) GO TO 2640
                IF (K/= 3) GO TO 2660
                   IF(O(N)==O(84))O(N)=O(109)
                   IF(O(N)==O(85))O(N)=O(110)
-2660           CONTINUE
-2640        CONTINUE
+ 2660          CONTINUE
+ 2640       CONTINUE
          GO TO 2440
-2441     CONTINUE
+ 2441    CONTINUE
          O(S-2*(K)-2)=N
          L(K)=O(S-2*(K)-2)-O(S-2*(K)-1)
          END DO
@@ -1147,50 +1147,50 @@ CGHQUVWXYZ
          IF (O(54)/= 14) GO TO 2700
             M=1505+O(B)
             GO TO 2690
-2700        M=1625+O(B)
-2690     CONTINUE
-2710     IF (O(M)/= 0) GO TO 2730
+ 2700       M=1625+O(B)
+ 2690    CONTINUE
+ 2710    IF (O(M)/= 0) GO TO 2730
             IF (O(54)/= 12) GO TO 2750
                O(54)=O(31)
                GO TO 2760
-2750        CONTINUE
+ 2750       CONTINUE
             CALL MESAGE(14, 2, 0,0)
-            GO TO 99999
-2730     CONTINUE
+            RETURN
+ 2730    CONTINUE
          M=O(M)
          P = M+4
          LP=O(M+3)-P
          IF(LP/= L(1))GO TO 2710
          A=B
-2770     IF(O(P)/= O(A))GO TO 2771
+ 2770    IF(O(P)/= O(A))GO TO 2771
             P=P+1
             A=A+1
             IF(A>=E)GO TO 2780
          GO TO 2770
-2771     CONTINUE
-C   TRACE9;
-C      D-LINK PAT         CAT PTR   MARK PAT
+ 2771    CONTINUE
+!   TRACE9;
+!      D-LINK PAT         CAT PTR   MARK PAT
          GO TO 2710
-2780     IF (O(54)==12) GO TO 2800
+ 2780    IF (O(54)==12) GO TO 2800
             IF(O(M)/= 0)O((O(M))+1)=O(M+1)
             O(O(M+1))=O(M)
             C=O(M+2)
             O(M+2)=O(90)
-2810        IF(C==0)GO TO 2811
+ 2810       IF(C==0)GO TO 2811
                O(C+2)=O(90)
                C=O(C)
             GO TO 2810
-2811        CONTINUE
+ 2811       CONTINUE
             IF(O(13)>0)CALL MACTRC(13,0,S)
-            GO TO 99999
-2800     CONTINUE
+            RETURN
+ 2800    CONTINUE
          NEED= 4+L(3)
          IF(NEED> 450740-O(34)) CALL KRUNC(NEED)
          C=O(M+2)
-2820     IF(O(C)==0)GO TO 2821
+ 2820    IF(O(C)==0)GO TO 2821
             C=O(C)
          GO TO 2820
-2821     CONTINUE
+ 2821    CONTINUE
          O(C)=O(34)
          O(O(34))=0
          O(O(34)+1)=C
@@ -1203,33 +1203,33 @@ C      D-LINK PAT         CAT PTR   MARK PAT
             O(O(34)-J)=O(A-J)
          END DO
          IF(O(13)>0)CALL MACTRC(12,0,S)
-         GO TO 99999
-2680  CONTINUE
-2760  NEED=L(1)+L(3)+2*4
+         RETURN
+ 2680 CONTINUE
+ 2760 NEED=L(1)+L(3)+2*4
       IF (NEED>450740-O(34)) CALL KRUNC(2+NEED)
       A=O(S-2*(1)-1)
       Z=A+L(1)-1
       P=O(34)
       F=P+4
       I=F
-2840  IF(A>Z)GO TO 2841
+ 2840 IF(A>Z)GO TO 2841
          O(F)=O(A)
          F=F+1
          A=A+1
       GO TO 2840
-2841  CONTINUE
+ 2841 CONTINUE
       IF (O(I)/= O(84).OR.O(54)<=2) GO TO 2860
          CALL MESAGE(14, 21, O(S-2*(1)-1),O(S-2*(1)-2))
-         GO TO 99999
-2860  CONTINUE
+         RETURN
+ 2860 CONTINUE
       IF (O(I)<=O(105)) GO TO 2880
          CALL MESAGE(14, 9, O(S-2*(1)-1),O(S-2*(1)-2))
-         GO TO 99999
-2880  CONTINUE
+         RETURN
+ 2880 CONTINUE
       IF ((0<=O(54)).AND.(O(54)<=7)) GO TO 2900
          CALL MESAGE(14, 12, O(S-2*(1)-1),O(S-2*(1)-2))
-         GO TO 99999
-2900  CONTINUE
+         RETURN
+ 2900 CONTINUE
       I=O(I) + 1145 + O(54)*120
       O(P)=O(I)
       IF(O(P)/= 0)O((O(P))+1)=P
@@ -1250,31 +1250,31 @@ C      D-LINK PAT         CAT PTR   MARK PAT
          DO J = 1,K
             O(F-J)=O(E-J)
          END DO
-2920  CONTINUE
+ 2920 CONTINUE
       IF (O(13)>0) CALL MACTRC(15,P,R)
       O(34)= P +NEED
       O(60)=450740-O(34)
       O(61)=(100*O(60))/(450740-2655)
-99999 RETURN
+ RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
-      SUBROUTINEDOIT(A,Z)
+!_______________________________________________________________________
+!__________________________________________
+      SUBROUTINE DOIT(A,Z)
       implicit none
       integer a,z
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   s,x,t,p
       DIMENSION S(200)
       save      s,x,t,p
       X=0
-CBCDEFGHIJKLMNQRUVWY
+!BCDEFGHIJKLMNQRUVWY
       T=Z
-2940  IF(T<A)GO TO 2941
+ 2940 IF(T<A)GO TO 2941
          IF (O(T)/= O(95)) GO TO 2960
             IF (O(T-1)/= O(94)) GO TO 2980
                S(X+1)=T+1
@@ -1282,13 +1282,13 @@ CBCDEFGHIJKLMNQRUVWY
                X=X+2
                T=T-1
                GO TO 2970
-2980           S(X+1)= T+1
+ 2980          S(X+1)= T+1
                X=X+1
-2990           IF(O(T)==O(107).AND.O(T+1)==25)GO TO 2991
+ 2990          IF(O(T)==O(107).AND.O(T+1)==25)GO TO 2991
                   T=T-1
-                  IF(T<A)GO TO 99999
+                  IF(T<A)RETURN
                GO TO 2990
-2991           CONTINUE
+ 2991          CONTINUE
                P=T+6
                O(P-1)= S(X)-P
                X=X-1
@@ -1298,55 +1298,55 @@ CBCDEFGHIJKLMNQRUVWY
                   O(P-2)= O(P-3)-2
                   X=X-3
                   GO TO 3000
-3010              O(P-2)=S(X)-P
+ 3010             O(P-2)=S(X)-P
                   O(P-3)=S(X)-P
                   O(P-4)=S(X)-P
                   X=X-1
-3000           CONTINUE
-2970        CONTINUE
+ 3000          CONTINUE
+ 2970       CONTINUE
             GO TO 2950
-2960        IF  (O(T)/= O(94))GO TO 3020
+ 2960       IF  (O(T)/= O(94))GO TO 3020
             S(X+1)= T
             X=X+1
-2950     CONTINUE
-3020     CONTINUE
+ 2950    CONTINUE
+ 3020    CONTINUE
          T=T-1
       GO TO 2940
-2941  CONTINUE
-99999 RETURN
+ 2941 CONTINUE
+ RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       SUBROUTINE KRUNC(R)
       implicit none
       integer    r
       DIMENSION O(600000)
-CABEFGHIJKLQTUVWXYZ
+!ABEFGHIJKLQTUVWXYZ
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,n,d,p,s,c,i
       save    m,n,d,p,s,c,i
       IF (O(35)==0) GO TO 3040
          M=O(35)
-3050     IF(M==O(34))GO TO 3051
+ 3050    IF(M==O(34))GO TO 3051
             IF (O(M+2)<0) GO TO 3070
                IF(O(M)/= 0)O((O(M))+1)=O(M+1)
                O(O(M+1))=O(M)
-3070        CONTINUE
+ 3070       CONTINUE
             O(M+2)=O(90)
             M=O(M+3)
          GO TO 3050
-3051     CONTINUE
-3040  CONTINUE
+ 3051    CONTINUE
+ 3040 CONTINUE
       N=2655
       M=O(N+3)
       D=0
-C PREDECESSOR  SUCCESSOR    CONCAT
+! PREDECESSOR  SUCCESSOR    CONCAT
       O(O(34))=0
-3080  IF(N==O(34))GO TO 3081
+ 3080 IF(N==O(34))GO TO 3081
          M=N
          N= O(M+3)
          P=O(M+1)
@@ -1355,27 +1355,27 @@ C PREDECESSOR  SUCCESSOR    CONCAT
          IF (C/= O(90)) GO TO 3100
             D=D+ N-M
             GO TO 3080
-3100     CONTINUE
+ 3100    CONTINUE
          IF (S>0) O(S+1)=O(S+1)-D
          IF (C>0) O(N+1)=O(N+1)-D
          O(P)=O(P)-D
          O(M+3)=O(M+3)-D
-C   MOVE IT
+!   MOVE IT
          DO I = M,N
             O(I-D)=O(I)
          END DO
       GO TO 3080
-3081  CONTINUE
+ 3081 CONTINUE
       O(34)=O(34)-D
       O(O(34))=0
       IF (R>D)CALL MESAGE(15, 6, 0,0)
       O(60)=450740-O(34)
       O(61)=(100*O(60))/(450740-2655)
       CALL MESAGE(13,1,D,0)
-99999 RETURN
+       RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       integer FUNCTION NIB(L,B)
       implicit none
       integer  l,b
@@ -1383,8 +1383,8 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,n
       save    m,n
       M=1
@@ -1404,10 +1404,10 @@ C__________________________________________
          N=-N
       END IF
       NIB=N
-99999 RETURN
+       RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       integer FUNCTION LLONG(LOC,NUM,B,IND)
       implicit none
       integer  loc,num,b,ind
@@ -1415,11 +1415,11 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer n,l,i,j,k
       save    n,l,i,j,k
-      IF(O(68)/= 0)GO TO 99999
+      IF(O(68)/= 0)RETURN
       N=IABS(NUM)
       L=LOC
       I=N/B
@@ -1432,7 +1432,7 @@ C__________________________________________
          I=I/B
          J=J+1
       END DO
-CCOUNT DIGITS IN EXPANSION
+!COUNT DIGITS IN EXPANSION
       IF (NUM<0) THEN
          L=L+1
          O(L)=42
@@ -1445,10 +1445,10 @@ CCOUNT DIGITS IN EXPANSION
          J=J-1
          IF(J<=0)EXIT
       END DO
-99999 RETURN
+ RETURN
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       integer FUNCTION LEXP(A,Z)
       implicit none
       integer  a,z
@@ -1456,11 +1456,11 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   p,n
       DIMENSION P(100)
-CFGHIJKLMQRSUVWY
+!FGHIJKLMQRSUVWY
       EQUIVALENCE(O(49),N),( O(2555),P(1) )
       integer ispec
       integer b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
@@ -1496,8 +1496,8 @@ CFGHIJKLMQRSUVWY
             IF(ISPEC(MP,MQ,MV,MU,LONE)/= 3)LEXP=0
          END IF
          IF(O(D)==89) LEXP=1-LEXP
-         GO TO 99999
-3230  CONTINUE
+         RETURN
+ 3230 CONTINUE
       LEXP=0
       O(20)=0
       N=2355
@@ -1515,10 +1515,10 @@ CFGHIJKLMQRSUVWY
                B=B+1
             END DO
             CYCLE
-3290        IF  (O(B)/= O(76))GO TO 3310
+ 3290       IF  (O(B)/= O(76))GO TO 3310
             B=B+1
             CYCLE
-3310        T=B
+ 3310       T=B
             IF (10>O(T).OR.O(T)>29) GO TO 3330
                X=O(T)*O(T+1)
                T=T+2
@@ -1529,51 +1529,51 @@ CFGHIJKLMQRSUVWY
                X=X/20
                IF((10<X).AND.(X<33))GO TO 3360
                GO TO 3370
-3330        CONTINUE
+ 3330       CONTINUE
             X=O(T)
             T=T+1
             IF (X/= 45.OR.O(T)/= 45) GO TO 3390
                T=T+1
                X=36
                GO TO 3380
-3390           IF  (X/= 89)GO TO 3400
+ 3390          IF  (X/= 89)GO TO 3400
                X=29
                IF (O(T)==41) THEN
                   T=T+1
                   X=16
                END IF
                GO TO 3380
-3400           IF  (X/= 85)GO TO 3430
+ 3400          IF  (X/= 85)GO TO 3430
                X=30
                IF (O(T)==41) THEN
                   T=T+1
                   X=14
                END IF
                GO TO 3380
-3430           IF  (X/= 41)GO TO 3460
+ 3430          IF  (X/= 41)GO TO 3460
                X=18
                IF (O(T)==86) THEN
                   T=T+1
                   X=11
                END IF
                GO TO 3380
-3460           IF  (X/= 86)GO TO 3490
+ 3460          IF  (X/= 86)GO TO 3490
                X=23
                IF (O(T)==41) THEN
                   T=T+1
                   X=11
                END IF
                GO TO 3380
-3490           IF  (X/= (87))GO TO 3520
+ 3490          IF  (X/= (87))GO TO 3520
                X=32
                GO TO 3380
-3520           IF  (X/= (88))GO TO 3530
+ 3520          IF  (X/= (88))GO TO 3530
                X=13
-3380        CONTINUE
-3530        CONTINUE
+ 3380       CONTINUE
+ 3530       CONTINUE
             IF(P(X)==0)GO TO 3370
-3360        IF(X<10.OR.X>O(81) .OR. (X==O(81).AND.O(20)==0))
-     *      GO TO 3370
+ 3360       IF(X<10.OR.X>O(81) .OR. (X==O(81).AND.O(20)==0)) &
+      &      GO TO 3370
             IF (P(X)/100<=P(O(N-1))/100.AND.X/= O(80)) GO TO 3550
                O(20)=0
                O(49)=O(49)+1
@@ -1583,69 +1583,69 @@ CFGHIJKLMQRSUVWY
                IF(O(49)>2454)CALL MESAGE(15, 23, 0,0)
                B=T
                CYCLE
-3550        CONTINUE
+ 3550       CONTINUE
             IF (N==MNN) THEN
                LEXP=O(N)
-               GO TO 99999
+               RETURN
             END IF
             K=P(O(N-1))
             O(20)=1
             JMP=K-((K/100)*100)-1
-            GO TO (2000,3580,3590,3600,3610,3620,3630,3640,3650,3660,3670,
-     *      3680,3690,3700,3710),JMP
-3630        IF (O(N)==0) THEN
+            GO TO (2000,3580,3590,3600,3610,3620,3630,3640,3650,3660,3670, &
+      &      3680,3690,3700,3710),JMP
+ 3630       IF (O(N)==0) THEN
                CALL MESAGE(14, 10, 0,0)
                EXIT
             END IF
             O(N-2) = O(N-2) / O(N)
             GO TO 3740
-3640        O(N-2) = O(N-2) * O(N)
+ 3640       O(N-2) = O(N-2) * O(N)
             GO TO 3740
-3620        O(N-2) = O(N-2) + O(N)
+ 3620       O(N-2) = O(N-2) + O(N)
             GO TO 3740
-3610        O(N-2) = O(N-2) - O(N)
+ 3610       O(N-2) = O(N-2) - O(N)
             GO TO 3740
-3650        O(N-2) = O(N-2) **O(N)
+ 3650       O(N-2) = O(N-2) **O(N)
             GO TO 3740
-2000        O(N-2) = O(N)
+ 2000       O(N-2) = O(N)
             B=T
             GO TO 3740
-3600        O(N-2) = 1-O(N)
+ 3600       O(N-2) = 1-O(N)
             GO TO 3740
-3680        IF(O(N-2) /=  O(N))GO TO 3750
+ 3680       IF(O(N-2) /=  O(N))GO TO 3750
             GO TO 3760
-3690        IF(O(N-2) == O(N))GO TO 3750
+ 3690       IF(O(N-2) == O(N))GO TO 3750
             GO TO 3760
-3670        IF(O(N-2) <= O(N))GO TO 3750
+ 3670       IF(O(N-2) <= O(N))GO TO 3750
             GO TO 3760
-3700        IF(O(N-2) > O(N))GO TO 3750
+ 3700       IF(O(N-2) > O(N))GO TO 3750
             GO TO 3760
-3660        IF(O(N-2) >= O(N))GO TO 3750
+ 3660       IF(O(N-2) >= O(N))GO TO 3750
             GO TO 3760
-3710        IF(O(N-2) < O(N))GO TO 3750
+ 3710       IF(O(N-2) < O(N))GO TO 3750
             GO TO 3760
-3590        IF(O(N-2)==1 .AND. O(N)==1)GO TO 3750
+ 3590       IF(O(N-2)==1 .AND. O(N)==1)GO TO 3750
             GO TO 3760
-3580        IF(O(N-2)==1 .OR. O(N)==1)GO TO 3750
+ 3580       IF(O(N-2)==1 .OR. O(N)==1)GO TO 3750
             GO TO 3760
-3750        O(N-2)=1
+ 3750       O(N-2)=1
             GO TO 3740
-3760        O(N-2)=0
-3740        N=N-2
+ 3760       O(N-2)=0
+ 3740       N=N-2
       END DO
-3370  CALL MESAGE(14, 23, A,Z+1)
-99999 RETURN
+ 3370 CALL MESAGE(14, 23, A,Z+1)
+ RETURN
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE NXTCRD
       implicit none
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer mxr,mxt,mxn
       EQUIVALENCE(O(38),MXR),(O(36),MXT),(O(37),MXN)
       integer llong,linf
@@ -1653,7 +1653,7 @@ C________________________________________
       save    k,j,w,i,l,m,y,nerd
       O(62)=0
       IF(O(52)==2) CALL MESAGE(16,1,0,0)
-3770  CALL RW(0,O(9),325,MXR)
+ 3770 CALL RW(0,O(9),325,MXR)
       IF (O(52)==1) THEN
          O(52)=0
          O(9)=O(O(50))
@@ -1748,7 +1748,7 @@ C________________________________________
          NERD=LINF(457,MXT,10)
       END IF
       IF(O(15)==1)GO TO 3770
-      IF (O(14)<2) GO TO 99999
+      IF (O(14)<2) RETURN
       J=456
       K=457
       DO WHILE(K<=MXT)
@@ -1777,12 +1777,12 @@ C________________________________________
          J=J+1
          O(J)=90
       END DO
-99999 RETURN
+ RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!__________________________________________
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE CCCARD(K)
       implicit none
       integer k
@@ -1790,56 +1790,56 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer n5
       integer jmp,i
       save    jmp,i
       JMP=K
-      GO TO (680,4240,310,4250,3640,4260,3640,3640,4270,3640,3640,1970,
-     *1390,1980,3640,3640,2010,2020,2030,2040,2050),JMP
-CABCDEFGHJLMNPQRSTUVWXYZ
-680   O(10) =N5(0,2,1)
-      GO TO 99999
-4240  O(37) =N5(0,132,132)
+      GO TO (680,4240,310,4250,3640,4260,3640,3640,4270,3640,3640,1970, &
+      &1390,1980,3640,3640,2010,2020,2030,2040,2050),JMP
+!ABCDEFGHJLMNPQRSTUVWXYZ
+ 680 O(10) =N5(0,2,1)
+      RETURN
+ 4240 O(37) =N5(0,132,132)
       O(38)=324+O(37)
       O(36)=456+O(37)
-      GO TO 99999
-310   O(41)=N5(10,132,132)
+      RETURN
+ 310 O(41)=N5(10,132,132)
       O(43)=456+O(41)
       O(42)=324+O(41)
-      GO TO 99999
-4250  O(13)=N5(0,2,0)
-      GO TO 99999
-4260  O(15) =1
-      GO TO 99999
-4270  O(53)=N5(0,50,2)
-      GO TO 99999
-1970  O(21)=1
-      GO TO 99999
-1390  O(15) =0
-      GO TO 99999
-1980  O(21)=0
-      GO TO 99999
-2010  O(26)=N5(0,1,1)
-      GO TO 99999
-2020  I =N5(1,99,8)
+      RETURN
+ 4250 O(13)=N5(0,2,0)
+      RETURN
+ 4260 O(15) =1
+      RETURN
+ 4270 O(53)=N5(0,50,2)
+      RETURN
+ 1970 O(21)=1
+      RETURN
+ 1390 O(15) =0
+      RETURN
+ 1980 O(21)=0
+      RETURN
+ 2010 O(26)=N5(0,1,1)
+      RETURN
+ 2020 I =N5(1,99,8)
       REWIND I
-      GO TO 99999
-2030  O(30)=N5(0,2,0)
-      GO TO 99999
-2040  O(29)=N5(0,9,0)
-      GO TO 99999
-2050  O(50)=O(50)+1
+      RETURN
+ 2030 O(30)=N5(0,2,0)
+      RETURN
+ 2040 O(29)=N5(0,9,0)
+      RETURN
+ 2050 O(50)=O(50)+1
       O(O(50))=O(9)
       IF(O(50)>2504)CALL MESAGE(15, 30, 0,0)
       O(9)=N5(1,99,O(9))
-      GO TO 99999
-3640  CALL MESAGE(14, 22, 0,0)
-99999 RETURN
+      RETURN
+ 3640 CALL MESAGE(14, 22, 0,0)
+ RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       integer FUNCTION N5(L,M,K)
       implicit none
       integer  l,m,k
@@ -1847,8 +1847,8 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer nib
       integer j
       save    j
@@ -1857,11 +1857,11 @@ C__________________________________________
       IF ((L<=N5).AND.(N5<=M)) GO TO 4290
          CALL MESAGE(14, 3, 0,0)
          N5=K
-4290  CONTINUE
-99999 RETURN
+ 4290 CONTINUE
+         RETURN
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE MACTRC(W,R,S)
       implicit none
       integer  w,r,s
@@ -1869,35 +1869,35 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer k,m,t,n
       save    k,m,t,n
-      IF (O(23)>0.AND.O(29)<3.AND.W/= 4)GO TO 99999
+      IF (O(23)>0.AND.O(29)<3.AND.W/= 4)RETURN
       IF (W/= 2) GO TO 4310
          CALL DUMDUM(175,90,37,37,37,22,42,29,27,34,90)
          O(175+4)=(O(32)-1145)/120
          CALL CRIT(R,S)
          GO TO 4300
-4310     IF  (W/= 4)GO TO 4320
+ 4310    IF  (W/= 4)GO TO 4320
          CALL DUMDUM(175,90,45,28,29,27,10,23,16,14,90)
          CALL CRIT(R,S)
          GO TO 4300
-4320     IF  (W/= 5)GO TO 4330
+ 4320    IF  (W/= 5)GO TO 4330
          CALL DUMDUM(175,90,37,10,16,10,18,23,28,29,90)
          CALL CRIT(R,S)
-4300  CONTINUE
-4330  CONTINUE
+ 4300 CONTINUE
+ 4330 CONTINUE
       IF (W/= 33) GO TO 4350
          IF (O(23)/= 0) GO TO 4370
             CALL DUMDUM(175,90,90,27,14,13,30,12,14,13,90)
             GO TO 4360
-4370        CALL DUMDUM(175,90,90,90,90,90,23,14,28,29,90)
+ 4370       CALL DUMDUM(175,90,90,90,90,90,23,14,28,29,90)
             O(175+3)=O(23)
-4360     CONTINUE
+ 4360    CONTINUE
          CALL CRIT(R+1,S+1)
          GO TO 4340
-4350     IF  (W/= 15)GO TO 4380
+ 4350    IF  (W/= 15)GO TO 4380
          CALL DUMDUM(175,90,90,13,14,15,18,23,14,13,90)
          CALL CRIT(R+4,O(R+3))
          IF (R+4>=O(R+3)) GO TO 4400
@@ -1905,22 +1905,22 @@ C________________________________________
             O(175+2)=O(54)
             CALL CRIT(S+4,O(S+3))
             GO TO 4390
-4400        CALL DUMDUM(175,90,23,30,21,21,90,31,10,21,90)
+ 4400       CALL DUMDUM(175,90,23,30,21,21,90,31,10,21,90)
             CALL CRIT(S,S)
-4390     CONTINUE
+ 4390    CONTINUE
          GO TO 4340
-4380     IF  (W/= 12)GO TO 4410
+ 4380    IF  (W/= 12)GO TO 4410
          CALL DUMDUM(175,90,10,25,25,14,23,13,14,13,90)
          CALL CRIT(O(S-2*(3)-1),O(S-2*(3)-2) )
          CALL DUMDUM(175,90,90,90,90,90,90,90,29,24,90)
          CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
          GO TO 4340
-4410     IF  (W/= 13)GO TO 4420
+ 4410    IF  (W/= 13)GO TO 4420
          CALL DUMDUM(175,90,90,27,14,22,24,31,14,13,90)
          CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
          GO TO 4340
-4420     IF  (W/= 22)GO TO 4430
-         IF(O(R+4)<0)GO TO 99999
+ 4420    IF  (W/= 22)GO TO 4430
+         IF(O(R+4)<0)RETURN
          CALL DUMDUM(175,90,90,22,10,29,12,17,14,13,90)
          CALL CRIT(R+4,O(R+3) )
          K=O(S-1)
@@ -1932,13 +1932,13 @@ C________________________________________
                N=O(S-2*(M)-2)
                IF (T/= N) CALL CRIT(T,N)
             END DO
-4450     CONTINUE
-4340  CONTINUE
-4430  CONTINUE
-99999 RETURN
+ 4450    CONTINUE
+ 4340 CONTINUE
+ 4430 CONTINUE
+ RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       SUBROUTINE CRIT(A,Z)
       implicit none
       integer  a,z
@@ -1946,14 +1946,14 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,c
       save    b,c
       B=A
-4470  IF(B>=Z)GO TO 4471
+ 4470 IF(B>=Z)GO TO 4471
          C=175+9
-4480     IF(C>=246.OR.B>=Z)GO TO 4481
+ 4480    IF(C>=246.OR.B>=Z)GO TO 4481
             C=C+1
             O(C)=O(B)
             B=B+1
@@ -1962,15 +1962,15 @@ C__________________________________________
             IF(O(C)==-1)O(C)=74
             IF(O(C)==-2)O(C)=82
          GO TO 4480
-4481     CONTINUE
+ 4481    CONTINUE
          CALL RW(33,O(56),175,C)
          CALL DUMDUM(175,90,90,90,90,90,90,90,90,90,90)
       GO TO 4470
-4471  CONTINUE
-99999 RETURN
+ 4471 CONTINUE
+       RETURN
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE MESAGE (LEVEL,NO,K1,K2)
       implicit none
       integer level,no,k1,k2
@@ -1978,8 +1978,8 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common/junk/ verbose
       logical verbose
       IF(LEVEL==14 .OR. LEVEL==15)O(63)=O(63)+1
@@ -1988,39 +1988,39 @@ C________________________________________
       IF (LEVEL/= 13) GO TO 4500
          CALL FIND(13,2,O(60))
          CALL FIND(13,3,O(61))
-4500  CONTINUE
+ 4500 CONTINUE
       IF (LEVEL>14) GO TO 4520
          IF(O(63)<100)RETURN
          CALL FIND(15,10,0)
-4520  CONTINUE
+ 4520 CONTINUE
       IF (O(55)/= O(86).AND.O(55)/= O(87)) GO TO 4540
          O(63)=O(63)+1
          IF(O(55)==O(86)) CALL FIND(16,5,0)
          IF(O(55)==O(87))CALL FIND(16,4,0)
-4540  CONTINUE
+ 4540 CONTINUE
       IF(O(47)>2255.OR.O(48)>2305)O(63)=O(63)+1
       IF (O(48)<=2305) GO TO 4560
          CALL FIND(16,3,O(48)-2305)
-4560  CONTINUE
-4570  IF(O(47)<=2255)GO TO 4571
+ 4560 CONTINUE
+ 4570 IF(O(47)<=2255)GO TO 4571
          CALL FIND(16,2,O(O(47)))
          O(47)=O(47)-1
       GO TO 4570
-4571  CONTINUE
+ 4571 CONTINUE
       CALL FIND(13,3,O(61))
       IF (O(63)/= 0) GO TO 4590
          CALL FIND(16,6,0)
          GO TO 4580
-4590     CALL FIND(16,7,O(63))
+ 4590    CALL FIND(16,7,O(63))
          write(6,*) 'compilation error (stop 12)'
          call exit(12) !stop 12
-4580  CONTINUE
+ 4580 CONTINUE
       IF (O(59)==0)CALL INITAL(2)
       if( verbose ) write(6,*) 'OK'
       call exit(0) !stop 0
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       SUBROUTINE FIND(L,N,V)
       implicit none
       integer l,n,v
@@ -2028,44 +2028,44 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer llong
       integer a,c,q,r,s,nerd,k
       save    a,c,q,r,s,nerd,k
       A=175
       C=A+9
       Q=1865+L
-680   IF (O(Q)==0) GO TO 4610
+ 680 IF (O(Q)==0) GO TO 4610
          Q=O(Q)
          IF(O(Q+5)/= N)GO TO 680
          R=O(Q+2)+4
          S=O(O(Q+2)+3)
-4620     IF(R>=S)GO TO 4621
+ 4620    IF(R>=S)GO TO 4621
             C=C+1
             O(C)=O(R)
             R=R+1
          GO TO 4620
-4621     CONTINUE
+ 4621    CONTINUE
          GO TO 4600
-4610     C=C+LLONG(C,N,10,0)
-4600  CONTINUE
+ 4610    C=C+LLONG(C,N,10,0)
+ 4600 CONTINUE
       IF(L==15) CALL DUMDUM(175,90,45,45,45,15,10,29,10,21,90)
       IF(L==14) CALL DUMDUM(175,90,45,32,10,27,23,18,23,16,90)
       IF (L/= 13.AND.L/= 16) GO TO 4640
          CALL DUMDUM(175,90,90,90,90,90,90,90,90,90,90)
          IF(V/= 0) NERD=LLONG(A,V,10,0)
-4640  CONTINUE
+ 4640 CONTINUE
       CALL RW(33,O(56),A,C)
       IF (O(63)>0) CALL RW(23,O(57),A,C)
       DO K = A,C
          O(K)=O(76)
       END DO
       C=175+8
-99999 RETURN
+      RETURN
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       integer FUNCTION LINF(A,Z,IND)
       implicit none
       integer  a,z,ind
@@ -2073,20 +2073,20 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer llong
       integer last,kur,kit,kut,kst,h,b,i,j,npl,d,koff,c,limc,k
-C     LINF modes: packed comments and rule diagnostics.
+!     LINF modes: packed comments and rule diagnostics.
       integer, parameter :: linf_comment_mode = 12
       integer, parameter :: linf_rule_diagnostic_mode = 15
       DATA LAST/0/,KUR/0/,KIT/1/,KUT/0/
       save    last,kur,kit,kut,kst,h,b,i,j,npl,d,koff,c,limc,k
       LINF=A-1
-CCEFGLMNPQRS UVWXY
+!CEFGLMNPQRS UVWXY
       O(62)=0
-      IF (IND==linf_comment_mode .AND. (O(25)==0.OR.O(10)==1
-     * .OR.O(96)==O(A)))GO TO 99999
+      IF (IND==linf_comment_mode .AND. (O(25)==0.OR.O(10)==1 &
+      & .OR.O(96)==O(A)))RETURN
       KST=0
       H=0
       B=A
@@ -2100,93 +2100,93 @@ CCEFGLMNPQRS UVWXY
       IF(KIT/= 0)GO TO 430
       KUT=KUT-1
       KIT=1
-430   CONTINUE
+ 430 CONTINUE
       DO J = 175,254
          O(J)=O(76)
       END DO
       IF (IND/= linf_rule_diagnostic_mode) GO TO 4680
-4690     IF(I>=181.OR.B>Z)GO TO 4691
+ 4690    IF(I>=181.OR.B>Z)GO TO 4691
             IF (O(B)/= O(76)) GO TO 4710
                B=B+1
                GO TO 4690
-4710        CONTINUE
+ 4710       CONTINUE
             IF (0>O(B).OR.O(B)>9) GO TO 4730
                O(I)=O(B)
                I=I+1
                B=B+1
                GO TO 4720
-4730           GO TO 4691
-4720        CONTINUE
+ 4730          GO TO 4691
+ 4720       CONTINUE
          GO TO 4690
-4691     CONTINUE
+ 4691    CONTINUE
          NPL=65
          D=45
          KOFF=7
          GO TO 4670
-4680     NPL=71
+ 4680    NPL=71
          D=12
          O(175)=D
          KOFF=MAX(MIN(80,O(39)),2)
-4670  CONTINUE
+ 4670 CONTINUE
       IF (B<=Z) GO TO 4750
          IF (I<=175) GO TO 4770
             CALL RW(33,O(57),175,181)
             IF(IND==linf_rule_diagnostic_mode)CALL MESAGE(14, 14, 0,0)
-            GO TO 99999
-4770     CONTINUE
-4750  CONTINUE
+            RETURN
+ 4770    CONTINUE
+ 4750 CONTINUE
       C=174+KOFF+KUT*O(18)
       IF(KUT>LAST)C=C-O(18)
       IF(C>174+50)C=174+7
       I=C
-4780  IF(B>Z)GO TO 4781
+ 4780 IF(B>Z)GO TO 4781
          LIMC=MIN0(B+NPL,Z)
-4790     IF(B>LIMC.OR.I>246)GO TO 4791
+ 4790    IF(B>LIMC.OR.I>246)GO TO 4791
             IF (IND/= linf_rule_diagnostic_mode) GO TO 4810
                IF (O(17)/= 1) GO TO 4830
                   IF (O(B)/= O(105)) GO TO 4850
                      IF(I>246-4)GO TO 4791
                      H=1
-4860                 IF(O(B+H)==O(106))GO TO 4861
+ 4860                IF(O(B+H)==O(106))GO TO 4861
                         H=H+1
                      GO TO 4860
-4861                 CONTINUE
+ 4861                CONTINUE
                      O(B+H)=O(76)
                      IF (H/= 1) GO TO 4880
                         O(B)=O(86)
                         H=0
                         GO TO 4870
-4880                    I=I+LLONG(I-1,H-1,10,0)
+ 4880                   I=I+LLONG(I-1,H-1,10,0)
                         O(I)=17
                         B=B+1
                         I=I+1
-4870                 CONTINUE
-4850              CONTINUE
+ 4870                CONTINUE
+ 4850             CONTINUE
                   GO TO 4820
-4830              IF (O(B)/= O(86)) GO TO 4900
+ 4830             IF (O(B)/= O(86)) GO TO 4900
                      O(I)=O(B)
                      I=I+1
-4900              CONTINUE
-4820           CONTINUE
-4810        CONTINUE
+ 4900             CONTINUE
+ 4820          CONTINUE
+ 4810       CONTINUE
             IF (O(B)/= O(70)) GO TO 4920
                B=B+1
                GO TO 4791
-4920        CONTINUE
+ 4920       CONTINUE
             O(I)=O(B)
             I=I+1
             B=B+1
          GO TO 4790
-4791     CONTINUE
+ 4791    CONTINUE
          IF (O(30)/= 1) GO TO 4940
             DO K = 1,8
                O(254-K+1)=O(O(36)-K+1)
             END DO
             GO TO 4930
-4940        IF  (O(30)/= 2)GO TO 4960
+ 4940       IF  (O(30)/= 2)GO TO 4960
             K=LLONG(247,O(19),10,0)
-4930     CONTINUE
-4960     CONTINUE
+ 4930    CONTINUE
+ 4960    CONTINUE
          DO K = 175,246
             IF (O(K)==O(105)) THEN
                O(K)=O(86)
@@ -2197,20 +2197,20 @@ CCEFGLMNPQRS UVWXY
                KST=0
             END IF
          END DO
-      IF (I<=246.OR.IND/= linf_rule_diagnostic_mode
-     *    .OR.KST/= 0) GO TO 5030
-5040        IF(O(I-1)>=38.OR.KST<=0)GO TO 5041
+      IF (I<=246.OR.IND/= linf_rule_diagnostic_mode &
+      &    .OR.KST/= 0) GO TO 5030
+ 5040       IF(O(I-1)>=38.OR.KST<=0)GO TO 5041
                B=B-1
                I=I-1
                O(I)=O(76)
             GO TO 5040
-5041        CONTINUE
-5030     CONTINUE
+ 5041       CONTINUE
+ 5030    CONTINUE
          DO K = 175,254
             IF(0>O(K).OR.O(K)>100-1)O(K)=100-1
             O(K)=O(689+O(K))
          END DO
-C   LOOKOUT
+!   LOOKOUT
          CALL RW(23,O(57),175,254)
          DO K = 175,254
             O(K)=O(76)
@@ -2219,20 +2219,20 @@ C   LOOKOUT
          IF (IND/= linf_rule_diagnostic_mode) GO TO 5080
             O(175+5)=D
             GO TO 5070
-5080        O(175)=D
-5070     CONTINUE
+ 5080       O(175)=D
+ 5070    CONTINUE
          IF (KST<=0) GO TO 5100
             I=181
             O(181-1)=45
-5100     CONTINUE
+ 5100    CONTINUE
       GO TO 4780
-4781  CONTINUE
+ 4781 CONTINUE
       LAST=KUR
       IF(IND==linf_comment_mode) O(A)=O(96)
-99999 RETURN
+ RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       SUBROUTINE DUMDUM(L,A,B,C,D,E,F,G,H,I,J)
       implicit none
       integer L,A,B,C,D,E,F,G,H,I,J
@@ -2240,8 +2240,8 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       O( L )=A
       O(L+1)=B
       O(L+2)=C
@@ -2252,10 +2252,10 @@ C__________________________________________
       O(L+7)=H
       O(L+8)=I
       O(L+9)=J
-99999 RETURN
+       RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       SUBROUTINE RW(N,I,J,K)
       implicit none
       integer  N,I,J,K
@@ -2265,20 +2265,20 @@ C__________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
-C  IN RW
-C
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+!  IN RW
+!
       common/nrcc/ oflag
       integer      oflag
-C
+!
       logical skip_input,is_format,is_quote,is_quote_last
       integer nr,m,kof,l,nrr,nformat,itmp,nfl
       integer nn6,nn7,jj,nfirst,ii,m1
       character tmp_string*8, tmp1_string*6, f_buffer(8192)
       equivalence (ch,tmp_string)
-      data nn6,nn7,nfl/0,0,0/,
-     &     skip_input/.false./, is_format/.false./, is_quote/.false./
+      data nn6,nn7,nfl/0,0,0/, &
+      &     skip_input/.false./, is_format/.false./, is_quote/.false./
       data nformat/0/
       save nn6,nn7,hc,ch,nformat,nfl
       save nr,m,kof,l,nrr,skip_input,is_format,is_quote
@@ -2321,14 +2321,13 @@ C
              ch(m) = ' '
            end if
          end do
-50       continue
          endif
          !write(44,1) (CH(M),M=1,NR)
          DO M=1,NR
             O(J+M-1)=ICHAR(CH(M))
          END DO
-         GO TO 99999
-5120  CONTINUE
+         RETURN
+ 5120 CONTINUE
        KOF=589
       IF (N==33) KOF=100+KOF
       IF (N==23) KOF=0
@@ -2358,7 +2357,7 @@ C
       do jj=nr,1,-1
           if( ch(jj)/= ' ' ) GO TO 20
       end do
-20    continue
+ 20 continue
       nrr = jj
 
       ! Check for C-preprocessor statements
@@ -2369,7 +2368,7 @@ C
       do jj=1,nrr
         if( ch(jj)/= ' ' ) GO TO 31
       end do
-31    continue
+ 31 continue
       if( ch(jj)=='#' ) then
         do ii=jj,nrr
           ch(ii+1-jj) = ch(ii)
@@ -2384,7 +2383,6 @@ C
           end do
         end if
       endif
-30    continue
 
       if(i==7) then
       if( is_format ) then
@@ -2394,7 +2392,7 @@ C
                   if( ch(jj)/= ' ' ) GO TO 66
               end do
           end if
-66        continue
+ 66     continue
           do ii=jj,Nrr
               nfl = nfl + 1
               if( nfl>8192 ) then
@@ -2428,7 +2426,7 @@ C
               do ii=nfl,1,-1
                   if( f_buffer(ii)/= ' ' ) GO TO 62
               end do
-62            continue
+ 62         continue
               nfl = ii
           end if
           if( nformat==0 ) then
@@ -2437,7 +2435,7 @@ C
               jj = 72
               if( nfl<= 72 ) jj = nfl
               write(i,'(72a1)') (f_buffer(ii),ii=1,jj)
-67            continue
+ 67         continue
               if( jj>=nfl ) then
                   nfl = 0
                   return
@@ -2455,7 +2453,7 @@ C
           do jj=7,nrr
               if( ch(jj)/= ' ') GO TO 61
           end do
-61        continue
+ 61     continue
           do ii=jj,jj+5
               itmp = ichar(ch(ii))
               if( itmp>=97.and.itmp<=122 ) itmp=itmp-32
@@ -2499,22 +2497,22 @@ C
       endif
 
       write(i,1) (ch(m),m=1,Nrr)
-1     FORMAT(132A1)
+ 1 FORMAT(132A1)
 
-C
-C	NRC PATCH TO PUT DATE AND TIME AT EACH PAGE THROW
-C
+!
+!	NRC PATCH TO PUT DATE AND TIME AT EACH PAGE THROW
+!
       if( CH(1)=='1' .AND. I==6 ) then
           write(I,'(T55,$)') ' '
           call egs_fdate(I)
           write(I,*)
       end if
-      GO TO 99999
-5130  O(52)=1
-99999 RETURN
+      RETURN
+ 5130 O(52)=1
+ RETURN
       END
-C_______________________________________________________________________
-C________________________________________
+!_______________________________________________________________________
+!________________________________________
       SUBROUTINE INITAL(IND)
       implicit none
       integer  ind
@@ -2523,8 +2521,8 @@ C________________________________________
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common /junk/ verbose
       logical verbose
       integer kount,k,iuni
@@ -2536,11 +2534,11 @@ C________________________________________
          O(15)=0
          O(9)=5
          WRITE(7,1)KOUNT,(O(K),K=1,KOUNT)
-1        FORMAT(10Z8)
-2        FORMAT(A1)
+ 1    FORMAT(10Z8)
+ 2    FORMAT(A1)
          if( verbose ) write(6,*) 'OK'
          call exit(0) !stop 0
-5200  CONTINUE
+ 5200 CONTINUE
       DO K = 7,600000
          O(K)=0
       END DO
@@ -2548,29 +2546,29 @@ C________________________________________
       O(56)=O_E
       O(57)=O_R
       IUNI=O(9)
-C     O(14)=O(4)   THIS IS NO LONGER USED IN FORTRAN 77 VERSIONS
+!     O(14)=O(4)   THIS IS NO LONGER USED IN FORTRAN 77 VERSIONS
       O(16)=O_U
       READ(IUNI,2)COUNT
       REWIND IUNI
       IF (COUNT=='C') GO TO 5230
          READ (IUNI,1) KOUNT,(O(K),K=1,KOUNT)
-C
-C     The following line
-C        CALL RW(23,O(57),325+2,325+79)
-C     has been changed to conform with our (NRCC) current version.
-C     The effect seems to be that the
-C     %%1Copyright ....
-C     line at the end of MORNEW77.RAW gets properly handled.
-C     Previous to this date, the old version was in our standard
-C     distribution.
-C     Alex Bielajew 88/09/20
-C
+!
+!     The following line
+!        CALL RW(23,O(57),325+2,325+79)
+!     has been changed to conform with our (NRCC) current version.
+!     The effect seems to be that the
+!     %%1Copyright ....
+!     line at the end of MORNEW77.RAW gets properly handled.
+!     Previous to this date, the old version was in our standard
+!     distribution.
+!     Alex Bielajew 88/09/20
+!
          CALL RW(23,O(57),325+3,325+79)
          CALL RW(23,O(56),325+2,325+79)
          REWIND IUNI
          GO TO 5220
-5230     CALL RAW()
-5220  CONTINUE
+ 5230    CALL RAW()
+ 5220 CONTINUE
       O(55)=O(76)
       O(40)=525371
       O(32)=1625
@@ -2586,18 +2584,18 @@ C
       O(O_W)=O(79)
       CALL DUMDUM(44,2105,2155,2205,2255,2305,2355,2455,2505,0,0)
       CALL NXTCRD()
-99999 RETURN
+       RETURN
       END
-C_______________________________________________________________________
-C__________________________________________
+!_______________________________________________________________________
+!__________________________________________
       SUBROUTINE RAW
       implicit none
       DIMENSION O(600000)
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer   p
       DIMENSION P(100)
       EQUIVALENCE(O(2555),P(1))
@@ -2616,16 +2614,15 @@ C__________________________________________
       DO K = 689,788
          O(K-100)=O(K)
       END DO
-CMAKE INPUT AND OUTPUT SAME
-C .(MNOSET+54)=.(MNOSET+41);     OUT-TRANSLATE L-ARROW TO =
+!MAKE INPUT AND OUTPUT SAME
+! .(MNOSET+54)=.(MNOSET+41);     OUT-TRANSLATE L-ARROW TO =
       CALL RW(23,O(56),325+41,404)
       CALL RW(23,O(57),325+41,404)
       DO K = 1,100
             J=O(589+K-1)
          O(889+J)=K-1
-C     WRITE(6,1) J,K-1
+!     WRITE(6,1) J,K-1
       END DO
-   1     FORMAT(2I5)
       O(31)=4
       O(34)=2655
       DO K = 1,10
@@ -2633,7 +2630,7 @@ C     WRITE(6,1) J,K-1
          O(K+110)=K+110
          O(100-K)=-K
       END DO
-C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
+!     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
       CALL DUMDUM(76, 90, 79, 78, 75, 38, 46, 74, 82, 83, 84)
       O(86)=77
       O(87)=80
@@ -2660,7 +2657,7 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
       P( 23)=615
       P( 30)=616
       O(31)=6
-99999 RETURN
+       RETURN
       END
 
       subroutine open_units
@@ -2670,8 +2667,8 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
       COMMON /IBM/O
       integer O
       integer O_B,O_E,O_R,O_S,O_V,O_U,O_W,O_X
-      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S),
-     &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
+      equivalence (O(1),O_B),(O(2),O_E),(O(3),O_R),(O(4),O_S), &
+      &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       common/nrcc/ oflag
       integer      oflag
       common/junk/verbose
@@ -2691,20 +2688,20 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
 
         OPEN(UNIT=1,file='fort.1',STATUS='OLD',err=11)
         GO TO 12
-11      call getarg(0,arg)
+ 11   call getarg(0,arg)
         write(6,'(a,a)') arg(1:lnblnk1(arg)),' called without arguments'
         write(6,'(a)') '  but file fort.1 does not exist! '
         write(6,'(a)') '  quiting now.'
         call exit(1) !stop 1
-12      continue
+ 12   continue
         OPEN(UNIT=5,file='fort.5',STATUS='OLD',ERR=6)
-6       OPEN(UNIT=6,file='fort.6',STATUS='UNKNOWN')
+ 6   OPEN(UNIT=6,file='fort.6',STATUS='UNKNOWN')
         OPEN(UNIT=7,file='fort.7',STATUS='UNKNOWN')
         OPEN(UNIT=2,file='fort.2',STATUS='OLD',ERR=3)
-3       OPEN(UNIT=3,file='fort.3',STATUS='OLD',ERR=4)
-4       OPEN(UNIT=4,file='fort.4',STATUS='OLD',ERR=8)
-8       OPEN(UNIT=8,file='fort.8',STATUS='OLD',ERR=9)
-9       CONTINUE
+ 3   OPEN(UNIT=3,file='fort.3',STATUS='OLD',ERR=4)
+ 4   OPEN(UNIT=4,file='fort.4',STATUS='OLD',ERR=8)
+ 8   OPEN(UNIT=8,file='fort.8',STATUS='OLD',ERR=9)
+ 9   CONTINUE
         O_B=1   ! hex/raw data unit number
         O_E=6   ! listing unit number
         O_R=7   ! fortran/hex output unit number
@@ -2713,60 +2710,60 @@ C     BLANK BAT BLB TRM LPR RPR LSB RSB LCB RCB
           write(6,'(a)') 'mortran3.exe: using standard fort.* units'
           write(6,'(/a,$)') '  Mortran compiling ... '
         end if
-c        call getarg(0,arg)
-c        write(6,'(a,a)') arg(1:lnblnk1(arg)),
-c     &    ': using standard fort.* units'
-c        write(6,'(/a,$)') '  Mortran compiling ... '
+!        call getarg(0,arg)
+!        write(6,'(a,a)') arg(1:lnblnk1(arg)),
+!     &    ': using standard fort.* units'
+!        write(6,'(/a,$)') '  Mortran compiling ... '
         return
 
       end if
 
       call getarg(1,arg)
       if( arg(1:)=='-help' ) then
-        write(6,'(/a/,a/)')
-     & 'Mortran version 3.2 by Ray F. Cowan with modifications by ',
-     & 'Dave Rogers, Alex Bielajew and Iwan Kawrakow'
+        write(6,'(/a/,a/)') &
+      & 'Mortran version 3.2 by Ray F. Cowan with modifications by ', &
+      & 'Dave Rogers, Alex Bielajew and Iwan Kawrakow'
         write(6,'(/a/)') 'Usage: mortran3.exe [ options ]'
-        write(6,'(a)')
-     & ' If no options are given, mortran3 will attempt to use the ',
-     & ' following units (fort.*) files:',
-     & '   1:  Read raw or hex mortran data ',
-     & '   5:  Read mortran job file ',
-     & '   7:  Write hex data (if data creation) or fortran output',
-     & '   8:  Write listing (useful for debuging)'
-        write(6,'(a)')
-     & ' Symbolik links to the raw or hex data and to the mortran job',
-     & ' file must therefore have been made prior to invoking the ',
-     & ' mortran3 command. It is also useful to link unit 7 and 8 to ',
-     & ' the Desired fortran and listing output files. '
-        write(6,'(a)')
-     & ' Note that the concept of symbolik links does not exist under',
-     & ' Windows and so, one has to either copy the input files to ',
-     & ' fort.1 and fort.5 or to use mortran3 with the options ',
-     & ' described below.'
+        write(6,'(a)') &
+      & ' If no options are given, mortran3 will attempt to use the ', &
+      & ' following units (fort.*) files:', &
+      & '   1:  Read raw or hex mortran data ', &
+      & '   5:  Read mortran job file ', &
+      & '   7:  Write hex data (if data creation) or fortran output', &
+      & '   8:  Write listing (useful for debuging)'
+        write(6,'(a)') &
+      & ' Symbolik links to the raw or hex data and to the mortran job', &
+      & ' file must therefore have been made prior to invoking the ', &
+      & ' mortran3 command. It is also useful to link unit 7 and 8 to ', &
+      & ' the Desired fortran and listing output files. '
+        write(6,'(a)') &
+      & ' Note that the concept of symbolik links does not exist under', &
+      & ' Windows and so, one has to either copy the input files to ', &
+      & ' fort.1 and fort.5 or to use mortran3 with the options ', &
+      & ' described below.'
         write(6,*)
-        write(6,'(a)')
-     & ' The current version recognizes the following options:',
-     & '   -d file_name  use file name as the name of the raw or hex',
-     & '                 data file',
-     & '   -c file_name  use file name as the name of a configuration',
-     & '                 file. This file must contain file names, one',
-     & '                 per line, that will be concatenated in the ',
-     & '                 order given and the result will be used as a',
-     & '                 mortran job input.',
-     & '   -f f1 f2 ...  similar as the -c option, but now the files ',
-     & '                 to be concatenated are given directly on the ',
-     & '                 command line as f1 f2 etc.'
-        write(6,'(a)')
-     & '   -o7 fname     write mortran3 output to the file fname',
-     & '                 this is either the hex data file in the ',
-     & '                 case of hex data generation or the fortran ',
-     & '                 result of the mortran compilation.',
-     & '   -o8 fname     write listing output to the file fname',
-     & '   -help         print this message and exit',
-     & '   -s            make the pre-processor run silently',
-     & '   -i            ignore missing files specified via -c or -f',
-     & '                 instead of aborting, as in the case without -i'
+        write(6,'(a)') &
+      & ' The current version recognizes the following options:', &
+      & '   -d file_name  use file name as the name of the raw or hex', &
+      & '                 data file', &
+      & '   -c file_name  use file name as the name of a configuration', &
+      & '                 file. This file must contain file names, one', &
+      & '                 per line, that will be concatenated in the ', &
+      & '                 order given and the result will be used as a', &
+      & '                 mortran job input.', &
+      & '   -f f1 f2 ...  similar as the -c option, but now the files ', &
+      & '                 to be concatenated are given directly on the ', &
+      & '                 command line as f1 f2 etc.'
+        write(6,'(a)') &
+      & '   -o7 fname     write mortran3 output to the file fname', &
+      & '                 this is either the hex data file in the ', &
+      & '                 case of hex data generation or the fortran ', &
+      & '                 result of the mortran compilation.', &
+      & '   -o8 fname     write listing output to the file fname', &
+      & '   -help         print this message and exit', &
+      & '   -s            make the pre-processor run silently', &
+      & '   -i            ignore missing files specified via -c or -f', &
+      & '                 instead of aborting, as in the case without -i'
         write(6,'(//)')
         call exit(0) !stop 0
       end if
@@ -2800,7 +2797,7 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
             end if
             nfe=j
           end do
-88        continue
+ 88     continue
         else if( arg(1:2)=='-d' ) then
           if( i<narg ) then
             call getarg(i+1,arg)
@@ -2850,25 +2847,25 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
             if( lnblnk1(next_file)>0 ) then
               inquire(file=next_file,exist=is_there)
               if( is_there ) then
-                if( verbose ) write(6,'(a,a)') '  -> appending ',
-     &                        next_file(1:lnblnk1(next_file))
+                if( verbose ) write(6,'(a,a)') '  -> appending ', &
+      &                        next_file(1:lnblnk1(next_file))
                 call add_file(12,next_file)
               else
                 if( ignore_missing ) then
-                  if( verbose ) write(6,'(a,a,a)') '  file "',
-     &              next_file(1:lnblnk1(next_file)),
-     &              '" does not exist. Ignoring it.'
+                  if( verbose ) write(6,'(a,a,a)') '  file "', &
+      &              next_file(1:lnblnk1(next_file)), &
+      &              '" does not exist. Ignoring it.'
                 else
-                  write(6,'(a,a,a)') '  file "',
-     &              next_file(1:lnblnk1(next_file)),
-     &              '" does not exist. Quiting now.'
+                  write(6,'(a,a,a)') '  file "', &
+      &              next_file(1:lnblnk1(next_file)), &
+      &              '" does not exist. Quiting now.'
                   call exit(99) !stop 99
                 end if
               end if
             end if
             GO TO 104
-102         next = .false.
-104         continue
+ 102       next = .false.
+ 104       continue
           end do
           close(11)
           write(12,'(/a)') '%%'
@@ -2879,8 +2876,8 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
           if( nfs==nfe ) then ! a single command line file
             call getarg(nfs,next_file)
             if( verbose ) then
-            write(6,'(a,a)') '  command line file: ',
-     &         next_file(1:lnblnk1(next_file))
+            write(6,'(a,a)') '  command line file: ', &
+      &         next_file(1:lnblnk1(next_file))
             end if
             open(5,file=next_file,status='old',err=101)
           else
@@ -2893,18 +2890,18 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
               call getarg(j,next_file)
               inquire(file=next_file,exist=is_there)
               if( is_there ) then
-                if( verbose ) write(6,'(a,a)') '  -> appending ',
-     &                        next_file(1:lnblnk1(next_file))
+                if( verbose ) write(6,'(a,a)') '  -> appending ', &
+      &                        next_file(1:lnblnk1(next_file))
                 call add_file(12,next_file)
               else
                 if( ignore_missing ) then
-                  if( verbose ) write(6,'(a,a,a)') '  file "',
-     &              next_file(1:lnblnk1(next_file)),
-     &              '" does not exist. Ignoring it.'
+                  if( verbose ) write(6,'(a,a,a)') '  file "', &
+      &              next_file(1:lnblnk1(next_file)), &
+      &              '" does not exist. Ignoring it.'
                 else
-                  write(6,'(a,a,a)') '  file "',
-     &              next_file(1:lnblnk1(next_file)),
-     &              '" does not exist. Quiting now.'
+                  write(6,'(a,a,a)') '  file "', &
+      &              next_file(1:lnblnk1(next_file)), &
+      &              '" does not exist. Quiting now.'
                   call exit(99) !stop 99
                 end if
               end if
@@ -2919,8 +2916,8 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
       end if
       if( no7>0 ) then
         call getarg(no7,arg)
-        if( verbose ) write(6,'(a,a)') '  fortran output: ',
-     &      arg(1:lnblnk1(arg))
+        if( verbose ) write(6,'(a,a)') '  fortran output: ', &
+      &      arg(1:lnblnk1(arg))
         open(7,file=arg(1:lnblnk1(arg)))
       else
         if( verbose ) write(6,'(a)') '  fortran output: fort.7'
@@ -2928,8 +2925,8 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
       end if
       if( no8>0 ) then
         call getarg(no8,arg)
-        if( verbose )write(6,'(a,a)') '  mortlst output: ',
-     &      arg(1:lnblnk1(arg))
+        if( verbose )write(6,'(a,a)') '  mortlst output: ', &
+      &      arg(1:lnblnk1(arg))
         open(8,file=arg(1:lnblnk1(arg)),err=101)
       else
         if( verbose )write(6,'(a)') '  mortlst output: fort.8'
@@ -2942,7 +2939,7 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
       oflag = 8
       return
 
-101   write(6,'(a,a,a)') ' file ',arg(1:lnblnk1(arg)),' does not exist!'
+ 101 write(6,'(a,a,a)') ' file ',arg(1:lnblnk1(arg)),' does not exist!'
       call exit(3) !stop 3
       end
 
@@ -2958,9 +2955,9 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
         read(99,'(a)',err=101,end=101) line
         lineno = lineno + 1
         if( lnblnk1(line)>80 ) then
-          write(6,'(a,i5,a,a,a)')
-     &      '*** Warning: line ',lineno,' in file ',
-     &     the_file(1:lnblnk1(the_file)),' is longer than 80 chars!'
+          write(6,'(a,i5,a,a,a)') &
+      &      '*** Warning: line ',lineno,' in file ', &
+      &     the_file(1:lnblnk1(the_file)),' is longer than 80 chars!'
         end if
         ! remove tabs
         do j=1,lnblnk1(line)
@@ -2974,13 +2971,13 @@ c        write(6,'(/a,$)') '  Mortran compiling ... '
           write(iu,*)
         end if
       end do
-101   continue
+ 101 continue
       close(99)
       return
 
-100   continue
-      write(6,'(a,a)') 'add_file: could not open file ',
-     &  the_file(1:lnblnk1(the_file))
+ 100 continue
+      write(6,'(a,a)') 'add_file: could not open file ', &
+      &  the_file(1:lnblnk1(the_file))
       call exit(4) !stop 4
       end
 
