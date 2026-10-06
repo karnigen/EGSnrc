@@ -831,13 +831,13 @@ CCDGHILM
             O_W=O_X
             GO TO 1690
             END IF
-1650        IF (KRAP==0.OR.KRAQ/= O(23)) GO TO 1900
+1650        IF (KRAP/=0 .AND. KRAQ==O(23)) THEN
                O_X=O_X+1
                O(O_S)=O(96)
                O(KRAP)=O_X-KRAP-1
                KRAP=0
                GO TO 1590
-1900        CONTINUE
+            END IF
             DO K = 1,6
                O(O(40)-K)=O(K)
             END DO
