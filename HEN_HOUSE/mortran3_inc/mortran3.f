@@ -911,131 +911,142 @@
       IF(O(O_B)<19.OR.O(O_B)>30) CALL MESAGE(15, 7, O_B-2,O_E)
       O_B=O_B+1
       JMP=O(O_B-1)-18
-      GO TO (1950,1960,1970,1390,1980,1990,2000,2010,2020,2030,2040,2050), &
-      &JMP
- 1950 T=O(O_B)+78
-      O_X=O_X+1
-      O(O_X)=O(T)
-      RETURN
- 1960 CALL KRUNC(0)
-      RETURN
- 1970 IF (O(O_B)/= 12) GO TO 2070
-         O_X=O_X+LLONG(O_X,O(L-O(O_B+1))+O(O_B+2),10,1)
-         O_B=O_B+2
-         RETURN
- 2070 CONTINUE
-      IF (O(O_B)/= 16) GO TO 2090
-         O(16)=O(16)+10
-         O_X=O_X+LLONG(O_X,O(16),10,0)
-         RETURN
- 2090 CONTINUE
-      IF (O(O_B)/= 28) GO TO 2110
-         O_B=O_B+1
-         O(47)=O(47)+1
-         O(O(47))=NIB(O_X,10)
-         IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
-         GO TO 2120
- 2110 CONTINUE
-      IF (O(O_B)/= 30) GO TO 2140
-         O_B=O_B+1
-         IF(O(O_B)==1)O(L-1)=O(L)
-         L=L-1
-         IF (L>=2255) GO TO 2160
-            CALL MESAGE(14, 7, 0,0)
-            L=L+1
- 2160    CONTINUE
-         GO TO 1300
- 2140 CONTINUE
-      CALL MESAGE(15, 7, O_B-2,O_E)
- 1390 IF (O(O_B)/= 28) GO TO 2180
-         O_B=O_B+1
-         O(48)=O(48)+1
-         O(O(48))=O(O_B)
-         IF(O(48)>2354)CALL MESAGE(15, 22, 0,0)
-         RETURN
- 2180 CONTINUE
-      IF (O(O_B)/= 27) GO TO 2200
-         O_B=O_B+1
-         O(M)=O(O_B)
-         RETURN
- 2200 CONTINUE
-      IF (O(O_B)/= 30) GO TO 2220
+      SELECT CASE (JMP)
+      CASE (1)
+         T=O(O_B)+78
          O_X=O_X+1
-         O(O_X)=O(M)
-         M=M-1
-         IF (M>=2305) GO TO 2240
-            CALL MESAGE(14, 8, 0,0)
-            M=M+1
- 2240    CONTINUE
+         O(O_X)=O(T)
          RETURN
- 2220 CONTINUE
-      CALL MESAGE(15, 7, O_B-2,O_E)
- 1980 IBG=O(O_X)
-      O_X=O_X-1+LLONG(O_X-1,IBG,10,1)
-      RETURN
- 1990 CALL DEFINE(O_S)
-      RETURN
- 2000 O(58)=1
-      O_B=O_B+4
-      O(67)=O_B+O(O_B-1)
-      O(66)=O_B+O(O_B-2)
-      O(65)=O_B+O(O_B-3)
-      O(64)=O_B+O(O_B-4)
-      O_B=O_B-1
-      RETURN
- 2010 O(16)=O(16)+10
-      O(47)=O(47)+1
-      O(O(47))=O(16)
-      IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
- 2120 IF (O(O_B)/= 1) GO TO 2260
-         Z=O(L-1)
-         O(L-1)=O(L)
-         O(L)=Z
- 2260 CONTINUE
- 1300 IF(O(O_B)/= 1.AND.O(O_B)/= 0) then
-        !write(6,*) ' Mortran compilation error (stop 18)'
-        write(6,*) 'compilation error (stop 18)'
-        call exit(18) !stop 18
-      endif
-      RETURN
- 2020 IUNI=O(O_B)
-      REWIND IUNI
-      RETURN
- 2040 IF(O(29)>=1) CALL MACTRC(22,O(22),O_S)
-      O_B=O_B-1
-      RETURN
- 2030 T=O(O_B)
-      O_B=O_B+1
-      IF (0>=O(O_B).OR.O(O_B)>=5) GO TO 2280
-         T=T+26*O(O_B)
+      CASE (2)
+         CALL KRUNC(0)
+         RETURN
+      CASE (3)
+         IF (O(O_B)==12) THEN
+            O_X=O_X+LLONG(O_X,O(L-O(O_B+1))+O(O_B+2),10,1)
+            O_B=O_B+2
+            RETURN
+         ELSE IF (O(O_B)==16) THEN
+            O(16)=O(16)+10
+            O_X=O_X+LLONG(O_X,O(16),10,0)
+            RETURN
+         ELSE IF (O(O_B)==28) THEN
+            O_B=O_B+1
+            O(47)=O(47)+1
+            O(O(47))=NIB(O_X,10)
+            IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
+            IF (O(O_B)==1) THEN
+               Z=O(L-1)
+               O(L-1)=O(L)
+               O(L)=Z
+            END IF
+         ELSE IF (O(O_B)==30) THEN
+            O_B=O_B+1
+            IF(O(O_B)==1)O(L-1)=O(L)
+            L=L-1
+            IF (L<2255) THEN
+               CALL MESAGE(14, 7, 0,0)
+               L=L+1
+            END IF
+         ELSE
+            CALL MESAGE(15, 7, O_B-2,O_E)
+            RETURN
+         END IF
+         IF(O(O_B)/=1.AND.O(O_B)/=0)THEN
+            write(6,*) 'compilation error (stop 18)'
+            call exit(18)
+         END IF
+         RETURN
+      CASE (4)
+         IF (O(O_B)==28) THEN
+            O_B=O_B+1
+            O(48)=O(48)+1
+            O(O(48))=O(O_B)
+            IF(O(48)>2354)CALL MESAGE(15, 22, 0,0)
+         ELSE IF (O(O_B)==27) THEN
+            O_B=O_B+1
+            O(M)=O(O_B)
+         ELSE IF (O(O_B)==30) THEN
+            O_X=O_X+1
+            O(O_X)=O(M)
+            M=M-1
+            IF (M<2305) THEN
+               CALL MESAGE(14, 8, 0,0)
+               M=M+1
+            END IF
+         ELSE
+            CALL MESAGE(15, 7, O_B-2,O_E)
+         END IF
+         RETURN
+      CASE (5)
+         IBG=O(O_X)
+         O_X=O_X-1+LLONG(O_X-1,IBG,10,1)
+         RETURN
+      CASE (6)
+         CALL DEFINE(O_S)
+         RETURN
+      CASE (7)
+         O(58)=1
+         O_B=O_B+4
+         O(67)=O_B+O(O_B-1)
+         O(66)=O_B+O(O_B-2)
+         O(65)=O_B+O(O_B-3)
+         O(64)=O_B+O(O_B-4)
+         O_B=O_B-1
+         RETURN
+      CASE (8)
+         O(16)=O(16)+10
+         O(47)=O(47)+1
+         O(O(47))=O(16)
+         IF(O(47)>2304)CALL MESAGE(15, 21, 0,0)
+         IF (O(O_B)==1) THEN
+            Z=O(L-1)
+            O(L-1)=O(L)
+            O(L)=Z
+         END IF
+         IF(O(O_B)/=1.AND.O(O_B)/=0)THEN
+            write(6,*) 'compilation error (stop 18)'
+            call exit(18)
+         END IF
+         RETURN
+      CASE (9)
+         IUNI=O(O_B)
+         REWIND IUNI
+         RETURN
+      CASE (10)
+         T=O(O_B)
          O_B=O_B+1
- 2280 CONTINUE
-      NBA=0
-      GO TO 2290
- 2050 T=121+O(O_B)
-      O_B=O_B+1
-      NBA=O(O_X)
-      O_X=O_X-1
- 2290 IF (O(O_B)/= 43) GO TO 2310
+         IF (0<O(O_B).AND.O(O_B)<5) THEN
+            T=T+26*O(O_B)
+            O_B=O_B+1
+         END IF
+         NBA=0
+      CASE (11)
+         IF(O(29)>=1) CALL MACTRC(22,O(22),O_S)
+         O_B=O_B-1
+         RETURN
+      CASE (12)
+         T=121+O(O_B)
+         O_B=O_B+1
+         NBA=O(O_X)
+         O_X=O_X-1
+      CASE DEFAULT
+         CALL MESAGE(15, 7, O_B-2,O_E)
+         RETURN
+      END SELECT
+      IF (O(O_B)==43) THEN
          O(T)=O(T)+1
-         RETURN
- 2310 CONTINUE
-      IF (O(O_B)/= 42) GO TO 2330
+      ELSE IF (O(O_B)==42) THEN
          O(T)=O(T)-1
-         RETURN
- 2330 CONTINUE
-      IF (O(O_B)/= 41) GO TO 2350
+      ELSE IF (O(O_B)==41) THEN
          O(T)=O(O_X)
          O_X=O_X-1
-         RETURN
- 2350 CONTINUE
-      IF (O(O_B)/= 12) GO TO 2370
+      ELSE IF (O(O_B)==12) THEN
          O_X=O_X+1
          O(O_X)=O(T)
          IF (NBA>1) O_X=O_X-1+LLONG(O_X-1,O(T),NBA,1)
-         RETURN
- 2370 CONTINUE
-      CALL MESAGE(15, 7, O_B-3,O_E)
+      ELSE
+         CALL MESAGE(15, 7, O_B-3,O_E)
+      END IF
       RETURN
       END
 !_______________________________________________________________________
@@ -1796,47 +1807,50 @@
       integer jmp,i
       save    jmp,i
       JMP=K
-      GO TO (680,4240,310,4250,3640,4260,3640,3640,4270,3640,3640,1970, &
-      &1390,1980,3640,3640,2010,2020,2030,2040,2050),JMP
 !ABCDEFGHJLMNPQRSTUVWXYZ
- 680 O(10) =N5(0,2,1)
+      SELECT CASE (JMP)
+      CASE (1)
+         O(10)=N5(0,2,1)
+      CASE (2)
+         O(37)=N5(0,132,132)
+         O(38)=324+O(37)
+         O(36)=456+O(37)
+      CASE (3)
+         O(41)=N5(10,132,132)
+         O(43)=456+O(41)
+         O(42)=324+O(41)
+      CASE (4)
+         O(13)=N5(0,2,0)
+      CASE (6)
+         O(15)=1
+      CASE (9)
+         O(53)=N5(0,50,2)
+      CASE (12)
+         O(21)=1
+      CASE (13)
+         O(15)=0
+      CASE (14)
+         O(21)=0
+      CASE (17)
+         O(26)=N5(0,1,1)
+      CASE (18)
+         I=N5(1,99,8)
+         REWIND I
+      CASE (19)
+         O(30)=N5(0,2,0)
+      CASE (20)
+         O(29)=N5(0,9,0)
+      CASE (21)
+         O(50)=O(50)+1
+         O(O(50))=O(9)
+         IF(O(50)>2504)CALL MESAGE(15, 30, 0,0)
+         O(9)=N5(1,99,O(9))
+      CASE (5,7,8,10,11,15,16)
+         CALL MESAGE(14, 22, 0,0)
+      CASE DEFAULT
+         O(10)=N5(0,2,1)
+      END SELECT
       RETURN
- 4240 O(37) =N5(0,132,132)
-      O(38)=324+O(37)
-      O(36)=456+O(37)
-      RETURN
- 310 O(41)=N5(10,132,132)
-      O(43)=456+O(41)
-      O(42)=324+O(41)
-      RETURN
- 4250 O(13)=N5(0,2,0)
-      RETURN
- 4260 O(15) =1
-      RETURN
- 4270 O(53)=N5(0,50,2)
-      RETURN
- 1970 O(21)=1
-      RETURN
- 1390 O(15) =0
-      RETURN
- 1980 O(21)=0
-      RETURN
- 2010 O(26)=N5(0,1,1)
-      RETURN
- 2020 I =N5(1,99,8)
-      REWIND I
-      RETURN
- 2030 O(30)=N5(0,2,0)
-      RETURN
- 2040 O(29)=N5(0,9,0)
-      RETURN
- 2050 O(50)=O(50)+1
-      O(O(50))=O(9)
-      IF(O(50)>2504)CALL MESAGE(15, 30, 0,0)
-      O(9)=N5(1,99,O(9))
-      RETURN
- 3640 CALL MESAGE(14, 22, 0,0)
- RETURN
       END
 !_______________________________________________________________________
 !__________________________________________
@@ -1950,10 +1964,10 @@
       &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer b,c
       save    b,c
-      B=A
- 4470 IF(B>=Z)GO TO 4471
+            B=A
+            DO WHILE (B<Z)
          C=175+9
- 4480    IF(C>=246.OR.B>=Z)GO TO 4481
+          DO WHILE (C<246.AND.B<Z)
             C=C+1
             O(C)=O(B)
             B=B+1
@@ -1961,13 +1975,11 @@
             IF(O(C)>100+19)O(C)=100
             IF(O(C)==-1)O(C)=74
             IF(O(C)==-2)O(C)=82
-         GO TO 4480
- 4481    CONTINUE
+         END DO
          CALL RW(33,O(56),175,C)
          CALL DUMDUM(175,90,90,90,90,90,90,90,90,90,90)
-      GO TO 4470
- 4471 CONTINUE
-       RETURN
+      END DO
+      RETURN
       END
 !_______________________________________________________________________
 !________________________________________
