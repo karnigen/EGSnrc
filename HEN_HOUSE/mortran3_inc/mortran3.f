@@ -627,7 +627,7 @@
       IV=V
       ISPEC=3
       RETURN
-      END
+      END FUNCTION ISPEC
 !_______________________________________________________________________
 !__________________________________________
       integer FUNCTION MINI(S,U,W,KCT)
@@ -669,7 +669,7 @@
             RETURN
          END IF
       END DO
-      END
+      END FUNCTION MINI
 !_______________________________________________________________________
 !________________________________________
       SUBROUTINE EXPAND (F)
@@ -1404,7 +1404,7 @@
       END IF
       NIB=N
        RETURN
-      END
+      END FUNCTION NIB
 !_______________________________________________________________________
 !__________________________________________
       integer FUNCTION LLONG(LOC,NUM,B,IND)
@@ -1445,7 +1445,7 @@
          IF(J<=0)EXIT
       END DO
  RETURN
-      END
+      END FUNCTION LLONG
 !_______________________________________________________________________
 !________________________________________
       integer FUNCTION LEXP(A,Z)
@@ -1667,7 +1667,7 @@
       END DO
    CALL MESAGE(14, 23, A,Z+1)
  RETURN
-      END
+      END FUNCTION LEXP
 !_______________________________________________________________________
 !________________________________________
       SUBROUTINE NXTCRD
@@ -1897,7 +1897,7 @@
          N5=K
       END IF
       RETURN
-      END
+      END FUNCTION N5
 !_______________________________________________________________________
 !________________________________________
       SUBROUTINE MACTRC(W,R,S)
@@ -2247,7 +2247,7 @@
       LAST=KUR
       IF(IND==linf_comment_mode) O(A)=O(96)
  RETURN
-      END
+      END FUNCTION LINF
 !_______________________________________________________________________
 !__________________________________________
       SUBROUTINE DUMDUM(L,A,B,C,D,E,F,G,H,I,J)
@@ -3011,4 +3011,4 @@
       end do
       lnblnk1=0
       return
-      end
+      END FUNCTION lnblnk1
