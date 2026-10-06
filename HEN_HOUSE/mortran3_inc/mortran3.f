@@ -1464,7 +1464,7 @@
       integer ispec
       integer b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
       save    b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
-      IF (O(A+1)/= O(105)) GO TO 3230
+      IF (O(A+1)==O(105)) THEN
          LEXP=1
          B=A+1
          C=B+1
@@ -1496,7 +1496,7 @@
          END IF
          IF(O(D)==89) LEXP=1-LEXP
          RETURN
- 3230 CONTINUE
+         END IF
       LEXP=0
       O(20)=0
       N=2355
@@ -1506,7 +1506,7 @@
       B=A
       DO
          IF(B>Z)EXIT
-         IF (0>O(B).OR.O(B)>9) GO TO 3290
+         IF (O(B)>=0 .AND. O(B)<=9) THEN
             O(N)=0
             O(20)=1
             DO WHILE(0<=O(B).AND.O(B)<=9)
@@ -1514,11 +1514,13 @@
                B=B+1
             END DO
             CYCLE
- 3290       IF  (O(B)/= O(76))GO TO 3310
+         END IF
+         IF (O(B)==O(76)) THEN
             B=B+1
             CYCLE
- 3310       T=B
-            IF (10>O(T).OR.O(T)>29) GO TO 3330
+         END IF
+         T=B
+            IF (O(T)>=10 .AND. O(T)<=29) THEN
                X=O(T)*O(T+1)
                T=T+2
                IF (O(T)==29.OR.O(T)==13) THEN
@@ -1526,54 +1528,50 @@
                   T=T+1
                END IF
                X=X/20
-               IF((10<X).AND.(X<33))GO TO 3360
-               GO TO 3370
- 3330       CONTINUE
-            X=O(T)
-            T=T+1
-            IF (X/= 45.OR.O(T)/= 45) GO TO 3390
+               IF (.NOT.((10<X).AND.(X<33))) EXIT
+            ELSE
+               X=O(T)
                T=T+1
-               X=36
-               GO TO 3380
- 3390          IF  (X/= 89)GO TO 3400
-               X=29
-               IF (O(T)==41) THEN
-                  T=T+1
-                  X=16
-               END IF
-               GO TO 3380
- 3400          IF  (X/= 85)GO TO 3430
-               X=30
-               IF (O(T)==41) THEN
-                  T=T+1
-                  X=14
-               END IF
-               GO TO 3380
- 3430          IF  (X/= 41)GO TO 3460
-               X=18
-               IF (O(T)==86) THEN
-                  T=T+1
-                  X=11
-               END IF
-               GO TO 3380
- 3460          IF  (X/= 86)GO TO 3490
-               X=23
-               IF (O(T)==41) THEN
-                  T=T+1
-                  X=11
-               END IF
-               GO TO 3380
- 3490          IF  (X/= (87))GO TO 3520
-               X=32
-               GO TO 3380
- 3520          IF  (X/= (88))GO TO 3530
-               X=13
- 3380       CONTINUE
- 3530       CONTINUE
-            IF(P(X)==0)GO TO 3370
- 3360       IF(X<10.OR.X>O(81) .OR. (X==O(81).AND.O(20)==0)) &
-      &      GO TO 3370
-            IF (P(X)/100<=P(O(N-1))/100.AND.X/= O(80)) GO TO 3550
+               SELECT CASE (X)
+               CASE (45)
+                  IF (O(T)==45) THEN
+                     T=T+1
+                     X=36
+                  END IF
+               CASE (89)
+                  X=29
+                  IF (O(T)==41) THEN
+                     T=T+1
+                     X=16
+                  END IF
+               CASE (85)
+                  X=30
+                  IF (O(T)==41) THEN
+                     T=T+1
+                     X=14
+                  END IF
+               CASE (41)
+                  X=18
+                  IF (O(T)==86) THEN
+                     T=T+1
+                     X=11
+                  END IF
+               CASE (86)
+                  X=23
+                  IF (O(T)==41) THEN
+                     T=T+1
+                     X=11
+                  END IF
+               CASE (87)
+                  X=32
+               CASE (88)
+                  X=13
+               END SELECT
+            END IF
+            IF(P(X)==0)EXIT
+            IF(X<10.OR.X>O(81) .OR. (X==O(81).AND.O(20)==0)) &
+         &      EXIT
+            IF (P(X)/100>P(O(N-1))/100 .OR. X==O(80)) THEN
                O(20)=0
                O(49)=O(49)+1
                O(O(49))=X
@@ -1582,7 +1580,7 @@
                IF(O(49)>2454)CALL MESAGE(15, 23, 0,0)
                B=T
                CYCLE
- 3550       CONTINUE
+            END IF
             IF (N==MNN) THEN
                LEXP=O(N)
                RETURN
@@ -1590,49 +1588,84 @@
             K=P(O(N-1))
             O(20)=1
             JMP=K-((K/100)*100)-1
-            GO TO (2000,3580,3590,3600,3610,3620,3630,3640,3650,3660,3670, &
-      &      3680,3690,3700,3710),JMP
- 3630       IF (O(N)==0) THEN
-               CALL MESAGE(14, 10, 0,0)
-               EXIT
-            END IF
-            O(N-2) = O(N-2) / O(N)
-            GO TO 3740
- 3640       O(N-2) = O(N-2) * O(N)
-            GO TO 3740
- 3620       O(N-2) = O(N-2) + O(N)
-            GO TO 3740
- 3610       O(N-2) = O(N-2) - O(N)
-            GO TO 3740
- 3650       O(N-2) = O(N-2) **O(N)
-            GO TO 3740
- 2000       O(N-2) = O(N)
-            B=T
-            GO TO 3740
- 3600       O(N-2) = 1-O(N)
-            GO TO 3740
- 3680       IF(O(N-2) /=  O(N))GO TO 3750
-            GO TO 3760
- 3690       IF(O(N-2) == O(N))GO TO 3750
-            GO TO 3760
- 3670       IF(O(N-2) <= O(N))GO TO 3750
-            GO TO 3760
- 3700       IF(O(N-2) > O(N))GO TO 3750
-            GO TO 3760
- 3660       IF(O(N-2) >= O(N))GO TO 3750
-            GO TO 3760
- 3710       IF(O(N-2) < O(N))GO TO 3750
-            GO TO 3760
- 3590       IF(O(N-2)==1 .AND. O(N)==1)GO TO 3750
-            GO TO 3760
- 3580       IF(O(N-2)==1 .OR. O(N)==1)GO TO 3750
-            GO TO 3760
- 3750       O(N-2)=1
-            GO TO 3740
- 3760       O(N-2)=0
- 3740       N=N-2
+            SELECT CASE (JMP)
+            CASE (1)
+               O(N-2)=O(N)
+               B=T
+            CASE (2)
+               IF (O(N-2)==1 .OR. O(N)==1) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE (3)
+               IF (O(N-2)==1 .AND. O(N)==1) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE (4)
+               O(N-2)=1-O(N)
+            CASE (5)
+               O(N-2)=O(N-2)-O(N)
+            CASE (6)
+               O(N-2)=O(N-2)+O(N)
+            CASE (7)
+               IF (O(N)==0) THEN
+                  CALL MESAGE(14, 10, 0,0)
+                  EXIT
+               END IF
+               O(N-2)=O(N-2)/O(N)
+            CASE (8)
+               O(N-2)=O(N-2)*O(N)
+            CASE (9)
+               O(N-2)=O(N-2)**O(N)
+            CASE (10)
+               IF (O(N-2)>=O(N)) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE (11)
+               IF (O(N-2)<=O(N)) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE (12)
+               IF (O(N-2)/=O(N)) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE (13)
+               IF (O(N-2)==O(N)) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE (14)
+               IF (O(N-2)>O(N)) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE (15)
+               IF (O(N-2)<O(N)) THEN
+                  O(N-2)=1
+               ELSE
+                  O(N-2)=0
+               END IF
+            CASE DEFAULT
+               IF (O(N)==0) THEN
+                  CALL MESAGE(14, 10, 0,0)
+                  EXIT
+               END IF
+               O(N-2)=O(N-2)/O(N)
+            END SELECT
+            N=N-2
       END DO
- 3370 CALL MESAGE(14, 23, A,Z+1)
+   CALL MESAGE(14, 23, A,Z+1)
  RETURN
       END
 !_______________________________________________________________________
