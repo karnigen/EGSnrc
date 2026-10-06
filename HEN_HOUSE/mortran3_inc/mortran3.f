@@ -2286,7 +2286,7 @@
       save f_buffer
 
       NR=K+1-J
-      IF (N/= 0) GO TO 5120
+   IF (N==0) THEN
          !write(44,*) 'nr = ',nr,k,j,i
          READ(I,1,END=5130) (CH(M),M=1,NR)
          if( i/= 1 ) then
@@ -2328,7 +2328,7 @@
             O(J+M-1)=ICHAR(CH(M))
          END DO
          RETURN
- 5120 CONTINUE
+         END IF
        KOF=589
       IF (N==33) KOF=100+KOF
       IF (N==23) KOF=0
@@ -2355,10 +2355,11 @@
       !end do
       ! GCC versions < 3.4.0 miscompile the above when optimization is on.
       ! --IK, Nov 23 2005.
-      do jj=nr,1,-1
-          if( ch(jj)/= ' ' ) GO TO 20
+        jj=nr
+        DO WHILE (jj>=1)
+           if( ch(jj)/= ' ' ) EXIT
+           jj=jj-1
       end do
- 20 continue
       nrr = jj
 
       ! Check for C-preprocessor statements
@@ -2366,10 +2367,11 @@
       ! char from coloumn 7 is a #, assume it is a C-preprocessor directive
       ! and make the # to be the first char on the line.
       nfirst=1
-      do jj=1,nrr
-        if( ch(jj)/= ' ' ) GO TO 31
+         jj=1
+         DO WHILE (jj<=nrr)
+            if( ch(jj)/= ' ' ) EXIT
+            jj=jj+1
       end do
- 31 continue
       if( ch(jj)=='#' ) then
         do ii=jj,nrr
           ch(ii+1-jj) = ch(ii)
@@ -2389,11 +2391,11 @@
       if( is_format ) then
           jj = 7
           if( .not.is_quote ) then
-              do jj=7,nrr
-                  if( ch(jj)/= ' ' ) GO TO 66
+              DO WHILE (jj<=nrr)
+                 if( ch(jj)/= ' ' ) EXIT
+                 jj=jj+1
               end do
           end if
- 66     continue
           do ii=jj,Nrr
               nfl = nfl + 1
               if( nfl>8192 ) then
@@ -2424,10 +2426,11 @@
               end if
           end do
           if( .not.is_quote ) then
-              do ii=nfl,1,-1
-                  if( f_buffer(ii)/= ' ' ) GO TO 62
+              ii=nfl
+              DO WHILE (ii>=1)
+                 if( f_buffer(ii)/= ' ' ) EXIT
+                 ii=ii-1
               end do
- 62         continue
               nfl = ii
           end if
           if( nformat==0 ) then
@@ -2436,25 +2439,24 @@
               jj = 72
               if( nfl<= 72 ) jj = nfl
               write(i,'(72a1)') (f_buffer(ii),ii=1,jj)
- 67         continue
-              if( jj>=nfl ) then
-                  nfl = 0
-                  return
-              end if
+              DO WHILE (jj<nfl)
               ii = jj + 66
               if( ii>nfl ) ii = nfl
               write(i,'(a6,66a1)') '     *',(f_buffer(m),m=jj+1,ii)
               jj = ii
-              GO TO 67
+              END DO
+              nfl = 0
+              return
           end if
           return
       endif
 
       if( .not.is_format ) then
-          do jj=7,nrr
-              if( ch(jj)/= ' ') GO TO 61
+           jj=7
+           DO WHILE (jj<=nrr)
+              if( ch(jj)/= ' ') EXIT
+              jj=jj+1
           end do
- 61     continue
           do ii=jj,jj+5
               itmp = ichar(ch(ii))
               if( itmp>=97.and.itmp<=122 ) itmp=itmp-32
