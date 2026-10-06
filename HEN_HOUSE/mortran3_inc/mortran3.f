@@ -790,37 +790,34 @@ CCDGHILM
             IF(O(68)==0)CALL KAT
             END IF
             GO TO 1690
-1640        IF (O(O_B)/= 10) GO TO 1830
+1640        IF (O(O_B)==10) THEN
                O_B=O_B+1
                IF(1>O(O_B).OR.O(O_B)>O(O_S-1) )CALL MESAGE(15, 4, O_B,O_E)
                O_X=O_X+LLONG(O_X,O(O_S-2*(O(O_B))-2)-O(O_S-2*(O(O_B))-1),10,0)
                IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                O_B=O_B+2
                GO TO 1590
-1830        CONTINUE
-            IF (O(O_B)/= 13) GO TO 1850
+            ELSE IF (O(O_B)==13) THEN
                O_B=O_B+1
                T=1
-1860           CONTINUE
+               DO
                   IF( O(109) ==O(O_B))T=T+1
                   IF( O(110) ==O(O_B))T=T-1
-                  IF(T==0)GO TO 1861
+                  IF(T==0)EXIT
                   O_X=O_X+1
                   IF(O_X>O(40))CALL MESAGE(15, 3, 0,0)
                   O(O_X)=O(O_B)
                   O_B=O_B+1
-               GO TO 1860
-1861           CONTINUE
+               END DO
                GO TO 1690
-1850        CONTINUE
-            IF (O(O_B)/= 15) GO TO 1880
+            ELSE IF (O(O_B)==15) THEN
                O_X=O_X+1
                O(O_X)=O(97)
                O_X=O_X+1
                KRAP=O_X
                KRAQ=O(23)
                GO TO 1690
-1880        CONTINUE
+            ELSE
             O(23)=O(23)+1
             IF(O(23)==1)SEF=O(15)
             O(15)=1
@@ -833,6 +830,7 @@ CCDGHILM
             IF(O(51)>2554)CALL MESAGE(15, 34, 0,0)
             O_W=O_X
             GO TO 1690
+            END IF
 1650        IF (KRAP==0.OR.KRAQ/= O(23)) GO TO 1900
                O_X=O_X+1
                O(O_S)=O(96)
