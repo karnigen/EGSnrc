@@ -2119,49 +2119,47 @@
       B=A
       I=175
       KUT=KUR
-      IF(O(B)/= O(75))GO TO 430
-      B=B+2
-      KIT=O(B-1)-1
-      KUR=KUR+KIT
-      KUT=KUR
-      IF(KIT/= 0)GO TO 430
-      KUT=KUT-1
-      KIT=1
- 430 CONTINUE
+      IF(O(B)==O(75)) THEN
+         B=B+2
+         KIT=O(B-1)-1
+         KUR=KUR+KIT
+         KUT=KUR
+         IF(KIT==0) THEN
+            KUT=KUT-1
+            KIT=1
+         END IF
+      END IF
       DO J = 175,254
          O(J)=O(76)
       END DO
-      IF (IND/= linf_rule_diagnostic_mode) GO TO 4680
- 4690    IF(I>=181.OR.B>Z)GO TO 4691
-            IF (O(B)/= O(76)) GO TO 4710
+      IF (IND==linf_rule_diagnostic_mode) THEN
+         DO WHILE (I<181 .AND. B<=Z)
+            IF (O(B)==O(76)) THEN
                B=B+1
-               GO TO 4690
- 4710       CONTINUE
-            IF (0>O(B).OR.O(B)>9) GO TO 4730
+               CYCLE
+            END IF
+            IF (O(B)>=0 .AND. O(B)<=9) THEN
                O(I)=O(B)
                I=I+1
                B=B+1
-               GO TO 4720
- 4730          GO TO 4691
- 4720       CONTINUE
-         GO TO 4690
- 4691    CONTINUE
+            ELSE
+               EXIT
+            END IF
+         END DO
          NPL=65
          D=45
          KOFF=7
-         GO TO 4670
- 4680    NPL=71
+      ELSE
+         NPL=71
          D=12
          O(175)=D
          KOFF=MAX(MIN(80,O(39)),2)
- 4670 CONTINUE
-      IF (B<=Z) GO TO 4750
-         IF (I<=175) GO TO 4770
-            CALL RW(33,O(57),175,181)
-            IF(IND==linf_rule_diagnostic_mode)CALL MESAGE(14, 14, 0,0)
-            RETURN
- 4770    CONTINUE
- 4750 CONTINUE
+      END IF
+      IF (B>Z .AND. I>175) THEN
+         CALL RW(33,O(57),175,181)
+         IF(IND==linf_rule_diagnostic_mode)CALL MESAGE(14, 14, 0,0)
+         RETURN
+      END IF
       C=174+KOFF+KUT*O(18)
       IF(KUT>LAST)C=C-O(18)
       IF(C>174+50)C=174+7
@@ -2243,15 +2241,15 @@
             O(K)=O(76)
          END DO
          I=C
-         IF (IND/= linf_rule_diagnostic_mode) GO TO 5080
+         IF (IND==linf_rule_diagnostic_mode) THEN
             O(175+5)=D
-            GO TO 5070
- 5080       O(175)=D
- 5070    CONTINUE
-         IF (KST<=0) GO TO 5100
+         ELSE
+            O(175)=D
+         END IF
+         IF (KST>0) THEN
             I=181
             O(181-1)=45
- 5100    CONTINUE
+         END IF
       GO TO 4780
  4781 CONTINUE
       LAST=KUR
