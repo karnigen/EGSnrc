@@ -499,7 +499,10 @@ CADEFGHIJKLRSXYZ
             IF (V==T) THEN
                V=V+1
                T=T+1
-               IF(V>U)GO TO 1120
+               IF(V>U)THEN
+                  ISPEC=1
+                  RETURN
+               END IF
                CYCLE ISPEC_SCAN
             END IF
          END IF
@@ -507,7 +510,10 @@ CADEFGHIJKLRSXYZ
             IQ=Q
             I=MINI(P,Q,NP,1505)
             IF(O(29)>=4) CALL MACTRC(5,V,U)
-            IF(I==0)GO TO 90
+            IF(I==0)THEN
+               ISPEC=2
+               RETURN
+            END IF
             O(45)=O(45)+1
             O(O(45))=IQ
             O(45)=O(45)+1
@@ -517,7 +523,8 @@ CADEFGHIJKLRSXYZ
          END IF
             IF (O(P)>=O(106)) THEN
                CALL MESAGE(14, 19, P,Q+11)
-               GO TO 90
+               ISPEC=2
+               RETURN
             END IF
             P=P+1
             JMP=O(P-1)-100
@@ -560,7 +567,8 @@ CADEFGHIJKLRSXYZ
                IF( M==0 ) V=O(O(46)-1)
                IF (O(46)==2205) THEN
                   CALL MESAGE(14, 17, 0,0)
-                  GO TO 90
+                  ISPEC=2
+                  RETURN
                END IF
                NUL=O(O(46))
                O(46)=O(46)-1
@@ -575,7 +583,10 @@ CADEFGHIJKLRSXYZ
             IF (O(P-2)<=O(V).AND.O(V)<=O(P-1)) THEN
                M=1
                V=V+1
-               IF(V>U)GO TO 1120
+               IF(V>U)THEN
+                  ISPEC=1
+                  RETURN
+               END IF
             END IF
             GO TO 1300
             CASE (5)
@@ -598,7 +609,10 @@ CADEFGHIJKLRSXYZ
             IF(M==1)V=W
             END SELECT
 1300        IF(M==1)CYCLE ISPEC_SCAN
-            IF(O(P)/= O(101) .AND. O(P)/= O(104))GO TO 90
+            IF(O(P)/= O(101) .AND. O(P)/= O(104))THEN
+               ISPEC=2
+               RETURN
+            END IF
          CYCLE ISPEC_SCAN
          END IF
             IF (O(45)/=2155) THEN
@@ -612,11 +626,7 @@ CADEFGHIJKLRSXYZ
       END DO ISPEC_SCAN
       IV=V
       ISPEC=3
-      GO TO 99999
-90    ISPEC=2
-      GO TO 99999
-1120  ISPEC=1
-99999 RETURN
+      RETURN
       END
 C_______________________________________________________________________
 C__________________________________________
@@ -635,27 +645,30 @@ C__________________________________________
       M=KCT+O(S)
 CABCDEFGHIJKNRTXYZ
       L=U-S
-1390  IF (O(M)==0) GO TO 1410
+      DO
+         IF (O(M)==0) THEN
+            CALL MESAGE(14, 15, S,U+1)
+            RETURN
+         END IF
          M=O(M)
          V=S
          P=M+4
          Q=O(M+3)
 C   IF Q-PnL jM;
          IF(O(29)>=6) CALL MACTRC(2,P,Q)
-1420     IF(P>=Q)GO TO 1421
-            IF(O(P)/= O(V))GO TO 1390
+         DO WHILE (P<Q)
+            IF(O(P)/= O(V))EXIT
             P=P+1
             V=V+1
-         GO TO 1420
-1421     CONTINUE
+         END DO
+         IF (P>=Q) THEN
          S=O(M+2)+4
          U=O(O(M+2)+3)
          MINI=1
          W=V
-         GO TO 99999
-1410  CONTINUE
-      CALL MESAGE(14, 15, S,U+1)
-99999 RETURN
+            RETURN
+         END IF
+      END DO
       END
 C_______________________________________________________________________
 C________________________________________
