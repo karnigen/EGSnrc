@@ -1086,12 +1086,13 @@
       &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
 !GHQUVWXYZ
       integer   l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
+      logical found
       save      l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
       DIMENSION L(3)
-      IF (O(S-2*(1)-1)/= O(S-2*(1)-2)) GO TO 2420
+      IF (O(S-2*(1)-1)==O(S-2*(1)-2)) THEN
          CALL MESAGE(14, 1, 0,0)
          RETURN
- 2420 CONTINUE
+      END IF
       O(54)=O(31)
       IF ( O(S-2*(2)-1)/= O(S-2*(2)-2) )O(54)=O(O(S-2*(2)-1))
       DO K = 1,3
@@ -1143,7 +1144,7 @@
          O(S-2*(K)-2)=N
          L(K)=O(S-2*(K)-2)-O(S-2*(K)-1)
          END DO
-      IF (12>O(54).OR.O(54)>14) GO TO 2680
+      IF (O(54)>=12 .AND. O(54)<=14) THEN
          B=O(S-2*(1)-1)
          E=O(S-2*(1)-2)
          IF (O(54)==14) THEN
@@ -1151,61 +1152,65 @@
          ELSE
             M=1625+O(B)
          END IF
- 2710    IF (O(M)/= 0) GO TO 2730
-            IF (O(54)/= 12) GO TO 2750
-               O(54)=O(31)
-               GO TO 2760
- 2750       CONTINUE
-            CALL MESAGE(14, 2, 0,0)
-            RETURN
- 2730    CONTINUE
-         M=O(M)
-         P = M+4
-         LP=O(M+3)-P
-         IF(LP/= L(1))GO TO 2710
-         A=B
- 2770    IF(O(P)/= O(A))GO TO 2771
-            P=P+1
-            A=A+1
-            IF(A>=E)GO TO 2780
-         GO TO 2770
- 2771    CONTINUE
-!   TRACE9;
-!      D-LINK PAT         CAT PTR   MARK PAT
-         GO TO 2710
- 2780    IF (O(54)==12) GO TO 2800
-            IF(O(M)/= 0)O((O(M))+1)=O(M+1)
-            O(O(M+1))=O(M)
+         found=.false.
+         DEFINE_LOOKUP: DO
+            IF (O(M)==0) THEN
+               IF (O(54)==12) THEN
+                  O(54)=O(31)
+                  EXIT DEFINE_LOOKUP
+               END IF
+               CALL MESAGE(14, 2, 0,0)
+               RETURN
+            END IF
+            M=O(M)
+            P=M+4
+            LP=O(M+3)-P
+            IF (LP/=L(1)) CYCLE DEFINE_LOOKUP
+            A=B
+            DO WHILE (O(P)==O(A))
+               P=P+1
+               A=A+1
+               IF (A>=E) THEN
+                  found=.true.
+                  EXIT DEFINE_LOOKUP
+               END IF
+            END DO
+         END DO DEFINE_LOOKUP
+         IF (found) THEN
+            IF (O(54)/=12) THEN
+               IF(O(M)/= 0)O((O(M))+1)=O(M+1)
+               O(O(M+1))=O(M)
+               C=O(M+2)
+               O(M+2)=O(90)
+               DO WHILE (C/=0)
+                  O(C+2)=O(90)
+                  C=O(C)
+               END DO
+               IF(O(13)>0)CALL MACTRC(13,0,S)
+               RETURN
+            END IF
+            NEED=4+L(3)
+            IF(NEED>450740-O(34)) CALL KRUNC(NEED)
             C=O(M+2)
-            O(M+2)=O(90)
-            DO WHILE (C/=0)
-               O(C+2)=O(90)
+            DO WHILE (O(C)/=0)
                C=O(C)
             END DO
-            IF(O(13)>0)CALL MACTRC(13,0,S)
+            O(C)=O(34)
+            O(O(34))=0
+            O(O(34)+1)=C
+            O(O(34)+2)=O(91)
+            O(O(34)+3)=O(34)+NEED
+            O(34)=O(34)+NEED
+            A=O(S-2*(3)-2)
+            K=L(3)
+            DO J = 1,K
+               O(O(34)-J)=O(A-J)
+            END DO
+            IF(O(13)>0)CALL MACTRC(12,0,S)
             RETURN
- 2800    CONTINUE
-         NEED= 4+L(3)
-         IF(NEED> 450740-O(34)) CALL KRUNC(NEED)
-         C=O(M+2)
-          DO WHILE (O(C)/=0)
-            C=O(C)
-          END DO
-         O(C)=O(34)
-         O(O(34))=0
-         O(O(34)+1)=C
-         O(O(34)+2)=O(91)
-         O(O(34)+3)=O(34)+NEED
-         O(34)=O(34)+NEED
-         A=O(S-2*(3)-2)
-         K=L(3)
-         DO J = 1,K
-            O(O(34)-J)=O(A-J)
-         END DO
-         IF(O(13)>0)CALL MACTRC(12,0,S)
-         RETURN
- 2680 CONTINUE
- 2760 NEED=L(1)+L(3)+2*4
+         END IF
+      END IF
+      NEED=L(1)+L(3)+2*4
       IF (NEED>450740-O(34)) CALL KRUNC(2+NEED)
       A=O(S-2*(1)-1)
       Z=A+L(1)-1
@@ -1217,18 +1222,18 @@
          F=F+1
          A=A+1
        END DO
-      IF (O(I)/= O(84).OR.O(54)<=2) GO TO 2860
+      IF (O(I)==O(84) .AND. O(54)>2) THEN
          CALL MESAGE(14, 21, O(S-2*(1)-1),O(S-2*(1)-2))
          RETURN
- 2860 CONTINUE
-      IF (O(I)<=O(105)) GO TO 2880
+      END IF
+      IF (O(I)>O(105)) THEN
          CALL MESAGE(14, 9, O(S-2*(1)-1),O(S-2*(1)-2))
          RETURN
- 2880 CONTINUE
-      IF ((0<=O(54)).AND.(O(54)<=7)) GO TO 2900
+      END IF
+      IF (O(54)<0 .OR. O(54)>7) THEN
          CALL MESAGE(14, 12, O(S-2*(1)-1),O(S-2*(1)-2))
          RETURN
- 2900 CONTINUE
+      END IF
       I=O(I) + 1145 + O(54)*120
       O(P)=O(I)
       IF(O(P)/= 0)O((O(P))+1)=P
