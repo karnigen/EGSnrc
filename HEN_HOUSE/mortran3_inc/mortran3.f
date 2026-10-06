@@ -2164,54 +2164,48 @@
       IF(KUT>LAST)C=C-O(18)
       IF(C>174+50)C=174+7
       I=C
- 4780 IF(B>Z)GO TO 4781
+      DO WHILE (B<=Z)
          LIMC=MIN0(B+NPL,Z)
- 4790    IF(B>LIMC.OR.I>246)GO TO 4791
-            IF (IND/= linf_rule_diagnostic_mode) GO TO 4810
-               IF (O(17)/= 1) GO TO 4830
-                  IF (O(B)/= O(105)) GO TO 4850
-                     IF(I>246-4)GO TO 4791
+         DO WHILE (B<=LIMC .AND. I<=246)
+            IF (IND==linf_rule_diagnostic_mode) THEN
+               IF (O(17)==1) THEN
+                  IF (O(B)==O(105)) THEN
+                     IF (I>246-4) EXIT
                      H=1
- 4860                IF(O(B+H)==O(106))GO TO 4861
+                     DO WHILE (O(B+H)/=O(106))
                         H=H+1
-                     GO TO 4860
- 4861                CONTINUE
+                     END DO
                      O(B+H)=O(76)
-                     IF (H/= 1) GO TO 4880
+                     IF (H==1) THEN
                         O(B)=O(86)
                         H=0
-                        GO TO 4870
- 4880                   I=I+LLONG(I-1,H-1,10,0)
+                     ELSE
+                        I=I+LLONG(I-1,H-1,10,0)
                         O(I)=17
                         B=B+1
                         I=I+1
- 4870                CONTINUE
- 4850             CONTINUE
-                  GO TO 4820
- 4830             IF (O(B)/= O(86)) GO TO 4900
-                     O(I)=O(B)
-                     I=I+1
- 4900             CONTINUE
- 4820          CONTINUE
- 4810       CONTINUE
-            IF (O(B)/= O(70)) GO TO 4920
+                     END IF
+                  END IF
+               ELSE IF (O(B)==O(86)) THEN
+                  O(I)=O(B)
+                  I=I+1
+               END IF
+            END IF
+            IF (O(B)==O(70)) THEN
                B=B+1
-               GO TO 4791
- 4920       CONTINUE
+               EXIT
+            END IF
             O(I)=O(B)
             I=I+1
             B=B+1
-         GO TO 4790
- 4791    CONTINUE
-         IF (O(30)/= 1) GO TO 4940
+         END DO
+         IF (O(30)==1) THEN
             DO K = 1,8
                O(254-K+1)=O(O(36)-K+1)
             END DO
-            GO TO 4930
- 4940       IF  (O(30)/= 2)GO TO 4960
+         ELSE IF (O(30)==2) THEN
             K=LLONG(247,O(19),10,0)
- 4930    CONTINUE
- 4960    CONTINUE
+         END IF
          DO K = 175,246
             IF (O(K)==O(105)) THEN
                O(K)=O(86)
@@ -2222,15 +2216,14 @@
                KST=0
             END IF
          END DO
-      IF (I<=246.OR.IND/= linf_rule_diagnostic_mode &
-          .OR.KST/= 0) GO TO 5030
- 5040       IF(O(I-1)>=38.OR.KST<=0)GO TO 5041
+        IF (I>246 .AND. IND==linf_rule_diagnostic_mode &
+           .AND. KST==0) THEN
+          DO WHILE (O(I-1)<38 .AND. KST>0)
                B=B-1
                I=I-1
                O(I)=O(76)
-            GO TO 5040
- 5041       CONTINUE
- 5030    CONTINUE
+          END DO
+        END IF
          DO K = 175,254
             IF(0>O(K).OR.O(K)>100-1)O(K)=100-1
             O(K)=O(689+O(K))
@@ -2250,8 +2243,7 @@
             I=181
             O(181-1)=45
          END IF
-      GO TO 4780
- 4781 CONTINUE
+      END DO
       LAST=KUR
       IF(IND==linf_comment_mode) O(A)=O(96)
  RETURN
