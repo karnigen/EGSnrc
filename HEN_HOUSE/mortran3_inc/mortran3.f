@@ -1337,43 +1337,41 @@
       &            (O(5),O_V),(O(6),O_U),(O(7),O_W),(O(8),O_X)
       integer m,n,d,p,s,c,i
       save    m,n,d,p,s,c,i
-      IF (O(35)==0) GO TO 3040
+      IF (O(35)/=0) THEN
          M=O(35)
- 3050    IF(M==O(34))GO TO 3051
-            IF (O(M+2)<0) GO TO 3070
+         DO WHILE (M/=O(34))
+            IF (O(M+2)>=0) THEN
                IF(O(M)/= 0)O((O(M))+1)=O(M+1)
                O(O(M+1))=O(M)
- 3070       CONTINUE
+            END IF
             O(M+2)=O(90)
             M=O(M+3)
-         GO TO 3050
- 3051    CONTINUE
- 3040 CONTINUE
+         END DO
+      END IF
       N=2655
       M=O(N+3)
       D=0
 ! PREDECESSOR  SUCCESSOR    CONCAT
       O(O(34))=0
- 3080 IF(N==O(34))GO TO 3081
+      DO WHILE (N/=O(34))
          M=N
          N= O(M+3)
          P=O(M+1)
          S=O(M)
          C=O(M+2)
-         IF (C/= O(90)) GO TO 3100
+         IF (C==O(90)) THEN
             D=D+ N-M
-            GO TO 3080
- 3100    CONTINUE
-         IF (S>0) O(S+1)=O(S+1)-D
-         IF (C>0) O(N+1)=O(N+1)-D
-         O(P)=O(P)-D
-         O(M+3)=O(M+3)-D
+         ELSE
+            IF (S>0) O(S+1)=O(S+1)-D
+            IF (C>0) O(N+1)=O(N+1)-D
+            O(P)=O(P)-D
+            O(M+3)=O(M+3)-D
 !   MOVE IT
-         DO I = M,N
-            O(I-D)=O(I)
-         END DO
-      GO TO 3080
- 3081 CONTINUE
+            DO I = M,N
+               O(I-D)=O(I)
+            END DO
+         END IF
+      END DO
       O(34)=O(34)-D
       O(O(34))=0
       IF (R>D)CALL MESAGE(15, 6, 0,0)
