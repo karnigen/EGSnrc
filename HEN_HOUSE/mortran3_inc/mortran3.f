@@ -1664,7 +1664,8 @@
       save    k,j,w,i,l,m,y,nerd
       O(62)=0
       IF(O(52)==2) CALL MESAGE(16,1,0,0)
- 3770 CALL RW(0,O(9),325,MXR)
+      DO
+      CALL RW(0,O(9),325,MXR)
       IF (O(52)==1) THEN
          O(52)=0
          O(9)=O(O(50))
@@ -1758,7 +1759,7 @@
       ELSE IF (O(10)==1) THEN
          NERD=LINF(457,MXT,10)
       END IF
-      IF(O(15)==1)GO TO 3770
+      IF(O(15)==1)CYCLE
       IF (O(14)<2) RETURN
       J=456
       K=457
@@ -1788,7 +1789,9 @@
          J=J+1
          O(J)=90
       END DO
- RETURN
+      EXIT
+      END DO
+      RETURN
       END
 !_______________________________________________________________________
 !__________________________________________
