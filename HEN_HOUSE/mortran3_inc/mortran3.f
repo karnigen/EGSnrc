@@ -1099,67 +1099,58 @@
          T=O(S-2*(K)-2)
          N=A-1
          Z=0
- 2440    IF(A>T)GO TO 2441
+          DO WHILE (A<=T)
             N=N+1
             O(N)=O(A)
             A=A+1
-            IF (O(N)/= O(86)) GO TO 2460
-               IF (K/= 3.AND.O(28)<=0) GO TO 2480
-                  IF (Z/= 0) GO TO 2500
+            IF (O(N)==O(86)) THEN
+               IF (K==3.OR.O(28)>0) THEN
+                  IF (Z==0) THEN
                      O(N)=O(105)
                      Z=1
-                     GO TO 2490
- 2500                IF (O(A)/= O(86).OR.A>T) GO TO 2520
-                        A=A+1
-                        GO TO 2510
- 2520                   O(N)=O(106)
-                        Z=0
- 2510                CONTINUE
- 2490             CONTINUE
- 2480          CONTINUE
-               GO TO 2450
- 2460          IF  (O(N)/= O(76))GO TO 2530
-               IF (Z/= 0) GO TO 2550
- 2560             IF(O(A)/= O(76).OR.A>=T)GO TO 2561
+                  ELSE IF (O(A)==O(86).AND.A<=T) THEN
                      A=A+1
-                  GO TO 2560
- 2561             CONTINUE
- 2550          CONTINUE
-               GO TO 2450
- 2530          IF  (O(N)/= O(78))GO TO 2570
-               IF (O(A)/= O(78)) GO TO 2590
-                  A=A+1
-                  GO TO 2580
- 2590             O(N)=O(108)
- 2580          CONTINUE
-               GO TO 2450
- 2570          IF  (O(N)/= O(77))GO TO 2600
-               IF (O(A)/= O(77)) GO TO 2620
-                  A=A+1
-                  GO TO 2610
- 2620             O(N)=O(107)
- 2610          CONTINUE
- 2450       CONTINUE
- 2600       CONTINUE
-            IF (O(33)/= 0) GO TO 2640
-               IF (K/= 3) GO TO 2660
-                  IF(O(N)==O(84))O(N)=O(109)
-                  IF(O(N)==O(85))O(N)=O(110)
- 2660          CONTINUE
- 2640       CONTINUE
-         GO TO 2440
- 2441    CONTINUE
+                  ELSE
+                     O(N)=O(106)
+                     Z=0
+                  END IF
+               END IF
+            ELSE IF (O(N)==O(76)) THEN
+                  IF (Z==0) THEN
+                     DO WHILE (O(A)==O(76).AND.A<T)
+                        A=A+1
+                     END DO
+                  END IF
+               ELSE IF (O(N)==O(78)) THEN
+                  IF (O(A)==O(78)) THEN
+                     A=A+1
+                  ELSE
+                     O(N)=O(108)
+                  END IF
+               ELSE IF (O(N)==O(77)) THEN
+                  IF (O(A)==O(77)) THEN
+                     A=A+1
+                  ELSE
+                     O(N)=O(107)
+                  END IF
+               END IF
+            IF (O(33)==0 .AND. K==3) THEN
+               IF(O(N)==O(84))O(N)=O(109)
+               IF(O(N)==O(85))O(N)=O(110)
+            END IF
+          CYCLE
+          END DO
          O(S-2*(K)-2)=N
          L(K)=O(S-2*(K)-2)-O(S-2*(K)-1)
          END DO
       IF (12>O(54).OR.O(54)>14) GO TO 2680
          B=O(S-2*(1)-1)
          E=O(S-2*(1)-2)
-         IF (O(54)/= 14) GO TO 2700
+         IF (O(54)==14) THEN
             M=1505+O(B)
-            GO TO 2690
- 2700       M=1625+O(B)
- 2690    CONTINUE
+         ELSE
+            M=1625+O(B)
+         END IF
  2710    IF (O(M)/= 0) GO TO 2730
             IF (O(54)/= 12) GO TO 2750
                O(54)=O(31)
@@ -1187,21 +1178,19 @@
             O(O(M+1))=O(M)
             C=O(M+2)
             O(M+2)=O(90)
- 2810       IF(C==0)GO TO 2811
+            DO WHILE (C/=0)
                O(C+2)=O(90)
                C=O(C)
-            GO TO 2810
- 2811       CONTINUE
+            END DO
             IF(O(13)>0)CALL MACTRC(13,0,S)
             RETURN
  2800    CONTINUE
          NEED= 4+L(3)
          IF(NEED> 450740-O(34)) CALL KRUNC(NEED)
          C=O(M+2)
- 2820    IF(O(C)==0)GO TO 2821
+          DO WHILE (O(C)/=0)
             C=O(C)
-         GO TO 2820
- 2821    CONTINUE
+          END DO
          O(C)=O(34)
          O(O(34))=0
          O(O(34)+1)=C
@@ -1223,12 +1212,11 @@
       P=O(34)
       F=P+4
       I=F
- 2840 IF(A>Z)GO TO 2841
+       DO WHILE (A<=Z)
          O(F)=O(A)
          F=F+1
          A=A+1
-      GO TO 2840
- 2841 CONTINUE
+       END DO
       IF (O(I)/= O(84).OR.O(54)<=2) GO TO 2860
          CALL MESAGE(14, 21, O(S-2*(1)-1),O(S-2*(1)-2))
          RETURN
@@ -1256,12 +1244,12 @@
       F=P+NEED
       E=O(S-2*(3)-2)
       K=L(3)
-      IF (K==0) GO TO 2920
+      IF (K/=0) THEN
          CALL DOIT(E-K,E)
          DO J = 1,K
             O(F-J)=O(E-J)
          END DO
- 2920 CONTINUE
+      END IF
       IF (O(13)>0) CALL MACTRC(15,P,R)
       O(34)= P +NEED
       O(60)=450740-O(34)
