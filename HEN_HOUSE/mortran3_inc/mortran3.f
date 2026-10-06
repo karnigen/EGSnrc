@@ -1868,11 +1868,11 @@
       save    j
       J=457+4
       N5=NIB(J,10)
-            IF (.NOT.((L<=N5).AND.(N5<=M))) THEN
+      IF (.NOT.((L<=N5).AND.(N5<=M))) THEN
          CALL MESAGE(14, 3, 0,0)
          N5=K
-            END IF
-            RETURN
+      END IF
+      RETURN
       END
 !_______________________________________________________________________
 !________________________________________
@@ -1888,68 +1888,60 @@
       integer k,m,t,n
       save    k,m,t,n
       IF (O(23)>0.AND.O(29)<3.AND.W/= 4)RETURN
-      IF (W/= 2) GO TO 4310
+      SELECT CASE (W)
+      CASE (2)
          CALL DUMDUM(175,90,37,37,37,22,42,29,27,34,90)
          O(175+4)=(O(32)-1145)/120
          CALL CRIT(R,S)
-         GO TO 4300
- 4310    IF  (W/= 4)GO TO 4320
+      CASE (4)
          CALL DUMDUM(175,90,45,28,29,27,10,23,16,14,90)
          CALL CRIT(R,S)
-         GO TO 4300
- 4320    IF  (W/= 5)GO TO 4330
+      CASE (5)
          CALL DUMDUM(175,90,37,10,16,10,18,23,28,29,90)
          CALL CRIT(R,S)
- 4300 CONTINUE
- 4330 CONTINUE
-      IF (W/= 33) GO TO 4350
-         IF (O(23)/= 0) GO TO 4370
+      END SELECT
+      SELECT CASE (W)
+      CASE (33)
+         IF (O(23)==0) THEN
             CALL DUMDUM(175,90,90,27,14,13,30,12,14,13,90)
-            GO TO 4360
- 4370       CALL DUMDUM(175,90,90,90,90,90,23,14,28,29,90)
+         ELSE
+            CALL DUMDUM(175,90,90,90,90,90,23,14,28,29,90)
             O(175+3)=O(23)
- 4360    CONTINUE
+         END IF
          CALL CRIT(R+1,S+1)
-         GO TO 4340
- 4350    IF  (W/= 15)GO TO 4380
+      CASE (15)
          CALL DUMDUM(175,90,90,13,14,15,18,23,14,13,90)
          CALL CRIT(R+4,O(R+3))
-         IF (R+4>=O(R+3)) GO TO 4400
+         IF (R+4>=O(R+3)) THEN
+            CALL DUMDUM(175,90,23,30,21,21,90,31,10,21,90)
+            CALL CRIT(S,S)
+         ELSE
             CALL DUMDUM(175,90,90,90,90,31,10,21,30,14,90)
             O(175+2)=O(54)
             CALL CRIT(S+4,O(S+3))
-            GO TO 4390
- 4400       CALL DUMDUM(175,90,23,30,21,21,90,31,10,21,90)
-            CALL CRIT(S,S)
- 4390    CONTINUE
-         GO TO 4340
- 4380    IF  (W/= 12)GO TO 4410
+         END IF
+      CASE (12)
          CALL DUMDUM(175,90,10,25,25,14,23,13,14,13,90)
          CALL CRIT(O(S-2*(3)-1),O(S-2*(3)-2) )
          CALL DUMDUM(175,90,90,90,90,90,90,90,29,24,90)
          CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
-         GO TO 4340
- 4410    IF  (W/= 13)GO TO 4420
+      CASE (13)
          CALL DUMDUM(175,90,90,27,14,22,24,31,14,13,90)
          CALL CRIT(O(S-2*(1)-1),O(S-2*(1)-2) )
-         GO TO 4340
- 4420    IF  (W/= 22)GO TO 4430
+      CASE (22)
          IF(O(R+4)<0)RETURN
          CALL DUMDUM(175,90,90,22,10,29,12,17,14,13,90)
          CALL CRIT(R+4,O(R+3) )
          K=O(S-1)
-         IF (K==0) GO TO 4450
-            DO M = 1,K
-               CALL DUMDUM(175,90,90,90,90,10,27,16,90,90,90)
-               O(175+8)=M
-               T=O(S-2*(M)-1)
-               N=O(S-2*(M)-2)
-               IF (T/= N) CALL CRIT(T,N)
-            END DO
- 4450    CONTINUE
- 4340 CONTINUE
- 4430 CONTINUE
- RETURN
+         DO M = 1,K
+            CALL DUMDUM(175,90,90,90,90,10,27,16,90,90,90)
+            O(175+8)=M
+            T=O(S-2*(M)-1)
+            N=O(S-2*(M)-2)
+            IF (T/= N) CALL CRIT(T,N)
+         END DO
+      END SELECT
+      RETURN
       END
 !_______________________________________________________________________
 !__________________________________________
