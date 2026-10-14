@@ -2725,7 +2725,7 @@ subroutine open_units
     integer      oflag
     common/junk/verbose
     logical verbose
-    character*100 arg,next_file
+    character*4096 arg,next_file
     logical  next,ignore_missing,is_there
 
     integer iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1

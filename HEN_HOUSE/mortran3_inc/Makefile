@@ -2,7 +2,7 @@ FC = gfortran
 FFLAGS = -std=legacy
 MACHINE_SOURCE ?= ../lib/linux/machine.f
 BUILD_DIR ?= build
-MORTRAN_EXE ?= $(BUILD_DIR)/mortran3_inc.exe
+MORTRAN_EXE ?= ../bin/linux/mortran3_inc.exe
 
 .PHONY: all format
 all: $(MORTRAN_EXE)
