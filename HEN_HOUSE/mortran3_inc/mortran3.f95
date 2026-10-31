@@ -845,14 +845,12 @@ subroutine expand (f)
                 o(o_x)=o(o_b)
                 o_b=o_b+1
             end do
-            go to 1690
         else if (o(o_b)==15) then
             o_x=o_x+1
             o(o_x)=o(ox_ldq)
             o_x=o_x+1
             krap=o_x
             kraq=o(ox_nest)
-            go to 1690
         else
             o(ox_nest)=o(ox_nest)+1
             if(o(ox_nest)==1)sef=o(ox_frt)
@@ -865,8 +863,9 @@ subroutine expand (f)
             o(o(ox_ysk))=o_b
             if(o(ox_ysk)>2554)call mesage(15, 34, 0,0)
             o_w=o_x
-            go to 1690
         end if
+        o_b=o_b+1
+        cycle
 1650    if (krap/=0 .and. kraq==o(ox_nest)) then
             o_x=o_x+1
             o(o_s)=o(ox_rdq)
