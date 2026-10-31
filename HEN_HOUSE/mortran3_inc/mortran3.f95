@@ -778,90 +778,92 @@ subroutine expand (f)
             end if
             o_b=o_b+1
             jmp=o(o_b-1)-o(ox_rq)
-            if (jmp==4) go to 1650
-            if (jmp/=3) then
-                if (jmp/=1) then
-                    if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
-                        a=o(o_s-2*(o(o_b))-1)
-                        n=o(o_s-2*(o(o_b))-2)
-                        do while (a<n)
-                            o_x=o_x+1
-                            if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
-                            o(o_x)=o(a)
-                            a=a+1
-                        end do
-                        o_b=o_b+1
-                        cycle
-                    else
-                        call mesage(15, 4, o_b,o_e)
-                    end if
-                end if
-                if (o(o_b)==12) then
-                    o_b=o_b+1
-                    if (o(o_b)==23) then
-                        if (o(ox_ngn)==0) then
-                            kgn=1
-                            o(ox_ngn)=1
+            expansion_dispatch: block
+                if (jmp==4) exit expansion_dispatch
+                if (jmp/=3) then
+                    if (jmp/=1) then
+                        if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
+                            a=o(o_s-2*(o(o_b))-1)
+                            n=o(o_s-2*(o(o_b))-2)
+                            do while (a<n)
+                                o_x=o_x+1
+                                if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
+                                o(o_x)=o(a)
+                                a=a+1
+                            end do
+                            o_b=o_b+1
+                            cycle
                         else
-                            kgn=kgn+1
+                            call mesage(15, 4, o_b,o_e)
                         end if
-                    else if (o(o_b)==16) then
-                        if (o(ox_ngn)==1) kgn=kgn+1
-                    else if (o(o_b)==14) then
-                        kgn=kgn-1
-                        if(kgn<=0)o(ox_ngn)=0
                     end if
-                    if (o(ox_geo)/=0) then
-                        if(o(ox_ngn)==0)o(ox_base)=ox_ct4_base
-                        if(o(ox_ngn)/= 0)o(ox_base)=ox_ct0_base
+                    if (o(o_b)==12) then
+                        o_b=o_b+1
+                        if (o(o_b)==23) then
+                            if (o(ox_ngn)==0) then
+                                kgn=1
+                                o(ox_ngn)=1
+                            else
+                                kgn=kgn+1
+                            end if
+                        else if (o(o_b)==16) then
+                            if (o(ox_ngn)==1) kgn=kgn+1
+                        else if (o(o_b)==14) then
+                            kgn=kgn-1
+                            if(kgn<=0)o(ox_ngn)=0
+                        end if
+                        if (o(ox_geo)/=0) then
+                            if(o(ox_ngn)==0)o(ox_base)=ox_ct4_base
+                            if(o(ox_ngn)/= 0)o(ox_base)=ox_ct0_base
+                        end if
+                    else
+                        if(o(ox_ngn)==0)call kat
                     end if
+                    o_b=o_b+1
+                    cycle
+                end if
+                if (o(o_b)==10) then
+                    o_b=o_b+1
+                    if(1>o(o_b).or.o(o_b)>o(o_s-1) )call mesage(15, 4, o_b,o_e)
+                    o_x=o_x+llong(o_x,o(o_s-2*(o(o_b))-2)-o(o_s-2*(o(o_b))-1),10,0)
+                    if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
+                    o_b=o_b+2
+                    cycle
+                else if (o(o_b)==13) then
+                    o_b=o_b+1
+                    t=1
+                    do
+                        if( o(ox_lgb) ==o(o_b))t=t+1
+                        if( o(ox_rgb) ==o(o_b))t=t-1
+                        if(t==0)exit
+                        o_x=o_x+1
+                        if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
+                        o(o_x)=o(o_b)
+                        o_b=o_b+1
+                    end do
+                else if (o(o_b)==15) then
+                    o_x=o_x+1
+                    o(o_x)=o(ox_ldq)
+                    o_x=o_x+1
+                    krap=o_x
+                    kraq=o(ox_nest)
                 else
-                    if(o(ox_ngn)==0)call kat
+                    o(ox_nest)=o(ox_nest)+1
+                    if(o(ox_nest)==1)sef=o(ox_frt)
+                    o(ox_frt)=1
+                    o(ox_ysk)=o(ox_ysk)+1
+                    o(o(ox_ysk))=o(ox_base)
+                    o(ox_ysk)=o(ox_ysk)+1
+                    o(o(ox_ysk))=o_w
+                    o(ox_ysk)=o(ox_ysk)+1
+                    o(o(ox_ysk))=o_b
+                    if(o(ox_ysk)>2554)call mesage(15, 34, 0,0)
+                    o_w=o_x
                 end if
                 o_b=o_b+1
                 cycle
-            end if
-            if (o(o_b)==10) then
-                o_b=o_b+1
-                if(1>o(o_b).or.o(o_b)>o(o_s-1) )call mesage(15, 4, o_b,o_e)
-                o_x=o_x+llong(o_x,o(o_s-2*(o(o_b))-2)-o(o_s-2*(o(o_b))-1),10,0)
-                if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
-                o_b=o_b+2
-                cycle
-            else if (o(o_b)==13) then
-                o_b=o_b+1
-                t=1
-                do
-                    if( o(ox_lgb) ==o(o_b))t=t+1
-                    if( o(ox_rgb) ==o(o_b))t=t-1
-                    if(t==0)exit
-                    o_x=o_x+1
-                    if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
-                    o(o_x)=o(o_b)
-                    o_b=o_b+1
-                end do
-            else if (o(o_b)==15) then
-                o_x=o_x+1
-                o(o_x)=o(ox_ldq)
-                o_x=o_x+1
-                krap=o_x
-                kraq=o(ox_nest)
-            else
-                o(ox_nest)=o(ox_nest)+1
-                if(o(ox_nest)==1)sef=o(ox_frt)
-                o(ox_frt)=1
-                o(ox_ysk)=o(ox_ysk)+1
-                o(o(ox_ysk))=o(ox_base)
-                o(ox_ysk)=o(ox_ysk)+1
-                o(o(ox_ysk))=o_w
-                o(ox_ysk)=o(ox_ysk)+1
-                o(o(ox_ysk))=o_b
-                if(o(ox_ysk)>2554)call mesage(15, 34, 0,0)
-                o_w=o_x
-            end if
-            o_b=o_b+1
-            cycle
-    1650    if (krap/=0 .and. kraq==o(ox_nest)) then
+                end block expansion_dispatch
+                if (krap/=0 .and. kraq==o(ox_nest)) then
                 o_x=o_x+1
                 o(o_s)=o(ox_rdq)
                 o(krap)=o_x-krap-1
