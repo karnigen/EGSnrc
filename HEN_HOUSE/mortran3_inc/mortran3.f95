@@ -3003,7 +3003,13 @@ subroutine add_file(iu,the_file)
     integer read_status
     character*(*) the_file
     character*250 line
-    open(99,file=the_file,status='old',err=100)
+    open(99,file=the_file,status='old',iostat=read_status)
+    if (read_status/=0) then
+        write(6,'(a,a)') 'add_file: could not open file ', &
+            the_file(1:lnblnk1(the_file))
+        call exit(4) !stop 4
+        return
+    end if
     lineno = 0
     do
         read(99,'(a)',iostat=read_status) line
@@ -3028,11 +3034,6 @@ subroutine add_file(iu,the_file)
     end do
     close(99)
     return
-
-100 continue
-    write(6,'(a,a)') 'add_file: could not open file ', &
-        the_file(1:lnblnk1(the_file))
-    call exit(4) !stop 4
 end
 
 integer*4 function lnblnk1(c)
