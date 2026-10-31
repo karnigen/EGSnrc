@@ -2738,7 +2738,7 @@ subroutine open_units
     character*4096 arg,next_file
     logical  next,ignore_missing,is_there
 
-    integer iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1
+    integer iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1,open_status
 
     narg = iargc()
     verbose = .true.
@@ -2748,14 +2748,14 @@ subroutine open_units
         ! no arguments -> assume program is called from a script
         ! making all necessary links and hope for the best
 
-        open(unit=1,file='fort.1',status='OLD',err=11)
-        go to 12
-11      call getarg(0,arg)
-        write(6,'(a,a)') arg(1:lnblnk1(arg)),' called without arguments'
-        write(6,'(a)') '  but file fort.1 does not exist! '
-        write(6,'(a)') '  quiting now.'
-        call exit(1) !stop 1
-12      continue
+        open(unit=1,file='fort.1',status='OLD',iostat=open_status)
+        if (open_status/=0) then
+            call getarg(0,arg)
+            write(6,'(a,a)') arg(1:lnblnk1(arg)),' called without arguments'
+            write(6,'(a)') '  but file fort.1 does not exist! '
+            write(6,'(a)') '  quiting now.'
+            call exit(1) !stop 1
+        end if
         open(unit=5,file='fort.5',status='OLD',err=6)
 6       open(unit=6,file='fort.6',status='UNKNOWN')
         open(unit=7,file='fort.7',status='UNKNOWN')
