@@ -778,53 +778,50 @@ subroutine expand (f)
             end if
             o_b=o_b+1
             jmp=o(o_b-1)-o(ox_rq)
-            select case (jmp)
-            case (3)
-                go to 1640
-            case (4)
-                go to 1650
-            end select
-            if (jmp/=1) then
-                if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
-                    a=o(o_s-2*(o(o_b))-1)
-                    n=o(o_s-2*(o(o_b))-2)
-                    do while (a<n)
-                        o_x=o_x+1
-                        if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
-                        o(o_x)=o(a)
-                        a=a+1
-                    end do
-                    o_b=o_b+1
-                    cycle
-                else
-                    call mesage(15, 4, o_b,o_e)
-                end if
-            end if
-            if (o(o_b)==12) then
-                o_b=o_b+1
-                if (o(o_b)==23) then
-                    if (o(ox_ngn)==0) then
-                        kgn=1
-                        o(ox_ngn)=1
+            if (jmp==4) go to 1650
+            if (jmp/=3) then
+                if (jmp/=1) then
+                    if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
+                        a=o(o_s-2*(o(o_b))-1)
+                        n=o(o_s-2*(o(o_b))-2)
+                        do while (a<n)
+                            o_x=o_x+1
+                            if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
+                            o(o_x)=o(a)
+                            a=a+1
+                        end do
+                        o_b=o_b+1
+                        cycle
                     else
-                        kgn=kgn+1
+                        call mesage(15, 4, o_b,o_e)
                     end if
-                else if (o(o_b)==16) then
-                    if (o(ox_ngn)==1) kgn=kgn+1
-                else if (o(o_b)==14) then
-                    kgn=kgn-1
-                    if(kgn<=0)o(ox_ngn)=0
                 end if
-                if (o(ox_geo)/=0) then
-                    if(o(ox_ngn)==0)o(ox_base)=ox_ct4_base
-                    if(o(ox_ngn)/= 0)o(ox_base)=ox_ct0_base
+                if (o(o_b)==12) then
+                    o_b=o_b+1
+                    if (o(o_b)==23) then
+                        if (o(ox_ngn)==0) then
+                            kgn=1
+                            o(ox_ngn)=1
+                        else
+                            kgn=kgn+1
+                        end if
+                    else if (o(o_b)==16) then
+                        if (o(ox_ngn)==1) kgn=kgn+1
+                    else if (o(o_b)==14) then
+                        kgn=kgn-1
+                        if(kgn<=0)o(ox_ngn)=0
+                    end if
+                    if (o(ox_geo)/=0) then
+                        if(o(ox_ngn)==0)o(ox_base)=ox_ct4_base
+                        if(o(ox_ngn)/= 0)o(ox_base)=ox_ct0_base
+                    end if
+                else
+                    if(o(ox_ngn)==0)call kat
                 end if
-            else
-                if(o(ox_ngn)==0)call kat
+                o_b=o_b+1
+                cycle
             end if
-            o_b=o_b+1
-            cycle
-    1640    if (o(o_b)==10) then
+            if (o(o_b)==10) then
                 o_b=o_b+1
                 if(1>o(o_b).or.o(o_b)>o(o_s-1) )call mesage(15, 4, o_b,o_e)
                 o_x=o_x+llong(o_x,o(o_s-2*(o(o_b))-2)-o(o_s-2*(o(o_b))-1),10,0)
