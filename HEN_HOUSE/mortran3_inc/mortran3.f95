@@ -779,28 +779,28 @@ subroutine expand (f)
             o_b=o_b+1
             jmp=o(o_b-1)-o(ox_rq)
             select case (jmp)
-            case (1)
-                go to 1620
             case (3)
                 go to 1640
             case (4)
                 go to 1650
             end select
-            if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
-                a=o(o_s-2*(o(o_b))-1)
-                n=o(o_s-2*(o(o_b))-2)
-                do while (a<n)
-                    o_x=o_x+1
-                    if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
-                    o(o_x)=o(a)
-                    a=a+1
-                end do
-                o_b=o_b+1
-                cycle
-            else
-                call mesage(15, 4, o_b,o_e)
+            if (jmp/=1) then
+                if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
+                    a=o(o_s-2*(o(o_b))-1)
+                    n=o(o_s-2*(o(o_b))-2)
+                    do while (a<n)
+                        o_x=o_x+1
+                        if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
+                        o(o_x)=o(a)
+                        a=a+1
+                    end do
+                    o_b=o_b+1
+                    cycle
+                else
+                    call mesage(15, 4, o_b,o_e)
+                end if
             end if
-    1620    if (o(o_b)==12) then
+            if (o(o_b)==12) then
                 o_b=o_b+1
                 if (o(o_b)==23) then
                     if (o(ox_ngn)==0) then
