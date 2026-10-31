@@ -781,16 +781,12 @@ subroutine expand (f)
             select case (jmp)
             case (1)
                 go to 1620
-            case (2)
-                go to 1630
             case (3)
                 go to 1640
             case (4)
                 go to 1650
-            case default
-                go to 1630
             end select
-    1630    if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
+            if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
                 a=o(o_s-2*(o(o_b))-1)
                 n=o(o_s-2*(o(o_b))-2)
                 do while (a<n)
