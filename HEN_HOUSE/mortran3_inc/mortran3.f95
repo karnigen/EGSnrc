@@ -166,179 +166,181 @@ program mortran3
     o_x=o_w
     first_pass=.true.
     translator_cycle: do
-        if (first_pass) then
-            first_pass=.false.
-            go to 10
-        end if
-        if (o_s>o_u) then
-            if (o(ox_nest)>0) then
-                call expand(-1)
-                cycle translator_cycle
-            end if
-            o_s=ox_home_base
-            o_u=o_s-1
-            go to 10
-        end if
-        o_m=o(ox_base)+o(o_s)
-        macro_scan: do
-            if(o(o_m)==0)exit
-            o_m=o(o_m)
-            d=o_m+4
-            mxd=o(o_m+3)
-            kd=0
-            o(ox_sq)=0
-            mq=0
-            f=0
-            a=0
-            t=o_s
-            o_v=o_s
-            if(o(ox_mtrc)>=4) call mactrc(2,d,mxd)
-            if(o(ox_mtrc)>=4) call mactrc(5,o_v,o_u+1)
-            token_scan: do
-                if(o_v>o_u)exit token_scan
-                if (o(o_v)==o(ox_ldq)) then
-                    o_v=o_v+o(o_v+1)+3
-                    cycle token_scan
-                end if
-                if (mq/= 0) go to 140
-                if (o(d)==o(ox_lcb)) then
-                    if (o(d+1)<=100.and.o(ox_base)>ox_ct3_base) then
-                        o(o_s-2*(a+1)-1)=o_v
-                        o(o_s-2*(a+1)-2)=o_v
-                        d=d+1
-                        mq=1
-                        if(o(d-3)/= o(ox_ga))f=0
-                        ip=d
-                        iq=d
-                        do
-                            if(o(iq)==o(ox_rcb))exit
-                            iq=iq+1
-                            if(iq<=mxd)cycle
-                            call mesage(14, 20, 0,0)
-                            cycle macro_scan
-                        end do
-                        cycle token_scan
-                    end if
-                end if
-                if (o(d)/= o(o_v).or.o(o_v)>=o(ox_ga)) go to 230
-                if( o(ox_lq) ==o(d))o(ox_sq)=o(ox_sq)+1
-                if( o(ox_rq) ==o(d))o(ox_sq)=o(ox_sq)-1
-                if(o(d)==o(ox_lmb))kd=1
-                if(o(d)==o(ox_rmb))kd=0
-                o_v=o_v+1
-                t=o_v
-240             d=d+1
-                if(d>=mxd) then
-                    call cout()
-                    call expand(a)
+        if (.not.first_pass) then
+            if (o_s>o_u) then
+                if (o(ox_nest)>0) then
+                    call expand(-1)
                     cycle translator_cycle
                 end if
-                cycle token_scan
-230             continue
-                if (o(o_v)==o(ox_bla).and.o(ox_sq)+kd==0) then
-                    o_v=o_v+1
-                    cycle token_scan
-                end if
-                if (o(d)==o(ox_ga)) then
-                    d=d+1
-                    n=o(d)
-                    n1=n/4
-                    n2=(n-4*n1)/2
-                    n3=n-4*n1-2*n2
-                else if (o(d)==o(ox_gp)) then
-                    n1=1
-                    n2=1
-                    n3=o(ox_mode)
-                else
-                    go to 130
-                end if
-                t=o_v
-                o(o_s-2*(a+1)-1)=o_v
-                o(o_s-2*(a+1)-2)=o_v
-                a=a+1
-                d=d+1
-                f=d
-                kc=0
-                kb=0
-                kp=0
-                cycle token_scan
-140             p=ip
-                q=iq
-                ia=o_v
-                if(o(ox_sq)/= 0)ia=0
-                ire=ispec(p,q,o_v,o_u,ia)
-                if(ire==1)exit token_scan
-                if (ire==3) then
-                    a=a+1
-                    if(f/= 0)o(o_s-2*(a-1)-2)=t
-                    if(ia/= 0)o(o_s-2*(a)-1)=ia
-                    o(o_s-2*(a)-2)=o_v
-                    d=q
-                    mq=0
-                    go to 240
-                end if
-130             continue
-                if (o(o_v)==o(ox_bla).and.mq==1) then
-                    o_v=o_v+1
-                    cycle token_scan
-                end if
-                if(f==0)cycle macro_scan
-                do
-                    if(o(t)==o(ox_rq))cycle macro_scan
-                    if (kd>0) then
-                        do
-                            if( o(ox_lmb) ==o(t))kd=kd+1
-                            if( o(ox_rmb) ==o(t))kd=kd-1
-                            if(kd==0)exit
-                            t=t+1
-                            if(t>o_u)cycle macro_scan
-                        end do
-                        exit
-                    end if
-                    if (o(t)==o(ox_lq)) then
-                        nb=1
-                        do
-                            if(nb==0)exit
-                            t=t+1
-                            if(t>o_u)cycle macro_scan
-                            if( o(ox_lq) ==o(t))nb=nb+1
-                            if( o(ox_rq) ==o(t))nb=nb-1
-                        end do
-                    end if
-                    if (o(ox_sq)==0) then
-                        if( o(ox_lcb) ==o(t))kc=kc+1
-                        if( o(ox_rcb) ==o(t))kc=kc-1
-                        if(kc<0)cycle macro_scan
-                        if (n1==1) then
-                            if(38==o(t))kp=kp+1
-                            if(46==o(t))kp=kp-1
-                            if(kp<0)cycle macro_scan
-                        end if
-                        if (n2==1) then
-                            if( o(ox_lsb) ==o(t))kb=kb+1
-                            if( o(ox_rsb) ==o(t))kb=kb-1
-                            if(kb<0)cycle macro_scan
-                        end if
-                        if (o(t)==o(ox_trm).and.n3>0)cycle macro_scan
-                    end if
-                    t=t+1
-                    if (t>o_u) then
-                        if(o(ox_frt)==1)cycle macro_scan
-                        go to 10
-                    end if
-                    if (kc+kp+kb/= 0) cycle
-                    if(mq==0)d=f
-                    exit
-                end do
-                o_v=t
-                o(o_s-2*(a)-2)=o_v
-            end do token_scan
-            if(o(ox_frt)==1)cycle macro_scan
-            if (o_s==o_u) then
                 o_s=ox_home_base
-                o(o_s)=o(o_u)
-                o_u=o_s
+                o_u=o_s-1
+                first_pass=.true.
+            else
+                o_m=o(ox_base)+o(o_s)
             end if
+        end if
+        macro_scan: do
+            if (.not.first_pass) then
+                if(o(o_m)==0)exit
+                o_m=o(o_m)
+                d=o_m+4
+                mxd=o(o_m+3)
+                kd=0
+                o(ox_sq)=0
+                mq=0
+                f=0
+                a=0
+                t=o_s
+                o_v=o_s
+                if(o(ox_mtrc)>=4) call mactrc(2,d,mxd)
+                if(o(ox_mtrc)>=4) call mactrc(5,o_v,o_u+1)
+                token_scan: do
+                    if(o_v>o_u)exit token_scan
+                    if (o(o_v)==o(ox_ldq)) then
+                        o_v=o_v+o(o_v+1)+3
+                        cycle token_scan
+                    end if
+                    if (mq/= 0) go to 140
+                    if (o(d)==o(ox_lcb)) then
+                        if (o(d+1)<=100.and.o(ox_base)>ox_ct3_base) then
+                            o(o_s-2*(a+1)-1)=o_v
+                            o(o_s-2*(a+1)-2)=o_v
+                            d=d+1
+                            mq=1
+                            if(o(d-3)/= o(ox_ga))f=0
+                            ip=d
+                            iq=d
+                            do
+                                if(o(iq)==o(ox_rcb))exit
+                                iq=iq+1
+                                if(iq<=mxd)cycle
+                                call mesage(14, 20, 0,0)
+                                cycle macro_scan
+                            end do
+                            cycle token_scan
+                        end if
+                    end if
+                    if (o(d)/= o(o_v).or.o(o_v)>=o(ox_ga)) go to 230
+                    if( o(ox_lq) ==o(d))o(ox_sq)=o(ox_sq)+1
+                    if( o(ox_rq) ==o(d))o(ox_sq)=o(ox_sq)-1
+                    if(o(d)==o(ox_lmb))kd=1
+                    if(o(d)==o(ox_rmb))kd=0
+                    o_v=o_v+1
+                    t=o_v
+    240             d=d+1
+                    if(d>=mxd) then
+                        call cout()
+                        call expand(a)
+                        cycle translator_cycle
+                    end if
+                    cycle token_scan
+    230             continue
+                    if (o(o_v)==o(ox_bla).and.o(ox_sq)+kd==0) then
+                        o_v=o_v+1
+                        cycle token_scan
+                    end if
+                    if (o(d)==o(ox_ga)) then
+                        d=d+1
+                        n=o(d)
+                        n1=n/4
+                        n2=(n-4*n1)/2
+                        n3=n-4*n1-2*n2
+                    else if (o(d)==o(ox_gp)) then
+                        n1=1
+                        n2=1
+                        n3=o(ox_mode)
+                    else
+                        go to 130
+                    end if
+                    t=o_v
+                    o(o_s-2*(a+1)-1)=o_v
+                    o(o_s-2*(a+1)-2)=o_v
+                    a=a+1
+                    d=d+1
+                    f=d
+                    kc=0
+                    kb=0
+                    kp=0
+                    cycle token_scan
+    140             p=ip
+                    q=iq
+                    ia=o_v
+                    if(o(ox_sq)/= 0)ia=0
+                    ire=ispec(p,q,o_v,o_u,ia)
+                    if(ire==1)exit token_scan
+                    if (ire==3) then
+                        a=a+1
+                        if(f/= 0)o(o_s-2*(a-1)-2)=t
+                        if(ia/= 0)o(o_s-2*(a)-1)=ia
+                        o(o_s-2*(a)-2)=o_v
+                        d=q
+                        mq=0
+                        go to 240
+                    end if
+    130             continue
+                    if (o(o_v)==o(ox_bla).and.mq==1) then
+                        o_v=o_v+1
+                        cycle token_scan
+                    end if
+                    if(f==0)cycle macro_scan
+                    do
+                        if(o(t)==o(ox_rq))cycle macro_scan
+                        if (kd>0) then
+                            do
+                                if( o(ox_lmb) ==o(t))kd=kd+1
+                                if( o(ox_rmb) ==o(t))kd=kd-1
+                                if(kd==0)exit
+                                t=t+1
+                                if(t>o_u)cycle macro_scan
+                            end do
+                            exit
+                        end if
+                        if (o(t)==o(ox_lq)) then
+                            nb=1
+                            do
+                                if(nb==0)exit
+                                t=t+1
+                                if(t>o_u)cycle macro_scan
+                                if( o(ox_lq) ==o(t))nb=nb+1
+                                if( o(ox_rq) ==o(t))nb=nb-1
+                            end do
+                        end if
+                        if (o(ox_sq)==0) then
+                            if( o(ox_lcb) ==o(t))kc=kc+1
+                            if( o(ox_rcb) ==o(t))kc=kc-1
+                            if(kc<0)cycle macro_scan
+                            if (n1==1) then
+                                if(38==o(t))kp=kp+1
+                                if(46==o(t))kp=kp-1
+                                if(kp<0)cycle macro_scan
+                            end if
+                            if (n2==1) then
+                                if( o(ox_lsb) ==o(t))kb=kb+1
+                                if( o(ox_rsb) ==o(t))kb=kb-1
+                                if(kb<0)cycle macro_scan
+                            end if
+                            if (o(t)==o(ox_trm).and.n3>0)cycle macro_scan
+                        end if
+                        t=t+1
+                        if (t>o_u) then
+                            if(o(ox_frt)==1)cycle macro_scan
+                            go to 10
+                        end if
+                        if (kc+kp+kb/= 0) cycle
+                        if(mq==0)d=f
+                        exit
+                    end do
+                    o_v=t
+                    o(o_s-2*(a)-2)=o_v
+                end do token_scan
+                if(o(ox_frt)==1)cycle macro_scan
+                if (o_s==o_u) then
+                    o_s=ox_home_base
+                    o(o_s)=o(o_u)
+                    o_u=o_s
+                end if
+            end if
+            first_pass=.false.
 10          o(ox_qfl)=o(ox_bla)
             kx=0
             do
