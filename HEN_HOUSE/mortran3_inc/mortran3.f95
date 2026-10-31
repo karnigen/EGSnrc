@@ -585,7 +585,6 @@ integer function ispec(p,q,iv,u,t)
                 o(ox_ksk)=o(ox_ksk)-1
                 c=o(o(ox_ksk))
                 o(ox_ksk)=o(ox_ksk)-1
-                go to 1300
             case (2)
                 p=p+2
                 m=0
@@ -597,7 +596,6 @@ integer function ispec(p,q,iv,u,t)
                         return
                     end if
                 end if
-                go to 1300
             case (5)
                 w=v
                 m=1
@@ -617,7 +615,7 @@ integer function ispec(p,q,iv,u,t)
                 p=p+1
                 if(m==1)v=w
             end select
-1300        if(m==1)cycle ispec_scan
+            if(m==1)cycle ispec_scan
             if(o(p)/= o(ox_alt) .and. o(p)/= o(ox_rip))then
                 ispec=2
                 return
@@ -698,63 +696,63 @@ subroutine expand (f)
     save    kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
 !CDGHILM
     t=0
-    if (f>=0) go to 1440
-    o(ox_nest)=o(ox_nest)-1
-    if(o(ox_nest)==0)o(ox_frt)=sef
-    do k = 1,6
-        o(k)=o(6+o_u+1-k)
-    end do
-    j=o(o(o(ox_ysk)))
-    if (j>=11 .and. j<=12) then
-        jv=lexp(o_w+1,o_x)
-        if (o(ox_ifl)==0) then
-            if (j==12) then
-                o_x=o_w+llong(o_w,jv,10,0)
-            end if
-            if (j==11) then
-                o_x=o_w+1
-                o(o_x)=jv
-            end if
-        else
-            o_x=o_w
-            o(ox_ifl)=o(ox_ifl)-1
-            if (jv==0) then
-                p=o(ox_kfb)
-                q=o(ox_kfe)
+    if (f<0) then
+        o(ox_nest)=o(ox_nest)-1
+        if(o(ox_nest)==0)o(ox_frt)=sef
+        do k = 1,6
+            o(k)=o(6+o_u+1-k)
+        end do
+        j=o(o(o(ox_ysk)))
+        if (j>=11 .and. j<=12) then
+            jv=lexp(o_w+1,o_x)
+            if (o(ox_ifl)==0) then
+                if (j==12) then
+                    o_x=o_w+llong(o_w,jv,10,0)
+                end if
+                if (j==11) then
+                    o_x=o_w+1
+                    o(o_x)=jv
+                end if
             else
-                p=o(ox_ktb)
-                q=o(ox_kte)
+                o_x=o_w
+                o(ox_ifl)=o(ox_ifl)-1
+                if (jv==0) then
+                    p=o(ox_kfb)
+                    q=o(ox_kfe)
+                else
+                    p=o(ox_ktb)
+                    q=o(ox_kte)
+                end if
+                o(ox_isk)=o(ox_isk)+1
+                o(o(ox_isk))=o(ox_kfe)+1
+                o(ox_isk)=o(ox_isk)+1
+                o(o(ox_isk))=o_e
+                if(o(ox_isk)>2154)call mesage(15, 18, 0,0)
+                o_b=p
+                o_e=q
             end if
-            o(ox_isk)=o(ox_isk)+1
-            o(o(ox_isk))=o(ox_kfe)+1
-            o(ox_isk)=o(ox_isk)+1
-            o(o(ox_isk))=o_e
-            if(o(ox_isk)>2154)call mesage(15, 18, 0,0)
-            o_b=p
-            o_e=q
         end if
+        nul=o(o(ox_ysk))
+        o(ox_ysk)=o(ox_ysk)-1
+        o_w=o(o(ox_ysk))
+        o(ox_ysk)=o(ox_ysk)-1
+        o(ox_base)=o(o(ox_ysk))
+        o(ox_ysk)=o(ox_ysk)-1
+    else
+        o(o_s-1)=f
+        o(ox_mxx)=o_s-2*f-3
+        o_r=o(o(ox_mcom)+2)
+        o_b=o_r+4
+        o_e=o(o_r+3)
+        o_r=o(o_r)
+        o(ox_mcnt)=o(ox_mcnt)+1
+        if (o(ox_mcnt)>1000) then
+            call mesage(14, 4, 0,0)
+            o(ox_mtrc)=2
+        end if
+        if(o(ox_mtrc)>=2) call mactrc(22,o(ox_mcom),o_s)
+        if( o(ox_nest)==0 )o_x=o_w
     end if
-    nul=o(o(ox_ysk))
-    o(ox_ysk)=o(ox_ysk)-1
-    o_w=o(o(ox_ysk))
-    o(ox_ysk)=o(ox_ysk)-1
-    o(ox_base)=o(o(ox_ysk))
-    o(ox_ysk)=o(ox_ysk)-1
-    go to 1430
-1440 o(o_s-1)=f
-    o(ox_mxx)=o_s-2*f-3
-    o_r=o(o(ox_mcom)+2)
-    o_b=o_r+4
-    o_e=o(o_r+3)
-    o_r=o(o_r)
-    o(ox_mcnt)=o(ox_mcnt)+1
-    if (o(ox_mcnt)>1000) then
-        call mesage(14, 4, 0,0)
-        o(ox_mtrc)=2
-    end if
-    if(o(ox_mtrc)>=2) call mactrc(22,o(ox_mcom),o_s)
-    if( o(ox_nest)==0 )o_x=o_w
-1430 continue
 1580 continue
     do while (o_b<o_e)
         if (o(o_b)<o(ox_ga)) then
@@ -2089,26 +2087,28 @@ subroutine find(l,n,v)
     a=ox_wbf_base
     c=a+9
     q=ox_ct6_base+l
-680 if (o(q)==0) go to 4610
-    q=o(q)
-    if(o(q+5)/= n)go to 680
-    r=o(q+2)+4
-    s=o(o(q+2)+3)
-4620 if(r>=s)go to 4621
-    c=c+1
-    o(c)=o(r)
-    r=r+1
-    go to 4620
-4621 continue
-    go to 4600
-4610 c=c+llong(c,n,10,0)
-4600 continue
+    do
+        if (o(q)==0) then
+            c=c+llong(c,n,10,0)
+            exit
+        end if
+        q=o(q)
+        if(o(q+5)/=n)cycle
+        r=o(q+2)+4
+        s=o(o(q+2)+3)
+        do while (r<s)
+            c=c+1
+            o(c)=o(r)
+            r=r+1
+        end do
+        exit
+    end do
     if(l==15) call dumdum(ox_wbf_base,90,45,45,45,15,10,29,10,21,90)
     if(l==14) call dumdum(ox_wbf_base,90,45,32,10,27,23,18,23,16,90)
-    if (l/= 13.and.l/= 16) go to 4640
-    call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90)
-    if(v/= 0) nerd=llong(a,v,10,0)
-4640 continue
+    if (l==13.or.l==16) then
+        call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90)
+        if(v/= 0) nerd=llong(a,v,10,0)
+    end if
     call rw(33,o(ox_mlst),a,c)
     if (o(ox_merr)>0) call rw(23,o(ox_flst),a,c)
     do k = a,c
