@@ -155,7 +155,7 @@ program mortran3
 
     call open_units
 
-    write(o_e,'(a,T55)',advance='no') 'Mortran 3.2',' '
+    write(o_e,'(a,1x)',advance='no') 'Mortran 3.2'
     call egs_fdate(o_e)
     write(o_e,*)
 
@@ -2551,7 +2551,7 @@ subroutine rw(n,i,j,k)
 !        NRC PATCH TO PUT DATE AND TIME AT EACH PAGE THROW
 !
     if( ch(1)=='1' .and. i==6 ) then
-        write(i,'(T55)',advance='no') ' '
+        write(i,'(T55)',advance='no')
         call egs_fdate(i)
         write(i,*)
     end if
