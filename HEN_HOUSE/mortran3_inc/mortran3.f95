@@ -2756,14 +2756,13 @@ subroutine open_units
             write(6,'(a)') '  quiting now.'
             call exit(1) !stop 1
         end if
-        open(unit=5,file='fort.5',status='OLD',err=6)
-6       open(unit=6,file='fort.6',status='UNKNOWN')
+        open(unit=5,file='fort.5',status='OLD',iostat=open_status)
+        open(unit=6,file='fort.6',status='UNKNOWN')
         open(unit=7,file='fort.7',status='UNKNOWN')
-        open(unit=2,file='fort.2',status='OLD',err=3)
-3       open(unit=3,file='fort.3',status='OLD',err=4)
-4       open(unit=4,file='fort.4',status='OLD',err=8)
-8       open(unit=8,file='fort.8',status='OLD',err=9)
-9       continue
+        open(unit=2,file='fort.2',status='OLD',iostat=open_status)
+        open(unit=3,file='fort.3',status='OLD',iostat=open_status)
+        open(unit=4,file='fort.4',status='OLD',iostat=open_status)
+        open(unit=8,file='fort.8',status='OLD',iostat=open_status)
         o_b=1   ! hex/raw data unit number
         o_e=6   ! listing unit number
         o_r=7   ! fortran/hex output unit number
