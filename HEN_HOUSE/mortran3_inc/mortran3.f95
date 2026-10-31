@@ -3000,14 +3000,14 @@ end
 
 subroutine add_file(iu,the_file)
     integer*4  iu
+    integer read_status
     character*(*) the_file
-    logical next_line
     character*250 line
     open(99,file=the_file,status='old',err=100)
-    next_line = .true.
     lineno = 0
-    do while (next_line)
-        read(99,'(a)',err=101,end=101) line
+    do
+        read(99,'(a)',iostat=read_status) line
+        if (read_status/=0) exit
         lineno = lineno + 1
         if( lnblnk1(line)>80 ) then
             write(6,'(a,i5,a,a,a)') &
@@ -3026,7 +3026,6 @@ subroutine add_file(iu,the_file)
             write(iu,*)
         end if
     end do
-101 continue
     close(99)
     return
 
