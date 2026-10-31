@@ -201,90 +201,92 @@ program mortran3
                             o_v=o_v+o(o_v+1)+3
                             cycle token_scan
                         end if
-                        if (mq/= 0) go to 140
-                        if (o(d)==o(ox_lcb)) then
-                            if (o(d+1)<=100.and.o(ox_base)>ox_ct3_base) then
+                        if (mq==0) then
+                            if (o(d)==o(ox_lcb)) then
+                                if (o(d+1)<=100.and.o(ox_base)>ox_ct3_base) then
+                                    o(o_s-2*(a+1)-1)=o_v
+                                    o(o_s-2*(a+1)-2)=o_v
+                                    d=d+1
+                                    mq=1
+                                    if(o(d-3)/= o(ox_ga))f=0
+                                    ip=d
+                                    iq=d
+                                    do
+                                        if(o(iq)==o(ox_rcb))exit
+                                        iq=iq+1
+                                        if(iq<=mxd)cycle
+                                        call mesage(14, 20, 0,0)
+                                        cycle macro_scan
+                                    end do
+                                    cycle token_scan
+                                end if
+                            end if
+                            if (o(d)==o(o_v).and.o(o_v)<o(ox_ga)) then
+                                if( o(ox_lq) ==o(d))o(ox_sq)=o(ox_sq)+1
+                                if( o(ox_rq) ==o(d))o(ox_sq)=o(ox_sq)-1
+                                if(o(d)==o(ox_lmb))kd=1
+                                if(o(d)==o(ox_rmb))kd=0
+                                o_v=o_v+1
+                                t=o_v
+                                d=d+1
+                                if(d>=mxd) then
+                                    call cout()
+                                    call expand(a)
+                                    cycle translator_cycle
+                                end if
+                                cycle token_scan
+                            end if
+                            if (o(o_v)==o(ox_bla).and.o(ox_sq)+kd==0) then
+                                o_v=o_v+1
+                                cycle token_scan
+                            end if
+                            if (o(d)==o(ox_ga).or.o(d)==o(ox_gp)) then
+                                if (o(d)==o(ox_ga)) then
+                                    d=d+1
+                                    n=o(d)
+                                    n1=n/4
+                                    n2=(n-4*n1)/2
+                                    n3=n-4*n1-2*n2
+                                else
+                                    n1=1
+                                    n2=1
+                                    n3=o(ox_mode)
+                                end if
+                                t=o_v
                                 o(o_s-2*(a+1)-1)=o_v
                                 o(o_s-2*(a+1)-2)=o_v
+                                a=a+1
                                 d=d+1
-                                mq=1
-                                if(o(d-3)/= o(ox_ga))f=0
-                                ip=d
-                                iq=d
-                                do
-                                    if(o(iq)==o(ox_rcb))exit
-                                    iq=iq+1
-                                    if(iq<=mxd)cycle
-                                    call mesage(14, 20, 0,0)
-                                    cycle macro_scan
-                                end do
+                                f=d
+                                kc=0
+                                kb=0
+                                kp=0
                                 cycle token_scan
                             end if
                         end if
-                        if (o(d)==o(o_v).and.o(o_v)<o(ox_ga)) then
-                            if( o(ox_lq) ==o(d))o(ox_sq)=o(ox_sq)+1
-                            if( o(ox_rq) ==o(d))o(ox_sq)=o(ox_sq)-1
-                            if(o(d)==o(ox_lmb))kd=1
-                            if(o(d)==o(ox_rmb))kd=0
-                            o_v=o_v+1
-                            t=o_v
-                            d=d+1
-                            if(d>=mxd) then
-                                call cout()
-                                call expand(a)
-                                cycle translator_cycle
+                        if (mq/=0) then
+                            p=ip
+                            q=iq
+                            ia=o_v
+                            if(o(ox_sq)/= 0)ia=0
+                            ire=ispec(p,q,o_v,o_u,ia)
+                            if(ire==1)exit token_scan
+                            if (ire==3) then
+                                a=a+1
+                                if(f/= 0)o(o_s-2*(a-1)-2)=t
+                                if(ia/= 0)o(o_s-2*(a)-1)=ia
+                                o(o_s-2*(a)-2)=o_v
+                                d=q
+                                mq=0
+                                d=d+1
+                                if(d>=mxd) then
+                                    call cout()
+                                    call expand(a)
+                                    cycle translator_cycle
+                                end if
+                                cycle token_scan
                             end if
-                            cycle token_scan
                         end if
-                        if (o(o_v)==o(ox_bla).and.o(ox_sq)+kd==0) then
-                            o_v=o_v+1
-                            cycle token_scan
-                        end if
-                        if (o(d)==o(ox_ga)) then
-                            d=d+1
-                            n=o(d)
-                            n1=n/4
-                            n2=(n-4*n1)/2
-                            n3=n-4*n1-2*n2
-                        else if (o(d)==o(ox_gp)) then
-                            n1=1
-                            n2=1
-                            n3=o(ox_mode)
-                        else
-                            go to 130
-                        end if
-                        t=o_v
-                        o(o_s-2*(a+1)-1)=o_v
-                        o(o_s-2*(a+1)-2)=o_v
-                        a=a+1
-                        d=d+1
-                        f=d
-                        kc=0
-                        kb=0
-                        kp=0
-                        cycle token_scan
-        140             p=ip
-                        q=iq
-                        ia=o_v
-                        if(o(ox_sq)/= 0)ia=0
-                        ire=ispec(p,q,o_v,o_u,ia)
-                        if(ire==1)exit token_scan
-                        if (ire==3) then
-                            a=a+1
-                            if(f/= 0)o(o_s-2*(a-1)-2)=t
-                            if(ia/= 0)o(o_s-2*(a)-1)=ia
-                            o(o_s-2*(a)-2)=o_v
-                            d=q
-                            mq=0
-                            d=d+1
-                            if(d>=mxd) then
-                                call cout()
-                                call expand(a)
-                                cycle translator_cycle
-                            end if
-                            cycle token_scan
-                        end if
-        130             continue
                         if (o(o_v)==o(ox_bla).and.mq==1) then
                             o_v=o_v+1
                             cycle token_scan
