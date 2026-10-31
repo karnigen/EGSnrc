@@ -2854,12 +2854,9 @@ subroutine open_units
             nfs=i+1
             do j=i+1,narg
                 call getarg(j,arg)
-                if( arg(1:1)=='-' ) then
-                    go to 88
-                end if
+                if( arg(1:1)=='-' ) exit
                 nfe=j
             end do
-88          continue
         else if( arg(1:2)=='-d' ) then
             if( i<narg ) then
                 call getarg(i+1,arg)
