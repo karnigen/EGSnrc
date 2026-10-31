@@ -221,21 +221,21 @@ program mortran3
                                 cycle token_scan
                             end if
                         end if
-                        if (o(d)/= o(o_v).or.o(o_v)>=o(ox_ga)) go to 230
-                        if( o(ox_lq) ==o(d))o(ox_sq)=o(ox_sq)+1
-                        if( o(ox_rq) ==o(d))o(ox_sq)=o(ox_sq)-1
-                        if(o(d)==o(ox_lmb))kd=1
-                        if(o(d)==o(ox_rmb))kd=0
-                        o_v=o_v+1
-                        t=o_v
-        240             d=d+1
-                        if(d>=mxd) then
-                            call cout()
-                            call expand(a)
-                            cycle translator_cycle
+                        if (o(d)==o(o_v).and.o(o_v)<o(ox_ga)) then
+                            if( o(ox_lq) ==o(d))o(ox_sq)=o(ox_sq)+1
+                            if( o(ox_rq) ==o(d))o(ox_sq)=o(ox_sq)-1
+                            if(o(d)==o(ox_lmb))kd=1
+                            if(o(d)==o(ox_rmb))kd=0
+                            o_v=o_v+1
+                            t=o_v
+                            d=d+1
+                            if(d>=mxd) then
+                                call cout()
+                                call expand(a)
+                                cycle translator_cycle
+                            end if
+                            cycle token_scan
                         end if
-                        cycle token_scan
-        230             continue
                         if (o(o_v)==o(ox_bla).and.o(ox_sq)+kd==0) then
                             o_v=o_v+1
                             cycle token_scan
@@ -276,7 +276,13 @@ program mortran3
                             o(o_s-2*(a)-2)=o_v
                             d=q
                             mq=0
-                            go to 240
+                            d=d+1
+                            if(d>=mxd) then
+                                call cout()
+                                call expand(a)
+                                cycle translator_cycle
+                            end if
+                            cycle token_scan
                         end if
         130             continue
                         if (o(o_v)==o(ox_bla).and.mq==1) then
