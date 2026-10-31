@@ -2736,7 +2736,7 @@ subroutine open_units
     common/junk/verbose
     logical verbose
     character*4096 arg,next_file
-    logical  next,ignore_missing,is_there
+    logical  ignore_missing,is_there
 
     integer iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1,open_status
 
@@ -2900,9 +2900,9 @@ subroutine open_units
                 write(6,'(a,a)') '  configuration file: ',arg(1:lnblnk1(arg))
             end if
             open(11,file=arg(1:lnblnk1(arg)),status='old',err=101)
-            next = .true.
-            do while (next)
-                read(11,'(a)',end=102,err=102) next_file
+            do
+                read(11,'(a)',iostat=open_status) next_file
+                if (open_status/=0) exit
                 if( lnblnk1(next_file)>0 ) then
                     inquire(file=next_file,exist=is_there)
                     if( is_there ) then
@@ -2922,9 +2922,6 @@ subroutine open_units
                         end if
                     end if
                 end if
-                go to 104
-102             next = .false.
-104             continue
             end do
             close(11)
             write(12,'(/a)') '%%'
