@@ -799,7 +799,8 @@ subroutine expand (f)
                 o(o_x)=o(a)
                 a=a+1
             end do
-            go to 1690
+            o_b=o_b+1
+            cycle
         else
             call mesage(15, 4, o_b,o_e)
         end if
@@ -825,7 +826,8 @@ subroutine expand (f)
         else
             if(o(ox_ngn)==0)call kat
         end if
-        go to 1690
+        o_b=o_b+1
+        cycle
 1640    if (o(o_b)==10) then
             o_b=o_b+1
             if(1>o(o_b).or.o(o_b)>o(o_s-1) )call mesage(15, 4, o_b,o_e)
@@ -885,8 +887,6 @@ subroutine expand (f)
         if( 0>y.or.y>=8 )call mesage(15, 17, o_b,o_e)
         o(ox_base)=y*120+ox_ct0_base
         exit
-1690    o_b=o_b+1
-        cycle
     end do
     if (o(ox_nest)<=0) then
         if (o(ox_isk)==ox_isk_base) then
