@@ -2290,9 +2290,10 @@ end subroutine dumdum
 subroutine rw(n,i,j,k)
     implicit none
     include "mortran3_indices.f95"
+    integer, parameter :: rw_buffer_size = 200
     integer :: n,i,j,k
-    character(len=1) :: ch(200)
-    integer :: hc(200)
+    character(len=1) :: ch(rw_buffer_size)
+    integer :: hc(rw_buffer_size)
     integer :: o(ox_capacity)
     common /ibm/o
     integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
@@ -2408,7 +2409,7 @@ subroutine rw(n,i,j,k)
         do ii=jj,nrr
             ch(ii+1-jj) = ch(ii)
         end do
-        do ii=nrr+2-jj,200
+        do ii=nrr+2-jj,rw_buffer_size
             ch(ii) = ' '
         end do
         nrr = nrr + 1 - jj
