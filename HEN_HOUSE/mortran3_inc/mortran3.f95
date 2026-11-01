@@ -1043,49 +1043,62 @@ subroutine kat
     if(o(o_b)<19.or.o(o_b)>30) call mesage(15, 7, o_b-2,o_e)
     o_b=o_b+1
     jmp=o(o_b-1)-18
+    ! After GA (107), the operator letter is a token from J through U (19..30).
+    ! Subtracting 18 selects these primitive operations:
+    !   J (19): push a value from the table at offset 78.
+    !   K (20): recover/compact buffer storage.
+    !   L (21): manipulate the Fortran-label stack.
+    !   M (22): manipulate the macro-variable stack.
+    !   N (23): convert the top output value to decimal text.
+    !   O (24): define a rule; P (25): set evaluator-IF ranges.
+    !   Q (26): allocate and push a numeric label; R (27): rewind a unit.
+    !   S (28): read/update a table entry; T (29): emit a macro trace.
+    !   U (30): use the table at offset 121, optionally formatting its value.
+    ! For example, @SS= encodes GA,S,S,=: S selects table entry 28 (STNG),
+    ! and '=' assigns the output-stack value to that entry.
     select case (jmp)
-    case (1)
+    case (1) ! @J: push a value from the table at offset 78.
         ! Read a value from the table area at offset 78 and push it on the
         ! output stack.
         t=o(o_b)+78
         o_x=o_x+1
         o(o_x)=o(t)
         return
-    case (2)
+    case (2) ! @K: recover/compact buffer storage.
         ! Run recovery and return; recovery manages its own buffer state.
         call krunc(0)
         return
-    case (3)
+    case (3) ! @L: perform a Fortran-label stack operation.
         ! The selector chooses a label/stack operation. Some selectors also
         ! consume a following option from the encoded operator stream.
-        if (o(o_b)==12) then
+        if (o(o_b)==12) then ! @LC...: format a value from the label stack.
             ! Format the decimal value assembled from the selected stack entry
             ! and the following operand, then append it to the output buffer.
             o_x=o_x+llong(o_x,o(l-o(o_b+1))+o(o_b+2),10,1)
             o_b=o_b+2
             return
-        else if (o(o_b)==16) then
+        else if (o(o_b)==16) then ! @LG...: allocate and emit a label.
             ! Allocate the next numeric label (labels advance by ten) and emit it.
             o(ox_labl)=o(ox_labl)+10
             o_x=o_x+llong(o_x,o(ox_labl),10,0)
             return
-        else if (o(o_b)==28) then
+        else if (o(o_b)==28) then ! @LS...: parse and push a label value.
             ! Convert the output-buffer number to an integer and push it on the
             ! label stack. Option 1 swaps the two top label-stack entries.
             o_b=o_b+1
             o(ox_lsk)=o(ox_lsk)+1
             o(o(ox_lsk))=nib(o_x,10)
             if(o(ox_lsk)>2304)call mesage(15, 21, 0,0)
-            if (o(o_b)==1) then
+            if (o(o_b)==1) then ! @LS1: swap the two top label-stack entries.
                 z=o(l-1)
                 o(l-1)=o(l)
                 o(l)=z
             end if
-        else if (o(o_b)==30) then
+        else if (o(o_b)==30) then ! @LU...: pop a label-stack entry.
             ! Pop the label stack; option 1 copies its top value to the entry
             ! immediately below it before the pop. Do not cross the stack base.
             o_b=o_b+1
-            if(o(o_b)==1)o(l-1)=o(l)
+            if(o(o_b)==1)o(l-1)=o(l) ! @LU1: copy the top entry before popping.
             l=l-1
             if (l<ox_lsk_base) then
                 call mesage(14, 7, 0,0)
@@ -1095,23 +1108,23 @@ subroutine kat
             call mesage(15, 7, o_b-2,o_e)
             return
         end if
-        if(o(o_b)/=1.and.o(o_b)/=0)then
+        if(o(o_b)/=1.and.o(o_b)/=0)then ! @LS/@LU option must be 0 or 1.
             write(6,*) 'compilation error (stop 18)'
             call exit(18)
         end if
         return
-    case (4)
+    case (4) ! @M: perform a macro-variable stack operation.
         ! Operate on the macro-variable stack: selector 28 pushes an encoded
         ! value, 27 replaces the current entry, and 30 pops it to output.
-        if (o(o_b)==28) then
+        if (o(o_b)==28) then ! @MS: push a value onto the macro-variable stack.
             o_b=o_b+1
             o(ox_msk)=o(ox_msk)+1
             o(o(ox_msk))=o(o_b)
             if(o(ox_msk)>2354)call mesage(15, 22, 0,0)
-        else if (o(o_b)==27) then
+        else if (o(o_b)==27) then ! @MR: replace the current macro-variable value.
             o_b=o_b+1
             o(m)=o(o_b)
-        else if (o(o_b)==30) then
+        else if (o(o_b)==30) then ! @MU: pop the macro-variable value to output.
             o_x=o_x+1
             o(o_x)=o(m)
             m=m-1
@@ -1123,16 +1136,16 @@ subroutine kat
             call mesage(15, 7, o_b-2,o_e)
         end if
         return
-    case (5)
+    case (5) ! @N: convert the top output value to decimal text.
         ! Replace the top output item with its decimal character representation.
         ibg=o(o_x)
         o_x=o_x-1+llong(o_x-1,ibg,10,1)
         return
-    case (6)
+    case (6) ! @O: define a rule.
         ! Define the rule represented by the current source-buffer range.
         call define(o_s)
         return
-    case (7)
+    case (7) ! @P: set evaluator-IF ranges.
         ! Enter evaluator conditional mode and derive the bounds of its two
         ! encoded buffer ranges from the four relative lengths that follow.
         o(ox_ifl)=1
@@ -1143,29 +1156,29 @@ subroutine kat
         o(ox_kfe)=o_b+o(o_b-4)
         o_b=o_b-1
         return
-    case (8)
+    case (8) ! @Q: allocate and push a numeric label.
         ! Allocate and push the next numeric label. Option 1 swaps the top two
         ! label-stack entries; only options 0 and 1 are valid here.
         o(ox_labl)=o(ox_labl)+10
         o(ox_lsk)=o(ox_lsk)+1
         o(o(ox_lsk))=o(ox_labl)
         if(o(ox_lsk)>2304)call mesage(15, 21, 0,0)
-        if (o(o_b)==1) then
+        if (o(o_b)==1) then ! @Q1: swap the two top label-stack entries.
             z=o(l-1)
             o(l-1)=o(l)
             o(l)=z
         end if
-        if(o(o_b)/=1.and.o(o_b)/=0)then
+        if(o(o_b)/=1.and.o(o_b)/=0)then ! @Q option must be 0 or 1.
             write(6,*) 'compilation error (stop 18)'
             call exit(18)
         end if
         return
-    case (9)
+    case (9) ! @R: rewind an input unit.
         ! Rewind the input unit identified by the following buffer item.
         iuni=o(o_b)
         rewind iuni
         return
-    case (10)
+    case (10) ! @S: read or update a table entry.
         ! Select a target table entry. An optional bank selector (1..4) adds
         ! a 26-entry bank offset; the operator itself is handled below.
         t=o(o_b)
@@ -1175,13 +1188,13 @@ subroutine kat
             o_b=o_b+1
         end if
         nba=0
-    case (11)
+    case (11) ! @T: emit a macro trace.
         ! Emit a macro trace when tracing is enabled, then restore o_b to the
         ! operator token before returning.
         if(o(ox_mtrc)>=1) call mactrc(22,o(ox_mcom),o_s)
         o_b=o_b-1
         return
-    case (12)
+    case (12) ! @U: access the table at offset 121.
         ! Select an entry in the table beginning at 121. Save the requested
         ! radix from output and remove it before the shared action.
         t=121+o(o_b)
@@ -1194,14 +1207,14 @@ subroutine kat
     end select
     ! Cases 10 and 12 share the final action: increment, decrement, assign
     ! from the output stack, or push a target value (optionally radix-formatted).
-    if (o(o_b)==43) then
+    if (o(o_b)==43) then ! @S/@U...+: increment the selected table entry.
         o(t)=o(t)+1
-    else if (o(o_b)==42) then
+    else if (o(o_b)==42) then ! @S/@U...-: decrement the selected table entry.
         o(t)=o(t)-1
-    else if (o(o_b)==41) then
+    else if (o(o_b)==41) then ! @S/@U...=: assign the output value to the entry.
         o(t)=o(o_x)
         o_x=o_x-1
-    else if (o(o_b)==12) then
+    else if (o(o_b)==12) then ! @S/@U...C: push the entry, optionally radix-formatted.
         o_x=o_x+1
         o(o_x)=o(t)
         if (nba>1) o_x=o_x-1+llong(o_x-1,o(t),nba,1)
