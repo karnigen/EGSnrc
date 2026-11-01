@@ -132,6 +132,7 @@
 !##############################################################################
 
 program mortran3
+    ! Translate Mortran source by tokenizing input, matching macro rules, and expanding them into Fortran output.
     implicit none
     include "mortran3_indices.f95"
     integer :: o(ox_capacity)
@@ -164,6 +165,7 @@ program mortran3
     iw=ox_mnxbf_base
     o_x=o_w
     first_pass=.true.
+    ! Alternate between matching rules against buffered input and loading more tokens.
     translator_cycle: do
         if (.not.first_pass) then
             if (o_s>o_u) then
@@ -178,6 +180,7 @@ program mortran3
                 o_m=o(ox_base)+o(o_s)
             end if
         end if
+        ! Walk the active rule table until a rule matches or the input must advance.
         macro_scan: do
             if (.not.first_pass) then
                 macro_match: block
@@ -350,6 +353,7 @@ program mortran3
                 end block macro_match
             end if
             first_pass=.false.
+            ! Copy translated character codes into the scan buffer while tracking quoted text and nested braces.
             input_restart: do
                 o(ox_qfl)=o(ox_bla)
                 kx=0
@@ -787,6 +791,7 @@ subroutine expand (f)
             end if
             o_b=o_b+1
             jmp=o(o_b-1)-o(ox_rq)
+            ! Interpret the encoded replacement item and update output or expansion state.
             expansion_dispatch: block
                 if (jmp==4) exit expansion_dispatch
                 if (jmp/=3) then
@@ -1613,6 +1618,7 @@ integer function lexp(a,z)
                 x=13
             end select
         end if
+        ! Use the operator table to apply precedence and reduce operands on the shared stack.
         if(p(x)==0)exit
         if(x<10.or.x>o(ox_rpr) .or. (x==o(ox_rpr).and.o(ox_nflg)==0)) &
             exit
@@ -1734,6 +1740,7 @@ subroutine nxtcrd
     do
         call rw(0,o(ox_unit),ox_rbf_base,mxr)
         if (o(ox_eof)==1) then
+            ! Resume the previous source unit, or signal end of all input when the stack is empty.
             o(ox_eof)=0
             o(ox_unit)=o(o(ox_usk))
             o(ox_usk)=o(ox_usk)-1
@@ -1745,12 +1752,14 @@ subroutine nxtcrd
                 return
             end if
         end if
+        ! Map raw input characters to the internal codes used by the scanner.
         do k=ox_rbf_base,mxr
             o(k+132)=o(ox_trt_base+o(k))
         end do
         o(ox_seqn)=o(ox_seqn)+1
         o(ox_crs)=ox_tbf_base
         o(ox_gbf_base)=o(ox_bla)
+        ! Handle control records before passing ordinary source text to the scanner.
         if (o(ox_tbf_base) == 93) then
             if (o(ox_t2_base)==14) then
                 o(ox_gbf_base)=1
@@ -1828,6 +1837,7 @@ subroutine nxtcrd
         end if
         if(o(ox_frt)==1)cycle
         if (o(ox_cset)<2) return
+        ! Normalize enabled two-character brace and bracket spellings to internal tokens.
         j=ox_t0_base
         k=ox_tbf_base
         do while(k<=mxt)
