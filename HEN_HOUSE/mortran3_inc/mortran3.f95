@@ -3069,6 +3069,7 @@ subroutine add_file(iu,the_file)
 end
 
 integer*4 function lnblnk1(c)
+    implicit none
     character c*(*)
     integer*4 j
     do j=len(c),1,-1
