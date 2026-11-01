@@ -1926,51 +1926,51 @@ subroutine mactrc(w,r,s)
     if (o(ox_nest)>0.and.o(ox_mtrc)<3.and.w/= 4)return
     select case (w)
     case (2)
-        call dumdum(ox_wbf_base,90,37,37,37,22,42,29,27,34,90)
+        call dumdum(ox_wbf_base,90,37,37,37,22,42,29,27,34,90) ! " ___M-TRY "
         o(ox_wbf_base+4)=(o(ox_base)-ox_ct0_base)/120
         call crit(r,s)
     case (4)
-        call dumdum(ox_wbf_base,90,45,28,29,27,10,23,16,14,90)
+        call dumdum(ox_wbf_base,90,45,28,29,27,10,23,16,14,90) ! " *STRANGE "
         call crit(r,s)
     case (5)
-        call dumdum(ox_wbf_base,90,37,10,16,10,18,23,28,29,90)
+        call dumdum(ox_wbf_base,90,37,10,16,10,18,23,28,29,90) ! " _AGAINST "
         call crit(r,s)
     end select
     select case (w)
     case (33)
         if (o(ox_nest)==0) then
-            call dumdum(ox_wbf_base,90,90,27,14,13,30,12,14,13,90)
+            call dumdum(ox_wbf_base,90,90,27,14,13,30,12,14,13,90) ! "  REDUCED "
         else
-            call dumdum(ox_wbf_base,90,90,90,90,90,23,14,28,29,90)
+            call dumdum(ox_wbf_base,90,90,90,90,90,23,14,28,29,90) ! "     NEST "
             o(ox_wbf_base+3)=o(ox_nest)
         end if
         call crit(r+1,s+1)
     case (15)
-        call dumdum(ox_wbf_base,90,90,13,14,15,18,23,14,13,90)
+        call dumdum(ox_wbf_base,90,90,13,14,15,18,23,14,13,90) ! "  DEFINED "
         call crit(r+4,o(r+3))
         if (r+4>=o(r+3)) then
-            call dumdum(ox_wbf_base,90,23,30,21,21,90,31,10,21,90)
+            call dumdum(ox_wbf_base,90,23,30,21,21,90,31,10,21,90) ! " NULL VAL "
             call crit(s,s)
         else
-            call dumdum(ox_wbf_base,90,90,90,90,31,10,21,30,14,90)
+            call dumdum(ox_wbf_base,90,90,90,90,31,10,21,30,14,90) ! "    VALUE "
             o(ox_wbf_base+2)=o(ox_typ)
             call crit(s+4,o(s+3))
         end if
     case (12)
-        call dumdum(ox_wbf_base,90,10,25,25,14,23,13,14,13,90)
+        call dumdum(ox_wbf_base,90,10,25,25,14,23,13,14,13,90) ! " APPENDED "
         call crit(o(s-2*(3)-1),o(s-2*(3)-2) )
-        call dumdum(ox_wbf_base,90,90,90,90,90,90,90,29,24,90)
+        call dumdum(ox_wbf_base,90,90,90,90,90,90,90,29,24,90) ! "       TO "
         call crit(o(s-2*(1)-1),o(s-2*(1)-2) )
     case (13)
-        call dumdum(ox_wbf_base,90,90,27,14,22,24,31,14,13,90)
+        call dumdum(ox_wbf_base,90,90,27,14,22,24,31,14,13,90) ! "  REMOVED "
         call crit(o(s-2*(1)-1),o(s-2*(1)-2) )
     case (22)
         if(o(r+4)<0)return
-        call dumdum(ox_wbf_base,90,90,22,10,29,12,17,14,13,90)
+        call dumdum(ox_wbf_base,90,90,22,10,29,12,17,14,13,90) ! "  MATCHED "
         call crit(r+4,o(r+3) )
         k=o(s-1)
         do m = 1,k
-            call dumdum(ox_wbf_base,90,90,90,90,10,27,16,90,90,90)
+            call dumdum(ox_wbf_base,90,90,90,90,10,27,16,90,90,90) ! "    ARG   "
             o(ox_wbf_base+8)=m
             t=o(s-2*(m)-1)
             n=o(s-2*(m)-2)
@@ -2005,7 +2005,7 @@ subroutine crit(a,z)
             if(o(c)==-2)o(c)=82
         end do
         call rw(33,o(ox_mlst),ox_wbf_base,c)
-        call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90)
+        call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90) ! "          "
     end do
     return
 end subroutine crit
@@ -2060,6 +2060,7 @@ subroutine mesage (level,no,k1,k2)
 end subroutine mesage
 !_______________________________________________________________________
 !__________________________________________
+! Look up a message template and write the diagnostic with its values.
 subroutine find(l,n,v)
     implicit none
     include "mortran3_indices.f95"
@@ -2091,10 +2092,10 @@ subroutine find(l,n,v)
         end do
         exit
     end do
-    if(l==15) call dumdum(ox_wbf_base,90,45,45,45,15,10,29,10,21,90)
-    if(l==14) call dumdum(ox_wbf_base,90,45,32,10,27,23,18,23,16,90)
+    if(l==15) call dumdum(ox_wbf_base,90,45,45,45,15,10,29,10,21,90) ! " ***FATAL "
+    if(l==14) call dumdum(ox_wbf_base,90,45,32,10,27,23,18,23,16,90) ! " *WARNING "
     if (l==13.or.l==16) then
-        call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90)
+        call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90) ! "          "
         if(v/= 0) nerd=llong(a,v,10,0)
     end if
     call rw(33,o(ox_mlst),a,c)
@@ -2107,6 +2108,7 @@ subroutine find(l,n,v)
 end subroutine find
 !_______________________________________________________________________
 !________________________________________
+! Format and write source text, comments, and rule diagnostics to the listing.
 integer function linf(a,z,ind)
     implicit none
     include "mortran3_indices.f95"
@@ -2264,6 +2266,7 @@ integer function linf(a,z,ind)
 end function linf
 !_______________________________________________________________________
 !__________________________________________
+! Store ten values consecutively starting at index l.
 subroutine dumdum(l,a,b,c,d,e,f,g,h,i,j)
     implicit none
     include "mortran3_indices.f95"
@@ -2287,6 +2290,7 @@ subroutine dumdum(l,a,b,c,d,e,f,g,h,i,j)
 end subroutine dumdum
 !_______________________________________________________________________
 !__________________________________________
+! Read source records and write translated or listing output.
 subroutine rw(n,i,j,k)
     implicit none
     include "mortran3_indices.f95"
