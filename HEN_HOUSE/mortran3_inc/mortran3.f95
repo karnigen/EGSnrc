@@ -3023,8 +3023,10 @@ end
 
 subroutine add_file(iu,the_file)
     use, intrinsic :: iso_fortran_env, only: error_unit
+    implicit none
     integer*4  iu
-    integer read_status
+    integer read_status,lineno,j
+    integer*4 lnblnk1
     character*(*) the_file
     character*250 line
     character*256 read_message
