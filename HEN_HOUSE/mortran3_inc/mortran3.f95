@@ -497,6 +497,11 @@ end program mortran3
 !__________________________________________
 ! Match source text against a macro pattern and report the match status.
 integer function ispec(p,q,iv,u,t)
+    ! p: Current macro-pattern buffer position; updated while matching.
+    ! q: Exclusive end of the macro-pattern range; may change during backtracking.
+    ! iv: Starting source-buffer position; updated to the match position on success.
+    ! u: Inclusive upper bound of the source-buffer range.
+    ! t: Source-buffer position used for special blank-token matching.
     implicit none
     include "mortran3_indices.f95"
     integer :: p,q,iv,u,t
@@ -652,6 +657,10 @@ end function ispec
 !__________________________________________
 ! Find a macro rule whose literal prefix matches the source text.
 integer function mini(s,u,w,kct)
+    ! s: Start of the pattern text; set to the selected rule's replacement start on success.
+    ! u: Exclusive end of the pattern text; set to the selected rule's replacement end on success.
+    ! w: Receives the position immediately after the matched literal prefix.
+    ! kct: Offset used to locate the rule table for the pattern.
     implicit none
     include "mortran3_indices.f95"
     integer :: s,u,w,kct
@@ -695,6 +704,7 @@ end function mini
 !________________________________________
 ! Expand a macro rule or restore state when returning from a nested expansion.
 subroutine expand (f)
+    ! f: Number of macro arguments to expand; a negative value restores nested expansion state.
     implicit none
     include "mortran3_indices.f95"
     integer :: f
@@ -1097,6 +1107,7 @@ end subroutine cout
 !________________________________________
 ! Process a macro definition and update the rule tables as required.
 subroutine define(s)
+    ! s: Stack index containing the macro definition's argument ranges.
     implicit none
     include "mortran3_indices.f95"
     integer :: s
@@ -1285,6 +1296,8 @@ end subroutine define
 !__________________________________________
 ! Fix relative offsets for conditional constructs in a macro replacement.
 subroutine doit(a,z)
+    ! a: First index of the replacement-text range to process.
+    ! z: Last index of the replacement-text range to process (inclusive).
     implicit none
     include "mortran3_indices.f95"
     integer :: a,z
@@ -1340,6 +1353,7 @@ end subroutine doit
 !__________________________________________
 ! Reclaim unused macro storage and compact the macro buffer.
 subroutine krunc(r)
+    ! r: Minimum number of buffer slots required after compaction; zero requests compaction only.
     implicit none
     include "mortran3_indices.f95"
     integer :: r
@@ -1398,6 +1412,8 @@ end subroutine krunc
 !__________________________________________
 ! Parse a signed integer from the buffer in the specified base.
 integer function nib(l,b)
+    ! l: Starting buffer index; moved backward to the character preceding the parsed integer.
+    ! b: Radix used to interpret the digits.
     implicit none
     include "mortran3_indices.f95"
     integer :: l,b
@@ -1431,6 +1447,10 @@ end function nib
 !__________________________________________
 ! Convert an integer to the specified base in the output buffer.
 integer function llong(loc,num,b,ind)
+    ! loc: Buffer index immediately before the formatted result.
+    ! num: Integer value to format.
+    ! b: Radix used to format the value.
+    ! ind: Set to zero to prefix a blank; nonzero omits the leading blank.
     implicit none
     include "mortran3_indices.f95"
     integer :: loc,num,b,ind
@@ -1473,6 +1493,8 @@ end function llong
 !________________________________________
 ! Evaluate a Mortran expression and return its truth value.
 integer function lexp(a,z)
+    ! a: First index of the expression in the shared buffer.
+    ! z: Last index of the expression in the shared buffer (inclusive).
     implicit none
     include "mortran3_indices.f95"
     integer :: a,z
@@ -1844,6 +1866,7 @@ end subroutine nxtcrd
 !________________________________________
 ! Apply settings from a Mortran control card.
 subroutine cccard(k)
+    ! k: Control-card selector identifying the setting to apply.
     implicit none
     include "mortran3_indices.f95"
     integer :: k
@@ -1905,6 +1928,9 @@ end subroutine cccard
 !__________________________________________
 ! Read a numeric value from the current control card, using a default if out of range.
 integer function n5(l,m,k)
+    ! l: Minimum allowed value.
+    ! m: Maximum allowed value.
+    ! k: Default value returned when the parsed value is outside the allowed range.
     implicit none
     include "mortran3_indices.f95"
     integer :: l,m,k
@@ -1928,6 +1954,9 @@ end function n5
 !________________________________________
 ! Write macro-processing trace messages to the listing.
 subroutine mactrc(w,r,s)
+    ! w: Trace-event selector.
+    ! r: First buffer position or value used by the selected trace event.
+    ! s: Second buffer position or limit used by the selected trace event.
     implicit none
     include "mortran3_indices.f95"
     integer :: w,r,s
@@ -1998,6 +2027,8 @@ end subroutine mactrc
 !__________________________________________
 ! Format and write a text fragment to the Mortran listing.
 subroutine crit(a,z)
+    ! a: First index of the text fragment in the shared buffer.
+    ! z: Exclusive end index of the text fragment.
     implicit none
     include "mortran3_indices.f95"
     integer :: a,z
@@ -2029,6 +2060,10 @@ end subroutine crit
 !________________________________________
 ! Report diagnostics and terminate when the message level requires it.
 subroutine mesage (level,no,k1,k2)
+    ! level: Diagnostic severity and message group.
+    ! no: Message number within the selected group.
+    ! k1: Value or buffer position supplied to the message template.
+    ! k2: Optional end position for a macro trace; zero suppresses that trace.
     implicit none
     include "mortran3_indices.f95"
     integer :: level,no,k1,k2
@@ -2079,6 +2114,9 @@ end subroutine mesage
 !__________________________________________
 ! Look up a message template and write the diagnostic with its values.
 subroutine find(l,n,v)
+    ! l: Diagnostic message group.
+    ! n: Message number within the group.
+    ! v: Numeric value inserted into messages that accept a value.
     implicit none
     include "mortran3_indices.f95"
     integer :: l,n,v
@@ -2127,6 +2165,9 @@ end subroutine find
 !________________________________________
 ! Format and write source text, comments, and rule diagnostics to the listing.
 integer function linf(a,z,ind)
+    ! a: First index of the source text in the shared buffer.
+    ! z: Last index of the source-text range (inclusive).
+    ! ind: Output mode, including packed-comment and rule-diagnostic modes.
     implicit none
     include "mortran3_indices.f95"
     integer :: a,z,ind
@@ -2285,6 +2326,8 @@ end function linf
 !__________________________________________
 ! Store ten values consecutively starting at index l.
 subroutine dumdum(l,a,b,c,d,e,f,g,h,i,j)
+    ! l: First destination index in the shared buffer.
+    ! a-j: Ten values stored consecutively beginning at l.
     implicit none
     include "mortran3_indices.f95"
     integer :: l,a,b,c,d,e,f,g,h,i,j
@@ -2309,6 +2352,10 @@ end subroutine dumdum
 !__________________________________________
 ! Read source records and write translated or listing output.
 subroutine rw(n,i,j,k)
+    ! n: Read/write operation and output-conversion mode; zero reads input.
+    ! i: Fortran I/O unit to read from or write to.
+    ! j: First index of the buffer range.
+    ! k: Last index of the buffer range (inclusive).
     implicit none
     include "mortran3_indices.f95"
     integer, parameter :: rw_buffer_size = 200
@@ -2573,6 +2620,7 @@ end subroutine rw
 ! Load raw or packed Mortran tables and initialize translator state.
 ! With ind=2, write the generated table to unit 7 and terminate.
 subroutine inital(ind)
+    ! ind: Initialization mode; two writes the generated table and terminates.
     implicit none
     include "mortran3_indices.f95"
     integer :: ind
@@ -3010,6 +3058,8 @@ end subroutine open_units
 
 ! Append a source file to the combined Mortran input.
 subroutine add_file(iu,the_file)
+    ! iu: Output unit receiving the source file contents.
+    ! the_file: Path of the source file to append.
     use, intrinsic :: iso_fortran_env, only: int32
     implicit none
     integer(int32) :: iu
@@ -3052,6 +3102,7 @@ end subroutine add_file
 
 ! Return the position of the last non-blank character, or zero if none.
 function lnblnk1(c)
+    ! c: Character string to inspect; trailing blanks are ignored.
     use, intrinsic :: iso_fortran_env, only: int32
     implicit none
     integer(int32) :: lnblnk1
