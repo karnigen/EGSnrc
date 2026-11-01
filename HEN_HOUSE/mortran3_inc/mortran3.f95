@@ -1459,6 +1459,8 @@ end subroutine define
 !__________________________________________
 ! Fix relative offsets for conditional constructs in a macro replacement.
 subroutine doit(a,z)
+    ! Resolve relative branch offsets in encoded evaluator IF/ELSE constructs
+    ! within a macro replacement, modifying the replacement buffer in place.
     ! a: First index of the replacement-text range to process.
     ! z: Last index of the replacement-text range to process (inclusive).
     implicit none
@@ -1473,15 +1475,19 @@ subroutine doit(a,z)
     save      s,x,t,p
     x=0
 !BCDEFGHIJKLMNQRUVWY
+    ! Scan backward so each branch target is known when its relative offset is patched.
     t=z
     do while (t>=a)
         if (o(t)==o(ox_lif)) then
             if (o(t-1)==o(ox_rif)) then
+                ! Save an adjacent RIF/LIF pair as a two-marker branch boundary.
                 s(x+1)=t+1
                 s(x+2)=o(t)
                 x=x+2
                 t=t-1
             else
+                ! Save this LIF's target boundary, then find the preceding GA/25
+                ! marker that anchors the generated conditional offset fields.
                 s(x+1)=t+1
                 x=x+1
                 do
@@ -1489,15 +1495,20 @@ subroutine doit(a,z)
                     t=t-1
                     if(t<a)return
                 end do
+                ! The three offset slots are located relative to the GA/25 marker.
                 p=t+6
                 o(p-1)=s(x)-p
                 x=x-1
                 if (s(x)==o(ox_lif)) then
+                    ! An enclosing LIF supplies distinct branch destinations;
+                    ! encode each as an offset from p and pop the three saved entries.
                     o(p-4)= s(x-2)-p
                     o(p-3)= s(x-1)-p
                     o(p-2)= o(p-3)-2
                     x=x-3
                 else
+                    ! Otherwise all three generated jumps target the same saved
+                    ! boundary; pop that single pending branch target.
                     o(p-2)=s(x)-p
                     o(p-3)=s(x)-p
                     o(p-4)=s(x)-p
@@ -1505,6 +1516,8 @@ subroutine doit(a,z)
                 end if
             end if
         else if (o(t)==o(ox_rif)) then
+            ! Remember a RIF boundary for the matching LIF encountered earlier
+            ! in this reverse scan.
             s(x+1)=t
             x=x+1
         end if
@@ -1516,7 +1529,8 @@ end subroutine doit
 !__________________________________________
 ! Reclaim unused macro storage and compact the macro buffer.
 subroutine krunc(r)
-    ! r: Minimum number of buffer slots required after compaction; zero requests compaction only.
+    ! Unlink deleted macro records and compact the remaining macro buffer in place.
+    ! r: Minimum free slots required afterward; zero requests compaction only.
     implicit none
     include "mortran3_indices.f95"
     integer :: r
@@ -1529,6 +1543,8 @@ subroutine krunc(r)
     integer :: m,n,d,p,s,c,i
     save    m,n,d,p,s,c,i
     if (o(ox_mrkf)/=0) then
+        ! Walk the marked-record chain, unlink each eligible record from its
+        ! rule bucket, and mark it deleted before the storage-compaction pass.
         m=o(ox_mrkf)
         do while (m/=o(ox_free))
             if (o(m+2)>=0) then
@@ -1543,16 +1559,22 @@ subroutine krunc(r)
     m=o(n+3)
     d=0
 ! PREDECESSOR  SUCCESSOR    CONCAT
+    ! A zero sentinel at the free pointer terminates the physical-record chain.
     o(o(ox_free))=0
     do while (n/=o(ox_free))
         m=n
         n= o(m+3)
+        ! Save this record's links/status before deciding whether to reclaim or move it.
         p=o(m+1)
         s=o(m)
         c=o(m+2)
         if (c==o(ox_ded)) then
+            ! Deleted record: accumulate its full extent; later live records
+            ! will be shifted left by the accumulated amount.
             d=d+ n-m
         else
+            ! Live record: subtract reclaimed space from every link into or
+            ! beyond this record before moving its contents down in the buffer.
             if (s>0) o(s+1)=o(s+1)-d
             if (c>0) o(n+1)=o(n+1)-d
             o(p)=o(p)-d
@@ -1563,9 +1585,12 @@ subroutine krunc(r)
             end do
         end if
     end do
+    ! Publish the compacted end of storage and restore its zero sentinel.
     o(ox_free)=o(ox_free)-d
     o(o(ox_free))=0
+    ! Fail if compaction could not satisfy the caller's requested allocation.
     if (r>d)call mesage(15, 6, 0,0)
+    ! Recompute free-space statistics and report the number of reclaimed slots.
     o(ox_locs)=ox_mnxbf_base-1-o(ox_free)
     o(ox_left)=(100*o(ox_locs))/(ox_mnxbf_base-1-ox_mbf_base)
     call mesage(13,1,d,0)
