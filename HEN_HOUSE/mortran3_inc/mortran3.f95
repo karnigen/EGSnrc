@@ -762,7 +762,9 @@ end function mini
 !________________________________________
 ! Expand a macro rule or restore state when returning from a nested expansion.
 subroutine expand (f)
-    ! f: Number of macro arguments to expand; a negative value restores nested expansion state.
+    ! Expand the selected rule into the output stack, or resume a suspended
+    ! parent expansion when f is negative.
+    ! f: Argument count for a new expansion; negative requests state restoration.
     implicit none
     include "mortran3_indices.f95"
     integer :: f
@@ -778,15 +780,21 @@ subroutine expand (f)
 !CDGHILM
     t=0
     if (f<0) then
+        ! A child expansion has finished. Drop its nesting level and restore
+        ! the six active table-head values saved when its replacement ended.
         o(ox_nest)=o(ox_nest)-1
         if(o(ox_nest)==0)o(ox_frt)=sef
         do k = 1,6
             o(k)=o(6+o_u+1-k)
         end do
+        ! Evaluator replacement markers 11 and 12 require evaluating the
+        ! expression accumulated on the output stack before resuming the parent.
         j=o(o(o(ox_ysk)))
         if (j>=11 .and. j<=12) then
             jv=lexp(o_w+1,o_x)
             if (o(ox_ifl)==0) then
+                ! Outside evaluator-IF mode, return the value as either decimal
+                ! text (12) or a single numeric token (11).
                 if (j==12) then
                     o_x=o_w+llong(o_w,jv,10,0)
                 end if
@@ -795,6 +803,8 @@ subroutine expand (f)
                     o(o_x)=jv
                 end if
             else
+                ! Inside evaluator-IF mode, choose the true/false pattern range
+                ! and save the enclosing range so it can be restored afterward.
                 o_x=o_w
                 o(ox_ifl)=o(ox_ifl)-1
                 if (jv==0) then
@@ -813,6 +823,7 @@ subroutine expand (f)
                 o_e=q
             end if
         end if
+        ! Pop the child frame: restore its output start and active rule-table base.
         nul=o(o(ox_ysk))
         o(ox_ysk)=o(ox_ysk)-1
         o_w=o(o(ox_ysk))
@@ -820,8 +831,12 @@ subroutine expand (f)
         o(ox_base)=o(o(ox_ysk))
         o(ox_ysk)=o(ox_ysk)-1
     else
+        ! Record the argument count and reserve the remaining space below o_s
+        ! for this rule's captured argument ranges and its generated output.
         o(o_s-1)=f
         o(ox_mxx)=o_s-2*f-3
+        ! Locate the selected rule's replacement body and retain the link to
+        ! the next rule descriptor for the later rule-chain check.
         o_r=o(o(ox_mcom)+2)
         o_b=o_r+4
         o_e=o(o_r+3)
@@ -832,11 +847,16 @@ subroutine expand (f)
             o(ox_mtrc)=2
         end if
         if(o(ox_mtrc)>=2) call mactrc(22,o(ox_mcom),o_s)
+        ! A top-level expansion starts a fresh output stack; nested expansions
+        ! append to the parent's output instead.
         if( o(ox_nest)==0 )o_x=o_w
     end if
+    ! Interpret replacement tokens until the rule is exhausted or it invokes a
+    ! nested macro/evaluator expansion that must run before this one can resume.
     expansion_restart: do
         do while (o_b<o_e)
             if (o(o_b)<o(ox_ga)) then
+                ! Ordinary replacement characters are copied literally.
                 o_x=o_x+1
                 if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
                 o(o_x)=o(o_b)
@@ -850,6 +870,8 @@ subroutine expand (f)
                 if (jmp==4) exit expansion_dispatch
                 if (jmp/=3) then
                     if (jmp/=1) then
+                        ! A valid parameter number selects one captured argument;
+                        ! copy its saved source range into the replacement output.
                         if (o(o_b)>=1 .and. o(o_b)<=o(o_s-1)) then
                             a=o(o_s-2*(o(o_b))-1)
                             n=o(o_s-2*(o(o_b))-2)
@@ -866,6 +888,8 @@ subroutine expand (f)
                         end if
                     end if
                     if (o(o_b)==12) then
+                        ! Update the nested generation-control state from the
+                        ! following marker and switch table families when needed.
                         o_b=o_b+1
                         if (o(o_b)==23) then
                             if (o(ox_ngn)==0) then
@@ -885,12 +909,15 @@ subroutine expand (f)
                             if(o(ox_ngn)/= 0)o(ox_base)=ox_ct0_base
                         end if
                     else
+                        ! Execute a primitive replacement operator unless
+                        ! generation-only text is currently being suppressed.
                         if(o(ox_ngn)==0)call kat
                     end if
                     o_b=o_b+1
                     cycle
                 end if
                 if (o(o_b)==10) then
+                    ! Emit the length of a captured argument as decimal text.
                     o_b=o_b+1
                     if(1>o(o_b).or.o(o_b)>o(o_s-1) )call mesage(15, 4, o_b,o_e)
                     o_x=o_x+llong(o_x,o(o_s-2*(o(o_b))-2)-o(o_s-2*(o(o_b))-1),10,0)
@@ -898,6 +925,7 @@ subroutine expand (f)
                     o_b=o_b+2
                     cycle
                 else if (o(o_b)==13) then
+                    ! Copy a balanced brace group literally, including nested braces.
                     o_b=o_b+1
                     t=1
                     do
@@ -910,12 +938,16 @@ subroutine expand (f)
                         o_b=o_b+1
                     end do
                 else if (o(o_b)==15) then
+                    ! Start a packed quoted output token; krap remembers its
+                    ! length slot and kraq the nesting level where it began.
                     o_x=o_x+1
                     o(o_x)=o(ox_ldq)
                     o_x=o_x+1
                     krap=o_x
                     kraq=o(ox_nest)
                 else
+                    ! Suspend this rule and push its table, output, and input
+                    ! cursors before dispatching the nested rule expansion.
                     o(ox_nest)=o(ox_nest)+1
                     if(o(ox_nest)==1)sef=o(ox_frt)
                     o(ox_frt)=1
@@ -932,12 +964,16 @@ subroutine expand (f)
                 cycle
                 end block expansion_dispatch
                 if (krap/=0 .and. kraq==o(ox_nest)) then
+                ! Close a packed quoted token only when control returns to the
+                ! nesting level at which its opening marker was seen.
                 o_x=o_x+1
                 o(o_s)=o(ox_rdq)
                 o(krap)=o_x-krap-1
                 krap=0
                 cycle
             end if
+            ! The replacement is exhausted. Preserve the active table heads,
+            ! then select the rule-table family recorded by the current frame.
             do k = 1,6
                 o(o(ox_mxx)-k)=o(k)
             end do
@@ -954,12 +990,14 @@ subroutine expand (f)
         if (o(ox_nest)<=0) then
             if (o(ox_isk)==ox_isk_base) then
                 if (o_r>0) then
+                    ! Try the next candidate rule in the chain.
                     o_b=o_r+4
                     o_e=o(o_r+3)
                     o_r=o(o_r)
                     cycle expansion_restart
                 end if
             else
+                ! An evaluator-IF range ended; restore its saved input bounds.
                 o_e=o(o(ox_isk))
                 o(ox_isk)=o(ox_isk)-1
                 o_b=o(o(ox_isk))
@@ -967,9 +1005,13 @@ subroutine expand (f)
                 cycle expansion_restart
             end if
         end if
+        ! Return the current expansion output to the caller. A suspended parent
+        ! is resumed later through expand(-1).
         exit expansion_restart
     end do expansion_restart
     if(o(ox_mtrc)>=2) call mactrc(33,o_w,o_x)
+    ! Pop expanded characters into the source buffer in their original order,
+    ! then point o_s at the beginning of the newly expanded text.
     do while (o_x>o_w)
         o_v=o_v-1
         o(o_v)=o(o_x)
