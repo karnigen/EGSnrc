@@ -1950,9 +1950,11 @@ subroutine nxtcrd
     integer :: llong,linf
     integer :: k,j,w,i,l,m,y,nerd
     save    k,j,w,i,l,m,y,nerd
+    ! Reset per-record macro accounting; EOF state 2 means all input is already exhausted.
     o(ox_mcnt)=0
     if(o(ox_eof)==2) call mesage(16,1,0,0)
     do
+        ! Read the next physical record from the active input unit.
         call rw(0,o(ox_unit),ox_rbf_base,mxr)
         if (o(ox_eof)==1) then
             ! Resume the previous source unit, or signal end of all input when the stack is empty.
@@ -1971,37 +1973,48 @@ subroutine nxtcrd
         do k=ox_rbf_base,mxr
             o(k+132)=o(ox_trt_base+o(k))
         end do
+        ! Count this record and initialize the translated-record cursors.
         o(ox_seqn)=o(ox_seqn)+1
         o(ox_crs)=ox_tbf_base
         o(ox_gbf_base)=o(ox_bla)
-        ! Handle control records before passing ordinary source text to the scanner.
+        ! A record beginning with '%' (token 93) is a control card, not source
+        ! text. Its second character selects a special action or a cccard setting.
         if (o(ox_tbf_base) == 93) then
             if (o(ox_t2_base)==14) then
+                ! %E ejects a listing page: set the page-control byte, blank
+                ! its two-character prefix, and advance past the directive.
                 o(ox_gbf_base)=1
                 o(ox_rbf_base)=o(ox_oset_base+o(ox_bla))
                 o(ox_rbf_base+1)=o(ox_rbf_base)
                 o(ox_crs)=ox_t2_base+1
             else if (o(ox_t2_base)==93) then
+                ! %% marks end of input; EOF handling below resumes any stacked unit.
                 o(ox_eof)=1
                 o(ox_frt)=1
             else if (o(ox_t2_base)>=10.and.o(ox_t2_base)<=30) then
+                ! Letters A..U map to tokens 10..30; subtract 9 to get cccard's
+                ! selector 1..21. The selector reads any numeric suffix via n5.
                 call cccard(o(ox_t2_base)-9)
                 o(ox_crs)=o(ox_sigt)
                 o(o(ox_crs))=o(ox_trm)
             end if
             if (o(ox_eof)==1.or.o(ox_t2_base)==22.or.o(ox_t2_base)==15) then
+                ! %% ends input; %F and %M switch modes and end this read here.
                 o(ox_crs)=o(ox_sigt)
                 o(o(ox_crs))=o(ox_trm)
                 return
             end if
         end if
         if (o(ox_list)==1) then
+            ! Build the listing form of this record in the listing buffer.
             do j=ox_g2_base,ox_w0_base
                 o(j)=o(ox_bla)
             end do
             if (o(ox_seqf)==1) then
+                ! Emit a generated sequence number in the listing prefix.
                 j=llong(ox_g2_base,o(ox_seqn),10,0)
             else if (o(ox_seqf)==2) then
+                ! Or preserve the source record's fixed-format sequence field.
                 do j = 1,8
                     o(ox_gbf_base+j)=o(o(ox_sigt)+j)
                 end do
@@ -2010,6 +2023,8 @@ subroutine nxtcrd
             o(ox_g13_base)=o(ox_qfl)
             j=llong(ox_g14_base,o(ox_lvl),10,0)
             if (o(ox_indm)==0) then
+                ! Without continuation indentation, write the complete record
+                ! through the configured listing conversion.
                 w=ox_w0_base
                 do k = 1,mxn
                     w=w+1
@@ -2017,6 +2032,8 @@ subroutine nxtcrd
                 end do
                 call rw(18,o(ox_mlst),ox_gbf_base,w)
             else
+                ! With indentation enabled, trim edge blanks and emit the record
+                ! in bounded segments, prefixing each segment with its indent.
                 i=mod(max(o(ox_indm)*o(ox_lvl),0),90)
                 l=ox_tbf_base
                 m=o(ox_sigt)
@@ -2046,37 +2063,43 @@ subroutine nxtcrd
             end if
         end if
         if (o(ox_frt)==1) then
+            ! Forced listing writes the original record; annotation mode instead
+            ! emits the translated record with source-position markers.
             if (o(ox_tbf_base)/= 93) call rw(23,o(ox_flst),ox_rbf_base,ox_r8_base)
         else if (o(ox_ano)==1) then
             nerd=linf(ox_tbf_base,mxt,10)
         end if
+        ! Forced-listing/control records are consumed here and never reach the
+        ! main translator's source scanner.
         if(o(ox_frt)==1)cycle
         if (o(ox_cset)<2) return
-        ! Normalize enabled two-character brace and bracket spellings to internal tokens.
+        ! When alternate delimiters are enabled, map (* ... *) to braces and
+        ! <* ... *> to square brackets in the translated record.
         j=ox_t0_base
         k=ox_tbf_base
         do while(k<=mxt)
             j=j+1
             o(j)=o(k)
             k=k+1
-            if (o(j)==45) then
-                if (o(k)==46) then
+            if (o(j)==45) then ! 45 = *
+                if (o(k)==46) then ! 46 = )
                     o(j)=o(ox_rcb)
                     k=k+1
-                else if (o(k)==86) then
+                else if (o(k)==86) then ! 86 = >
                     o(j)=o(ox_rsb)
                     k=k+1
                 end if
-            else if (o(k)==45) then
-                if (o(j)==38) then
+            else if (o(k)==45) then ! 45 = *
+                if (o(j)==38) then ! 38 = (
                     o(j)=o(ox_lcb)
                     k=k+1
-                else if (o(j)==85) then
+                else if (o(j)==85) then ! 85 = <
                     o(j)=o(ox_lsb)
                     k=k+1
                 end if
             end if
         end do
+        ! Pad the remainder of the fixed-size translated-record area with blanks.
         do while(j<=mxt)
             j=j+1
             o(j)=90
@@ -2103,55 +2126,57 @@ subroutine cccard(k)
     integer :: n5
     integer :: jmp,i
     save    jmp,i
+    ! nxtcrd maps the letter token in %A..%U (10..30) to selector k=1..21;
+    ! %E is handled there as a listing page eject instead of reaching this table.
     jmp=k
 !ABCDEFGHJLMNPQRSTUVWXYZ
     select case (jmp)
-    case (1)
+    case (1) ! %A: set Mortran-source annotation mode.
         o(ox_ano)=n5(0,2,1)
-    case (2)
+    case (2) ! %B: set the raw and translated record-buffer limit.
         o(ox_nmx)=n5(0,132,132)
         o(ox_rmx)=ox_r0_base+o(ox_nmx)
         o(ox_tmx)=ox_t0_base+o(ox_nmx)
-    case (3)
+    case (3) ! %C: set the active input line width.
         o(ox_sign)=n5(10,132,132)
         o(ox_sigt)=ox_t0_base+o(ox_sign)
         o(ox_sigr)=ox_r0_base+o(ox_sign)
-    case (4)
+    case (4) ! %D: set macro-definition tracing level.
         o(ox_mdef)=n5(0,2,0)
-    case (6)
+    case (6) ! %F: enter Fortran mode.
         o(ox_frt)=1
-    case (9)
+    case (9) ! %I: set listing indentation per nesting level.
         o(ox_indm)=n5(0,50,2)
-    case (12)
+    case (12) ! %L: turn the Mortran listing on.
         o(ox_list)=1
-    case (13)
+    case (13) ! %M: return to Mortran mode.
         o(ox_frt)=0
-    case (14)
+    case (14) ! %N: turn the Mortran listing off.
         o(ox_list)=0
-    case (17)
+    case (17) ! %Q: set quoted-comment continuation mode.
         o(ox_lazy)=n5(0,1,1)
-    case (18)
+    case (18) ! %R: rewind the input unit selected by the numeric suffix.
         i=n5(1,99,8)
         rewind i
-    case (19)
+    case (19) ! %S: set source-sequence-field handling mode.
         o(ox_seqf)=n5(0,2,0)
-    case (20)
+    case (20) ! %T: set macro-tracing level.
         o(ox_mtrc)=n5(0,9,0)
-    case (21)
+    case (21) ! %U: push the current unit and switch to the requested input unit.
         o(ox_usk)=o(ox_usk)+1
         o(o(ox_usk))=o(ox_unit)
         if(o(ox_usk)>2504)call mesage(15, 30, 0,0)
         o(ox_unit)=n5(1,99,o(ox_unit))
-    case (5,7,8,10,11,15,16)
+    case (5,7,8,10,11,15,16) ! Unsupported here; %E is handled specially by nxtcrd.
         call mesage(14, 22, 0,0)
-    case default
+    case default ! Out-of-range selector: read it as an annotation-mode value.
         o(ox_ano)=n5(0,2,1)
     end select
     return
 end subroutine cccard
 !_______________________________________________________________________
 !__________________________________________
-! Read a numeric value from the current control card, using a default if out of range.
+! Read a decimal suffix from the current control card, defaulting if out of range.
 integer function n5(l,m,k)
     ! l: Minimum allowed value.
     ! m: Maximum allowed value.
