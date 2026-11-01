@@ -1432,7 +1432,7 @@ integer function llong(loc,num,b,ind)
     integer :: n,l,i,j,k
     save    n,l,i,j,k
     if(o(ox_ngn)/= 0)return
-    n=iabs(num)
+    n=abs(num)
     l=loc
     i=n/b
     j=1
@@ -1759,7 +1759,7 @@ subroutine nxtcrd
                 end do
                 call rw(18,o(ox_mlst),ox_gbf_base,w)
             else
-                i=mod(max0(o(ox_indm)*o(ox_lvl),0),90)
+                i=mod(max(o(ox_indm)*o(ox_lvl),0),90)
                 l=ox_tbf_base
                 m=o(ox_sigt)
                 do while(o(l)==o(ox_bla).and.l/=m)
@@ -2179,7 +2179,7 @@ integer function linf(a,z,ind)
     if(c>ox_w0_base+50)c=ox_w0_base+7
     i=c
     do while (b<=z)
-        limc=min0(b+npl,z)
+        limc=min(b+npl,z)
         do while (b<=limc .and. i<=ox_w72_base)
             if (ind==linf_rule_diagnostic_mode) then
                 if (o(ox_holr)==1) then
