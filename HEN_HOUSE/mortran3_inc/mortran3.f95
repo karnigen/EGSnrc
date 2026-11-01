@@ -1224,10 +1224,13 @@ subroutine cout
     integer :: linf
     integer :: t,nerd
     save    t,nerd
+    ! Scan the active source range for packed comment delimiters.
     t=o_s
     do
         if(t>o_v)exit
         if (o(t)==o(ox_ldq)) then
+            ! The following slot stores the payload length; list the payload,
+            ! then advance over the complete encoded comment block.
             nerd=linf(t+2,t+o(t+1)+1,12)
             t=t+o(t+1)+2
         end if
@@ -1614,6 +1617,8 @@ integer function nib(l,b)
     save    m,n
     m=1
     n=0
+    ! Skip blanks before the number, then accumulate digits from least to
+    ! most significant as they are stored in the buffer.
     do
         if(o(l)/= o(ox_bla))exit
         l=l-1
@@ -1624,6 +1629,7 @@ integer function nib(l,b)
         m=m*b
         l=l-1
     end do
+    ! The internal sign marker immediately before the digits makes the value negative.
     if (o(l)==42) then
         l=l-1
         n=-n
@@ -2242,7 +2248,10 @@ subroutine mactrc(w,r,s)
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
     integer :: k,m,t,n
     save    k,m,t,n
+    ! Suppress most nested trace details at low trace levels, but retain
+    ! selector 4 diagnostics.
     if (o(ox_nest)>0.and.o(ox_mtrc)<3.and.w/= 4)return
+    ! Emit progress markers for attempts, unexpected input, and retries.
     select case (w)
     case (2)
         call dumdum(ox_wbf_base,90,37,37,37,22,42,29,27,34,90) ! " ___M-TRY "
@@ -2255,6 +2264,8 @@ subroutine mactrc(w,r,s)
         call dumdum(ox_wbf_base,90,37,10,16,10,18,23,28,29,90) ! " _AGAINST "
         call crit(r,s)
     end select
+    ! Emit detailed events for reductions, definitions, rule updates, and
+    ! successful matches (including captured arguments for selector 22).
     select case (w)
     case (33)
         if (o(ox_nest)==0) then
@@ -2315,17 +2326,20 @@ subroutine crit(a,z)
     integer :: b,c
     save    b,c
     b=a
+    ! Copy the text into the listing workspace in chunks that fit its buffer.
     do while (b<z)
         c=ox_wbf_base+9
         do while (c<ox_w72_base.and.b<z)
             c=c+1
             o(c)=o(b)
             b=b+1
+            ! Convert internal blanks and marker values to listing-safe codes.
             if(o(c)==o(ox_bla))o(c)=37
             if(o(c)>100+19)o(c)=100
             if(o(c)==-1)o(c)=74
             if(o(c)==-2)o(c)=82
         end do
+        ! Mode 33 applies the alternate character map used by listing output.
         call rw(33,o(ox_mlst),ox_wbf_base,c)
         call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90) ! "          "
     end do
@@ -2349,17 +2363,22 @@ subroutine mesage (level,no,k1,k2)
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
     common/junk/ verbose
     logical :: verbose
+    ! Count warning/error groups before rendering the selected message.
     if(level==14 .or. level==15)o(ox_merr)=o(ox_merr)+1
     call find(level,no,k1)
+    ! Attach a macro trace when the caller provides a nonempty source range.
     if(k2/= 0)call mactrc(4,k1,k2)
     if (level==13) then
         call find(13,2,o(ox_locs))
         call find(13,3,o(ox_left))
     end if
     if (level<=14) then
+        ! Let nonfatal diagnostics return to the translator, but stop once the
+        ! counted messages reach one hundred.
         if(o(ox_merr)<100)return
         call find(15,10,0)
     end if
+    ! On finalization, report unterminated quotes and unclosed definition fields.
     if (o(ox_qfl)==o(ox_bq) .or. o(ox_qfl)==o(ox_dq)) then
         o(ox_merr)=o(ox_merr)+1
         if(o(ox_qfl)==o(ox_bq)) call find(16,5,0)
@@ -2377,10 +2396,12 @@ subroutine mesage (level,no,k1,k2)
     if (o(ox_merr)==0) then
         call find(16,6,0)
     else
+        ! Any accumulated error prevents success and terminates compilation.
         call find(16,7,o(ox_merr))
         write(6,*) 'compilation error (stop 12)'
         call exit(12) !stop 12
     end if
+    ! Table-generation mode writes the packed table from inital before exit.
     if (o(ox_mode)==0)call inital(2)
     if( verbose ) write(6,*) 'OK'
     call exit(0) !stop 0
@@ -2405,9 +2426,11 @@ subroutine find(l,n,v)
     save    a,c,q,r,s,nerd,k
     a=ox_wbf_base
     c=a+9
+    ! Follow the selected message group's table chain until its number matches.
     q=ox_ct6_base+l
     do
         if (o(q)==0) then
+            ! If no template is registered, print the message number itself.
             c=c+llong(c,n,10,0)
             exit
         end if
@@ -2422,12 +2445,15 @@ subroutine find(l,n,v)
         end do
         exit
     end do
+    ! Prefix fatal and warning groups; informational groups may include a value.
     if(l==15) call dumdum(ox_wbf_base,90,45,45,45,15,10,29,10,21,90) ! " ***FATAL "
     if(l==14) call dumdum(ox_wbf_base,90,45,32,10,27,23,18,23,16,90) ! " *WARNING "
     if (l==13.or.l==16) then
         call dumdum(ox_wbf_base,90,90,90,90,90,90,90,90,90,90) ! "          "
         if(v/= 0) nerd=llong(a,v,10,0)
     end if
+    ! Always write the mapped listing; mirror diagnostics to the other output
+    ! stream once an error has been recorded.
     call rw(33,o(ox_mlst),a,c)
     if (o(ox_merr)>0) call rw(23,o(ox_flst),a,c)
     do k = a,c
@@ -2461,6 +2487,8 @@ integer function linf(a,z,ind)
     linf=a-1
 !CEFGLMNPQRS UVWXY
     o(ox_mcnt)=0
+    ! Skip packed-comment output when comments are disabled, annotation mode is
+    ! active, or the range already starts with a closing-comment marker.
     if (ind==linf_comment_mode .and. (o(ox_pcom)==0.or.o(ox_ano)==1 &
                                       .or.o(ox_rdq)==o(a)))return
     kst=0
@@ -2482,6 +2510,7 @@ integer function linf(a,z,ind)
         o(j)=o(ox_bla)
     end do
     if (ind==linf_rule_diagnostic_mode) then
+        ! Rule diagnostics have a narrower text field and a dedicated prefix.
         do while (i<ox_w7_base .and. b<=z)
             if (o(b)==o(ox_bla)) then
                 b=b+1
@@ -2499,6 +2528,7 @@ integer function linf(a,z,ind)
         d=45
         koff=7
     else
+        ! Source and comment lines use the configured indentation and width.
         npl=71
         d=12
         o(ox_wbf_base)=d
@@ -2514,6 +2544,7 @@ integer function linf(a,z,ind)
     if(c>ox_w0_base+50)c=ox_w0_base+7
     i=c
     do while (b<=z)
+        ! Fill one listing record, stopping at its capacity or a source EOL.
         limc=min(b+npl,z)
         do while (b<=limc .and. i<=ox_w72_base)
             if (ind==linf_rule_diagnostic_mode) then
@@ -2560,6 +2591,8 @@ integer function linf(a,z,ind)
                 o(k)=o(ox_bq)
                 kst=1
             end if
+        ! Write the prepared record directly, then clear the workspace for the
+        ! next segment of a long source range.
             if (o(k)==o(ox_rq)) then
                 o(k)=o(ox_bq)
                 kst=0
@@ -2594,6 +2627,7 @@ integer function linf(a,z,ind)
         end if
     end do
     last=kur
+    ! Mark an emitted packed comment so cout will not list it again.
     if(ind==linf_comment_mode) o(a)=o(ox_rdq)
     return
 end function linf
@@ -2915,7 +2949,7 @@ end subroutine rw
 ! Load raw or packed Mortran tables and initialize translator state.
 ! With ind=2, write the generated table to unit 7 and terminate.
 subroutine inital(ind)
-    ! ind: Initialization mode; two writes the generated table and terminates.
+    ! ind: Initialization mode; 2 writes the generated table and terminates.
     implicit none
     include "mortran3_indices.f95"
     integer :: ind
@@ -2930,6 +2964,7 @@ subroutine inital(ind)
     integer :: kount,k,iuni
     save    kount,k,iuni,count
     if (ind==2) then
+        ! Serialize the in-memory table in packed-table format, then exit.
         o(ox_mode)=1
         o(ox_seqn)=5
         kount=o(ox_free)+1
@@ -2941,6 +2976,7 @@ subroutine inital(ind)
         if( verbose ) write(6,*) 'OK'
         call exit(0) !stop 0
     end if
+    ! Clear table and workspace storage while preserving the six reserved slots.
     do k = 7,ox_capacity
         o(k)=0
     end do
@@ -2950,11 +2986,14 @@ subroutine inital(ind)
     iuni=o(ox_unit)
 !     O(14)=O(4)   THIS IS NO LONGER USED IN FORTRAN 77 VERSIONS
     o(ox_labl)=o_u
+    ! Raw tables begin with the marker C; other files contain a packed table.
     read(iuni,2)count
     rewind iuni
     if (count=='C') then
         call raw()
     else
+        ! Load the packed table and copy its saved listing records to the
+        ! listing and translated-output units before rewinding the source.
         read (iuni,1) kount,(o(k),k=1,kount)
 !
 !     The following line
@@ -2971,6 +3010,7 @@ subroutine inital(ind)
         call rw(23,o(ox_mlst),ox_rbf_base+2,ox_rbf_base+79)
         rewind iuni
     end if
+    ! Establish the translator's allocation boundaries and initial sentinels.
     o(ox_qfl)=o(ox_bla)
     o(ox_mxx)=ox_home_base
     o(ox_base)=ox_ct4_base
@@ -3004,12 +3044,14 @@ subroutine raw
     equivalence(o(ox_pjt_base),p(1))
     integer :: k,j
     save     k,j
+    ! Derive the raw-table storage limits from the configured alphabet size.
     o(ox_nmx)=o_v
     o(ox_sign)=o_v
     o(ox_rmx)=ox_r0_base+o(ox_nmx)
     o(ox_tmx)=ox_t0_base+o(ox_nmx)
     o(ox_sigt)=ox_t0_base+o(ox_sign)
     o(ox_sigr)=ox_r0_base+o(ox_sign)
+    ! Read the raw character maps and token tables into their buffer regions.
     call rw(0,o(ox_unit),ox_rbf_base,o(ox_rmx))
     call rw(0,o(ox_unit),ox_oset_base,ox_oset_base+73)
     call rw(0,o(ox_unit),ox_rbf_base,o(ox_rmx))
@@ -3019,6 +3061,7 @@ subroutine raw
     end do
 !MAKE INPUT AND OUTPUT SAME
 ! .(MNOSET+54)=.(MNOSET+41);     OUT-TRANSLATE L-ARROW TO =
+    ! Preserve the raw table text in both listing and translated-output files.
     call rw(23,o(ox_mlst),ox_rbf_base+41,ox_r8_base)
     call rw(23,o(ox_flst),ox_rbf_base+41,ox_r8_base)
     do k = 1,100
@@ -3026,6 +3069,7 @@ subroutine raw
         o(ox_trt_base+j)=k-1
 !     WRITE(6,1) J,K-1
     end do
+    ! Set default table values and initialize the punctuation token codes.
     o(ox_dflt)=4
     o(ox_free)=ox_mbf_base
     do k = 1,10
@@ -3037,6 +3081,8 @@ subroutine raw
     call dumdum(76, 90, 79, 78, 75, 38, 46, 74, 82, 83, 84)
     o(ox_bq)=77
     o(ox_dq)=80
+    ! Install the bootstrap rule that lets the ordinary definition machinery
+    ! parse subsequent built-in rules from the raw table.
     ! Set up the captured-field ranges for a built-in definition: key, empty
     ! type field, and replacement. The token sequence below fills those ranges.
     call dumdum(29001,29018,29016,29016,29016,29016,29009,0,3,0,0)
@@ -3095,6 +3141,7 @@ subroutine open_units
     ignore_missing = .false.
     if(narg==0) then
 
+        ! Preserve the legacy fort.* convention for script-driven invocations.
         ! no arguments -> assume program is called from a script
         ! making all necessary links and hope for the best
 
@@ -3131,6 +3178,7 @@ subroutine open_units
 
     call getarg(1,arg)
     if( arg(1:)=='-help' ) then
+        ! Keep command-line usage documentation in the executable itself.
         write(6,'(/a/,a/)') &
             'Mortran version 3.2 by Ray F. Cowan with modifications by ', &
             'Dave Rogers, Alex Bielajew and Iwan Kawrakow'
@@ -3184,6 +3232,7 @@ subroutine open_units
     nc=-1
     no7=-1
     no8=-1
+    ! Record option argument positions first; file handling happens below.
     do i=1,narg
         call getarg(i,arg)
         if( arg(1:2)=='-s' ) then
@@ -3230,6 +3279,7 @@ subroutine open_units
         write(6,'(a)') 'mortran3.exe: using following I/O units'
     end if
     if( nd>0 ) then
+        ! The raw/packed table is always required when explicit options are used.
         call getarg(nd,arg)
         if( verbose ) then
             write(6,'(a,a)') '  raw/hex data file: ',arg(1:lnblnk1(arg))
@@ -3243,6 +3293,7 @@ subroutine open_units
     end if
     if( (nc>0).or.(nfs<=nfe) ) then
         if(nc>0) then
+            ! A -c file lists source files to concatenate into one Mortran job.
             open(12,file='mortjob.mortran')
             write(12,'(a)') '%L'
             call getarg(nc,arg)
@@ -3282,6 +3333,7 @@ subroutine open_units
             if (open_status/=0) call open_error()
         else
             if( nfs==nfe ) then ! a single command line file
+                ! A single -f input can be read directly without a temporary job.
                 call getarg(nfs,next_file)
                 if( verbose ) then
                     write(6,'(a,a)') '  command line file: ', &
@@ -3290,6 +3342,7 @@ subroutine open_units
                 open(5,file=next_file,status='old',iostat=open_status)
                 if (open_status/=0) call open_error()
             else
+                ! Multiple -f inputs are concatenated in command-line order.
                 if( verbose ) then
                     write(6,'(a,a)') '  command line files: '
                 end if
@@ -3324,6 +3377,8 @@ subroutine open_units
             end if
         end if
     end if
+    ! Open the generated Fortran and listing destinations, using legacy names
+    ! unless -o7 or -o8 supplied explicit paths.
     if( no7>0 ) then
         call getarg(no7,arg)
         if( verbose ) write(6,'(a,a)') '  fortran output: ', &
