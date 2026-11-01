@@ -499,13 +499,16 @@ program mortran3
 end program mortran3
 !_______________________________________________________________________
 !__________________________________________
-! Match source text against a macro pattern and report the match status.
+! Match encoded specifiers against source text, including alternatives and repetition.
 integer function ispec(p,q,iv,u,t)
-    ! p: Current macro-pattern buffer position; updated while matching.
-    ! q: Exclusive end of the macro-pattern range; may change during backtracking.
-    ! iv: Starting source-buffer position; updated to the match position on success.
+    ! Match one encoded specifier against the source buffer. Returns 1 when the
+    ! source ends while a match may continue, 2 for a mismatch/invalid pattern,
+    ! or 3 for a complete match.
+    ! p: Current pattern position; updated while matching and backtracking.
+    ! q: Exclusive end of the pattern range; may change when a nested specifier is selected.
+    ! iv: Starting source position; updated to the final position on success.
     ! u: Inclusive upper bound of the source-buffer range.
-    ! t: Source-buffer position used for special blank-token matching.
+    ! t: Position of a special blank token; advanced when that token is consumed.
     implicit none
     include "mortran3_indices.f95"
     integer :: p,q,iv,u,t
@@ -521,11 +524,15 @@ integer function ispec(p,q,iv,u,t)
     m=0
     b=0
     v=iv
+    ! jsk records pending nested-specifier alternatives; ksk records the
+    ! source position, pattern position, and repetition count for nested groups.
     o(ox_jsk)=ox_jsk_base
 !ADEFGHIJKLRSXYZ
     o(ox_ksk)=ox_ksk_base
     ispec_scan: do
         if(p<q) then
+            ! A designated blank token must consume the corresponding source
+            ! blank, keeping both cursors synchronized.
             if (o(v)==o(ox_bla)) then
                 if (v==t) then
                     v=v+1
@@ -538,6 +545,8 @@ integer function ispec(p,q,iv,u,t)
                 end if
             end if
             if (o(p)<=100) then
+                ! Resolve a table-backed literal/specifier. mini rewrites p/q
+                ! to the selected pattern and returns its matched prefix in np.
                 iq=q
                 i=mini(p,q,np,1505)
                 if(o(ox_mtrc)>=4) call mactrc(5,v,u)
@@ -545,6 +554,8 @@ integer function ispec(p,q,iv,u,t)
                     ispec=2
                     return
                 end if
+                ! Save the enclosing pattern end and the continuation point so
+                ! another table alternative can be tried after a later failure.
                 o(ox_jsk)=o(ox_jsk)+1
                 o(o(ox_jsk))=iq
                 o(ox_jsk)=o(ox_jsk)+1
@@ -561,6 +572,9 @@ integer function ispec(p,q,iv,u,t)
             jmp=o(p-1)-100
             select case (jmp)
             case (1)
+                ! Alternative separator: after a successful branch, skip the
+                ! rest of its group; after failure, restart at the saved source
+                ! position for the next branch.
                 if (m/= 0) then
                     n=1
                     do
@@ -576,6 +590,8 @@ integer function ispec(p,q,iv,u,t)
                 end if
                 cycle ispec_scan
             case (3)
+                ! Open a nested group/repetition: save its count, source cursor,
+                ! and pattern start, then begin matching the group from count 0.
                 o(ox_ksk)=o(ox_ksk)+1
                 o(o(ox_ksk))=c
                 o(ox_ksk)=o(ox_ksk)+1
@@ -586,6 +602,9 @@ integer function ispec(p,q,iv,u,t)
                 c=0
                 cycle ispec_scan
             case (4)
+                ! Close a quantified group. The two following values are its
+                ! repetition bounds; repeat while below the upper bound, then
+                ! restore the enclosing group's saved state.
                 p=p+2
                 if (m==1) then
                     c=c+1
@@ -608,6 +627,7 @@ integer function ispec(p,q,iv,u,t)
                 c=o(o(ox_ksk))
                 o(ox_ksk)=o(ox_ksk)-1
             case (2)
+                ! Match one source token against the inclusive encoded range.
                 p=p+2
                 m=0
                 if (o(p-2)<=o(v).and.o(v)<=o(p-1)) then
@@ -619,6 +639,8 @@ integer function ispec(p,q,iv,u,t)
                     end if
                 end if
             case (5)
+                ! Match the encoded quoted literal exactly. Leading pattern
+                ! blanks are aligned with the source before comparing tokens.
                 w=v
                 m=1
                 if (o(p)==o(ox_bla)) then
@@ -638,6 +660,8 @@ integer function ispec(p,q,iv,u,t)
                 if(m==1)v=w
             end select
             if(m==1)cycle ispec_scan
+            ! A failed atom can only be recovered at an alternative separator
+            ! or a group close; any other next token makes the whole match fail.
             if(o(p)/= o(ox_alt) .and. o(p)/= o(ox_rip))then
                 ispec=2
                 return
@@ -645,6 +669,8 @@ integer function ispec(p,q,iv,u,t)
             cycle ispec_scan
         end if
         if (o(ox_jsk)/=ox_jsk_base) then
+            ! The current pattern range is exhausted; restore the most recent
+            ! table alternative and continue matching it.
             p=o(o(ox_jsk))
             o(ox_jsk)=o(ox_jsk)-1
             q=o(o(ox_jsk))
@@ -653,6 +679,8 @@ integer function ispec(p,q,iv,u,t)
         end if
         exit ispec_scan
     end do ispec_scan
+    ! Reaching the end with no pending alternatives means the full specifier
+    ! matched; publish the advanced source cursor to the caller.
     iv=v
     ispec=3
     return
