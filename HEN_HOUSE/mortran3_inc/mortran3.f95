@@ -153,19 +153,23 @@ program mortran3
     save    iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
         ire,nb,kx,y,nerd
 
+    ! Open configured input/output units before writing the version banner.
     call open_units
 
     write(o_e,'(a,1x)',advance='no') 'Mortran 3.2'
     call egs_fdate(o_e)
     write(o_e,*)
 
+    ! Seed the shared-buffer cursors, load the initial tables/options, and set
+    ! the first scan-buffer fill as the first pass through the main loop.
     o_v=100
     o_u=1000
     call inital(1)
     iw=ox_mnxbf_base
     o_x=o_w
     first_pass=.true.
-    ! Alternate between matching rules against buffered input and loading more tokens.
+    ! Alternate between matching rules against buffered input and loading more
+    ! tokens. After an expansion, resume its parent before scanning new input.
     translator_cycle: do
         if (.not.first_pass) then
             if (o_s>o_u) then
@@ -177,15 +181,19 @@ program mortran3
                 o_u=o_s-1
                 first_pass=.true.
             else
+                ! Select the rule chain keyed by the next source token.
                 o_m=o(ox_base)+o(o_s)
             end if
         end if
-        ! Walk the active rule table until a rule matches or the input must advance.
+        ! Try the rules for the current token in table order; if none match,
+        ! extend the scan buffer with more input below.
         macro_scan: do
             if (.not.first_pass) then
                 macro_match: block
                     if(o(o_m)==0)exit
                     o_m=o(o_m)
+                    ! Load this candidate's pattern bounds and reset state used
+                    ! to track nested delimiters and captured arguments.
                     d=o_m+4
                     mxd=o(o_m+3)
                     kd=0
@@ -197,6 +205,8 @@ program mortran3
                     o_v=o_s
                     if(o(ox_mtrc)>=4) call mactrc(2,d,mxd)
                     if(o(ox_mtrc)>=4) call mactrc(5,o_v,o_u+1)
+                    ! Compare this candidate pattern with the buffered source.
+                    ! Quoted source strings are packed tokens and are skipped whole.
                     token_scan: do
                         if(o_v>o_u)exit token_scan
                         if (o(o_v)==o(ox_ldq)) then
@@ -243,6 +253,8 @@ program mortran3
                                 cycle token_scan
                             end if
                             if (o(d)==o(ox_ga).or.o(d)==o(ox_gp)) then
+                                ! Begin capturing a macro argument and remember its
+                                ! source bounds; the following scan balances its delimiters.
                                 if (o(d)==o(ox_ga)) then
                                     d=d+1
                                     n=o(d)
@@ -293,6 +305,8 @@ program mortran3
                             o_v=o_v+1
                             cycle token_scan
                         end if
+                        ! A candidate with no argument capture cannot recover from
+                        ! a mismatch; otherwise scan to the end of the current argument.
                         if(f==0)cycle macro_scan
                         do
                             if(o(t)==o(ox_rq))cycle macro_scan
@@ -353,7 +367,8 @@ program mortran3
                 end block macro_match
             end if
             first_pass=.false.
-            ! Copy translated character codes into the scan buffer while tracking quoted text and nested braces.
+            ! No rule expanded at this scan point. Append normalized input tokens
+            ! to the scan buffer, preserving quoted strings and nested groups.
             input_restart: do
                 o(ox_qfl)=o(ox_bla)
                 kx=0
@@ -364,6 +379,8 @@ program mortran3
                     o_c=o_c+1
                     if(o_c>o(ox_sigt))call nxtcrd()
                     if (o(o_u)==o(ox_lcb)) then
+                        ! Copy a complete nested brace group without treating its
+                        ! contents as top-level quote/statement delimiters.
                         o(ox_qfl)=o(o_u)
                         kx=1
                         do
@@ -379,6 +396,8 @@ program mortran3
                         o(ox_qfl)=o(ox_bla)
                     end if
                     if (o(o_u)==o(ox_dq)) then
+                        ! Pack double-quoted text as one length-prefixed token so
+                        ! macro matching cannot inspect its contents as syntax.
                         do
                             if(o(ox_lazy)/= 1)o(ox_qfl)=o(ox_dq)
                             o(o_u)=o(ox_ldq)
@@ -415,6 +434,8 @@ program mortran3
                         end do
                     end if
                     if (o(o_u)==o(ox_bq).and.o(ox_stng)>0) then
+                        ! When string recognition is enabled, pack the alternate
+                        ! quoted form and treat doubled delimiters as escaped data.
                         o(ox_qfl)=o(o_u)
                         o(o_u)=o(ox_lq)
                         do
@@ -435,6 +456,7 @@ program mortran3
                         end do
                     end if
                     if (o(o_u)==o(ox_bla)) then
+                        ! Collapse runs of source blanks to one scan-buffer blank.
                         if (o_s/=o_u) then
                             if(o(o_u-1)==o(ox_bla))o_u=o_u-1
                         end if
@@ -452,6 +474,8 @@ program mortran3
             end do input_restart
         end do macro_scan
         if (o(ox_nest)>0) then
+            ! Inside a replacement, copy an unmatched token through unchanged.
+            ! Copy a line-sequence region as a unit except in the corresponding table.
             o_x=o_x+1
             if(o_x>o(ox_mxx))call mesage(15, 3, 0,0)
             o(o_x)=o(o_s)
@@ -467,6 +491,8 @@ program mortran3
             end if
             cycle translator_cycle
         end if
+        ! Outside expansion, transfer scanned tokens to output until the buffer
+        ! ends or a line-sequence boundary is reached; handle strings and markers.
         do
             if (o(o_s)==o(ox_trm)) then
                 if (o_w>=iw) o_w=linf (iw,o_w,15)
