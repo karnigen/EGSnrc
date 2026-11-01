@@ -2312,6 +2312,7 @@ end subroutine dumdum
 !_______________________________________________________________________
 !__________________________________________
 subroutine rw(n,i,j,k)
+    use, intrinsic :: iso_fortran_env, only: error_unit
     implicit none
     include "mortran3_indices.f95"
     integer  n,i,j,k
@@ -2329,9 +2330,10 @@ subroutine rw(n,i,j,k)
     integer      oflag
 !
     logical skip_input,is_format,is_quote,is_quote_last
-    integer nr,m,kof,l,nrr,nformat,itmp,nfl
+    integer nr,m,kof,l,nrr,nformat,itmp,nfl,read_status
     integer nn6,nn7,jj,nfirst,ii,m1
     character tmp_string*8, tmp1_string*6, f_buffer(8192)
+    character*256 read_message
     equivalence (ch,tmp_string)
     data nn6,nn7,nfl/0,0,0/, &
         skip_input/.false./, is_format/.false./, is_quote/.false./
@@ -2343,7 +2345,14 @@ subroutine rw(n,i,j,k)
     nr=k+1-j
     if (n==0) then
         !write(44,*) 'nr = ',nr,k,j,i
-        read(i,1,end=5130) (ch(m),m=1,nr)
+        read(i,1,iostat=read_status,iomsg=read_message) (ch(m),m=1,nr)
+        if (is_iostat_end(read_status)) then
+            o(ox_eof)=1
+            return
+        else if (read_status/=0) then
+            write(error_unit,'(a,i0,2a)') 'rw: error reading unit ',i,': ',trim(read_message)
+            call exit(2)
+        end if
         if( i/= 1 ) then
             do m=1,nr-1
                 if( .not.skip_input ) then
@@ -2565,8 +2574,6 @@ subroutine rw(n,i,j,k)
         call egs_fdate(i)
         write(i,*)
     end if
-    return
-5130 o(ox_eof)=1
     return
 end subroutine rw
 !_______________________________________________________________________
