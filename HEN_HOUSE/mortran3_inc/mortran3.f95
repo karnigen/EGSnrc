@@ -3022,10 +3022,12 @@ contains
 end
 
 subroutine add_file(iu,the_file)
+    use, intrinsic :: iso_fortran_env, only: error_unit
     integer*4  iu
     integer read_status
     character*(*) the_file
     character*250 line
+    character*256 read_message
     open(99,file=the_file,status='old',iostat=read_status)
     if (read_status/=0) then
         write(6,'(a,a)') 'add_file: could not open file ', &
@@ -3035,8 +3037,13 @@ subroutine add_file(iu,the_file)
     end if
     lineno = 0
     do
-        read(99,'(a)',iostat=read_status) line
-        if (read_status/=0) exit
+        read(99,'(a)',iostat=read_status,iomsg=read_message) line
+        if (is_iostat_end(read_status)) exit
+        if (read_status/=0) then
+            write(error_unit,'(4a)') 'add_file: error reading file ', &
+                trim(the_file),': ',trim(read_message)
+            call exit(2)
+        end if
         lineno = lineno + 1
         if( lnblnk1(line)>80 ) then
             write(6,'(a,i5,a,a,a)') &
