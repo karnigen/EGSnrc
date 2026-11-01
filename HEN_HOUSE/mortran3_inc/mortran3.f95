@@ -136,19 +136,19 @@ program mortran3
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer o_c,o_mxc,o_m
-    integer iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
+    integer :: o_c,o_mxc,o_m
+    integer :: iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
         ire,nb,kx,y,nerd
-    integer ispec,linf
-    logical first_pass
+    integer :: ispec,linf
+    logical :: first_pass
     equivalence(o(ox_crs),o_c),(o(ox_sigt),o_mxc),(o(ox_mcom),o_m)
 !
     common/nrcc/ oflag
-    integer      oflag
+    integer :: oflag
 
     save    iw,a,d,mxd,kd,mq,f,t,ip,iq,n,n1,n2,n3,kc,kb,kp,p,q,ia, &
         ire,nb,kx,y,nerd
@@ -499,15 +499,15 @@ end program mortran3
 integer function ispec(p,q,iv,u,t)
     implicit none
     include "mortran3_indices.f95"
-    integer p,q,iv,u,t
+    integer :: p,q,iv,u,t
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer mini
-    integer c,m,b,v,iq,i,np,jmp,n,nul,w
+    integer :: mini
+    integer :: c,m,b,v,iq,i,np,jmp,n,nul,w
     save    c,m,b,v,iq,i,np,jmp,n,nul,w
     c=0
     m=0
@@ -654,14 +654,14 @@ end function ispec
 integer function mini(s,u,w,kct)
     implicit none
     include "mortran3_indices.f95"
-    integer s,u,w,kct
+    integer :: s,u,w,kct
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer m,l,v,p,q
+    integer :: m,l,v,p,q
     save    m,l,v,p,q
     mini=0
     m=kct+o(s)
@@ -697,15 +697,15 @@ end function mini
 subroutine expand (f)
     implicit none
     include "mortran3_indices.f95"
-    integer  f
+    integer :: f
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer lexp,llong
-    integer kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
+    integer :: lexp,llong
+    integer :: kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
     data kgn/0/
     save    kgn,t,sef,k,j,jv,p,q,nul,jmp,a,n,krap,kraq,z,y
 !CDGHILM
@@ -918,14 +918,14 @@ subroutine kat
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer l,m
+    integer :: l,m
     equivalence (o(ox_lsk),l),(o(ox_msk),m)
-    integer llong,nib
-    integer jmp,t,ibg,z,iuni,nba
+    integer :: llong,nib
+    integer :: jmp,t,ibg,z,iuni,nba
     save    jmp,t,ibg,z,iuni,nba
 !FGHIJKLPQ  YZ
     if(o(o_b)<19.or.o(o_b)>30) call mesage(15, 7, o_b-2,o_e)
@@ -1076,12 +1076,12 @@ subroutine cout
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer linf
-    integer t,nerd
+    integer :: linf
+    integer :: t,nerd
     save    t,nerd
     t=o_s
     do
@@ -1099,16 +1099,16 @@ end subroutine cout
 subroutine define(s)
     implicit none
     include "mortran3_indices.f95"
-    integer s
+    integer :: s
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
 !GHQUVWXYZ
-    integer   l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
-    logical found
+    integer :: l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
+    logical :: found
     save      l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
     dimension l(3)
     if (o(s-2*(1)-1)==o(s-2*(1)-2)) then
@@ -1288,14 +1288,14 @@ end subroutine define
 subroutine doit(a,z)
     implicit none
     include "mortran3_indices.f95"
-    integer a,z
+    integer :: a,z
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer   s,x,t,p
+    integer :: s,x,t,p
     dimension s(200)
     save      s,x,t,p
     x=0
@@ -1344,15 +1344,15 @@ end subroutine doit
 subroutine krunc(r)
     implicit none
     include "mortran3_indices.f95"
-    integer    r
+    integer :: r
     dimension o(ox_capacity)
 !ABEFGHIJKLQTUVWXYZ
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer m,n,d,p,s,c,i
+    integer :: m,n,d,p,s,c,i
     save    m,n,d,p,s,c,i
     if (o(ox_mrkf)/=0) then
         m=o(ox_mrkf)
@@ -1402,14 +1402,14 @@ end subroutine krunc
 integer function nib(l,b)
     implicit none
     include "mortran3_indices.f95"
-    integer  l,b
+    integer :: l,b
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer m,n
+    integer :: m,n
     save    m,n
     m=1
     n=0
@@ -1435,14 +1435,14 @@ end function nib
 integer function llong(loc,num,b,ind)
     implicit none
     include "mortran3_indices.f95"
-    integer  loc,num,b,ind
+    integer :: loc,num,b,ind
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer n,l,i,j,k
+    integer :: n,l,i,j,k
     save    n,l,i,j,k
     if(o(ox_ngn)/= 0)return
     n=iabs(num)
@@ -1477,19 +1477,19 @@ end function llong
 integer function lexp(a,z)
     implicit none
     include "mortran3_indices.f95"
-    integer  a,z
+    integer :: a,z
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer   p,n
+    integer :: p,n
     dimension p(100)
 !FGHIJKLMQRSUVWY
     equivalence(o(ox_nsk),n),( o(ox_pjt_base),p(1) )
-    integer ispec
-    integer b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
+    integer :: ispec
+    integer :: b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
     save    b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
     if (o(a+1)==o(ox_lq)) then
         lexp=1
@@ -1702,14 +1702,14 @@ subroutine nxtcrd
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer mxr,mxt,mxn
+    integer :: mxr,mxt,mxn
     equivalence(o(ox_rmx),mxr),(o(ox_tmx),mxt),(o(ox_nmx),mxn)
-    integer llong,linf
-    integer k,j,w,i,l,m,y,nerd
+    integer :: llong,linf
+    integer :: k,j,w,i,l,m,y,nerd
     save    k,j,w,i,l,m,y,nerd
     o(ox_mcnt)=0
     if(o(ox_eof)==2) call mesage(16,1,0,0)
@@ -1849,15 +1849,15 @@ end subroutine nxtcrd
 subroutine cccard(k)
     implicit none
     include "mortran3_indices.f95"
-    integer k
+    integer :: k
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer n5
-    integer jmp,i
+    integer :: n5
+    integer :: jmp,i
     save    jmp,i
     jmp=k
 !ABCDEFGHJLMNPQRSTUVWXYZ
@@ -1910,15 +1910,15 @@ end subroutine cccard
 integer function n5(l,m,k)
     implicit none
     include "mortran3_indices.f95"
-    integer  l,m,k
+    integer :: l,m,k
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer nib
-    integer j
+    integer :: nib
+    integer :: j
     save    j
     j=ox_tbf_base+4
     n5=nib(j,10)
@@ -1933,14 +1933,14 @@ end function n5
 subroutine mactrc(w,r,s)
     implicit none
     include "mortran3_indices.f95"
-    integer  w,r,s
+    integer :: w,r,s
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer k,m,t,n
+    integer :: k,m,t,n
     save    k,m,t,n
     if (o(ox_nest)>0.and.o(ox_mtrc)<3.and.w/= 4)return
     select case (w)
@@ -2003,14 +2003,14 @@ end subroutine mactrc
 subroutine crit(a,z)
     implicit none
     include "mortran3_indices.f95"
-    integer  a,z
+    integer :: a,z
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer b,c
+    integer :: b,c
     save    b,c
     b=a
     do while (b<z)
@@ -2034,15 +2034,15 @@ end subroutine crit
 subroutine mesage (level,no,k1,k2)
     implicit none
     include "mortran3_indices.f95"
-    integer level,no,k1,k2
+    integer :: level,no,k1,k2
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
     common/junk/ verbose
-    logical verbose
+    logical :: verbose
     if(level==14 .or. level==15)o(ox_merr)=o(ox_merr)+1
     call find(level,no,k1)
     if(k2/= 0)call mactrc(4,k1,k2)
@@ -2084,15 +2084,15 @@ end subroutine mesage
 subroutine find(l,n,v)
     implicit none
     include "mortran3_indices.f95"
-    integer l,n,v
+    integer :: l,n,v
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer llong
-    integer a,c,q,r,s,nerd,k
+    integer :: llong
+    integer :: a,c,q,r,s,nerd,k
     save    a,c,q,r,s,nerd,k
     a=ox_wbf_base
     c=a+9
@@ -2132,15 +2132,15 @@ end subroutine find
 integer function linf(a,z,ind)
     implicit none
     include "mortran3_indices.f95"
-    integer  a,z,ind
+    integer :: a,z,ind
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer llong
-    integer last,kur,kit,kut,kst,h,b,i,j,npl,d,koff,c,limc,k
+    integer :: llong
+    integer :: last,kur,kit,kut,kst,h,b,i,j,npl,d,koff,c,limc,k
 !     LINF modes: packed comments and rule diagnostics.
     integer, parameter :: linf_comment_mode = 12
     integer, parameter :: linf_rule_diagnostic_mode = 15
@@ -2290,11 +2290,11 @@ end function linf
 subroutine dumdum(l,a,b,c,d,e,f,g,h,i,j)
     implicit none
     include "mortran3_indices.f95"
-    integer l,a,b,c,d,e,f,g,h,i,j
+    integer :: l,a,b,c,d,e,f,g,h,i,j
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
     o( l )=a
@@ -2314,24 +2314,26 @@ end subroutine dumdum
 subroutine rw(n,i,j,k)
     implicit none
     include "mortran3_indices.f95"
-    integer  n,i,j,k
-    character*1 ch(200)
-    integer     hc(200)
+    integer :: n,i,j,k
+    character(len=1) :: ch(200)
+    integer :: hc(200)
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
 !  IN RW
 !
     common/nrcc/ oflag
-    integer      oflag
+    integer :: oflag
 !
-    logical skip_input,is_format,is_quote,is_quote_last
-    integer nr,m,kof,l,nrr,nformat,itmp,nfl
-    integer nn6,nn7,jj,nfirst,ii,m1
-    character tmp_string*8, tmp1_string*6, f_buffer(8192)
+    logical :: skip_input,is_format,is_quote,is_quote_last
+    integer :: nr,m,kof,l,nrr,nformat,itmp,nfl
+    integer :: nn6,nn7,jj,nfirst,ii,m1
+    character(len=8) :: tmp_string
+    character(len=6) :: tmp1_string
+    character(len=1) :: f_buffer(8192)
     equivalence (ch,tmp_string)
     data nn6,nn7,nfl/0,0,0/, &
         skip_input/.false./, is_format/.false./, is_quote/.false./
@@ -2574,17 +2576,17 @@ end subroutine rw
 subroutine inital(ind)
     implicit none
     include "mortran3_indices.f95"
-    integer  ind
-    character*1 count
+    integer :: ind
+    character(len=1) :: count
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
     common /junk/ verbose
-    logical verbose
-    integer kount,k,iuni
+    logical :: verbose
+    integer :: kount,k,iuni
     save    kount,k,iuni,count
     if (ind==2) then
         o(ox_mode)=1
@@ -2653,14 +2655,14 @@ subroutine raw
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
-    integer   p
+    integer :: p
     dimension p(100)
     equivalence(o(ox_pjt_base),p(1))
-    integer  k,j
+    integer :: k,j
     save     k,j
     o(ox_nmx)=o_v
     o(ox_sign)=o_v
@@ -2727,18 +2729,18 @@ subroutine open_units
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
     common /ibm/o
-    integer o
-    integer o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
+    integer :: o
+    integer :: o_b,o_e,o_r,o_s,o_v,o_u,o_w,o_x
     equivalence (o(ox_b),o_b),(o(ox_e),o_e),(o(ox_r),o_r),(o(ox_s),o_s), &
         (o(ox_v),o_v),(o(ox_u),o_u),(o(ox_w),o_w),(o(ox_x),o_x)
     common/nrcc/ oflag
-    integer      oflag
+    integer :: oflag
     common/junk/verbose
-    logical verbose
-    character*4096 arg,next_file
-    logical  ignore_missing,is_there
+    logical :: verbose
+    character(len=4096) :: arg,next_file
+    logical :: ignore_missing,is_there
 
-    integer iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1,open_status
+    integer :: iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1,open_status
 
     narg = iargc()
     verbose = .true.
