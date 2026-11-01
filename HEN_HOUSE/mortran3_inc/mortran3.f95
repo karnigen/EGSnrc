@@ -942,28 +942,40 @@ subroutine kat
     integer :: jmp,t,ibg,z,iuni,nba
     save    jmp,t,ibg,z,iuni,nba
 !FGHIJKLPQ  YZ
+    ! The current buffer item is the encoded operator. Advance past it, then
+    ! use its code (19..30) to select one of the twelve primitive operations.
     if(o(o_b)<19.or.o(o_b)>30) call mesage(15, 7, o_b-2,o_e)
     o_b=o_b+1
     jmp=o(o_b-1)-18
     select case (jmp)
     case (1)
+        ! Read a value from the table area at offset 78 and push it on the
+        ! output stack.
         t=o(o_b)+78
         o_x=o_x+1
         o(o_x)=o(t)
         return
     case (2)
+        ! Run recovery and return; recovery manages its own buffer state.
         call krunc(0)
         return
     case (3)
+        ! The selector chooses a label/stack operation. Some selectors also
+        ! consume a following option from the encoded operator stream.
         if (o(o_b)==12) then
+            ! Format the decimal value assembled from the selected stack entry
+            ! and the following operand, then append it to the output buffer.
             o_x=o_x+llong(o_x,o(l-o(o_b+1))+o(o_b+2),10,1)
             o_b=o_b+2
             return
         else if (o(o_b)==16) then
+            ! Allocate the next numeric label (labels advance by ten) and emit it.
             o(ox_labl)=o(ox_labl)+10
             o_x=o_x+llong(o_x,o(ox_labl),10,0)
             return
         else if (o(o_b)==28) then
+            ! Convert the output-buffer number to an integer and push it on the
+            ! label stack. Option 1 swaps the two top label-stack entries.
             o_b=o_b+1
             o(ox_lsk)=o(ox_lsk)+1
             o(o(ox_lsk))=nib(o_x,10)
@@ -974,6 +986,8 @@ subroutine kat
                 o(l)=z
             end if
         else if (o(o_b)==30) then
+            ! Pop the label stack; option 1 copies its top value to the entry
+            ! immediately below it before the pop. Do not cross the stack base.
             o_b=o_b+1
             if(o(o_b)==1)o(l-1)=o(l)
             l=l-1
@@ -991,6 +1005,8 @@ subroutine kat
         end if
         return
     case (4)
+        ! Operate on the macro-variable stack: selector 28 pushes an encoded
+        ! value, 27 replaces the current entry, and 30 pops it to output.
         if (o(o_b)==28) then
             o_b=o_b+1
             o(ox_msk)=o(ox_msk)+1
@@ -1012,13 +1028,17 @@ subroutine kat
         end if
         return
     case (5)
+        ! Replace the top output item with its decimal character representation.
         ibg=o(o_x)
         o_x=o_x-1+llong(o_x-1,ibg,10,1)
         return
     case (6)
+        ! Define the rule represented by the current source-buffer range.
         call define(o_s)
         return
     case (7)
+        ! Enter evaluator conditional mode and derive the bounds of its two
+        ! encoded buffer ranges from the four relative lengths that follow.
         o(ox_ifl)=1
         o_b=o_b+4
         o(ox_ktb)=o_b+o(o_b-1)
@@ -1028,6 +1048,8 @@ subroutine kat
         o_b=o_b-1
         return
     case (8)
+        ! Allocate and push the next numeric label. Option 1 swaps the top two
+        ! label-stack entries; only options 0 and 1 are valid here.
         o(ox_labl)=o(ox_labl)+10
         o(ox_lsk)=o(ox_lsk)+1
         o(o(ox_lsk))=o(ox_labl)
@@ -1043,10 +1065,13 @@ subroutine kat
         end if
         return
     case (9)
+        ! Rewind the input unit identified by the following buffer item.
         iuni=o(o_b)
         rewind iuni
         return
     case (10)
+        ! Select a target table entry. An optional bank selector (1..4) adds
+        ! a 26-entry bank offset; the operator itself is handled below.
         t=o(o_b)
         o_b=o_b+1
         if (0<o(o_b).and.o(o_b)<5) then
@@ -1055,10 +1080,14 @@ subroutine kat
         end if
         nba=0
     case (11)
+        ! Emit a macro trace when tracing is enabled, then restore o_b to the
+        ! operator token before returning.
         if(o(ox_mtrc)>=1) call mactrc(22,o(ox_mcom),o_s)
         o_b=o_b-1
         return
     case (12)
+        ! Select an entry in the table beginning at 121. Save the requested
+        ! radix from output and remove it before the shared action.
         t=121+o(o_b)
         o_b=o_b+1
         nba=o(o_x)
@@ -1067,6 +1096,8 @@ subroutine kat
         call mesage(15, 7, o_b-2,o_e)
         return
     end select
+    ! Cases 10 and 12 share the final action: increment, decrement, assign
+    ! from the output stack, or push a target value (optionally radix-formatted).
     if (o(o_b)==43) then
         o(t)=o(t)+1
     else if (o(o_b)==42) then
