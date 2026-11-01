@@ -495,6 +495,7 @@ program mortran3
 end program mortran3
 !_______________________________________________________________________
 !__________________________________________
+! Match source text against a macro pattern and report the match status.
 integer function ispec(p,q,iv,u,t)
     implicit none
     include "mortran3_indices.f95"
@@ -649,6 +650,7 @@ integer function ispec(p,q,iv,u,t)
 end function ispec
 !_______________________________________________________________________
 !__________________________________________
+! Find a macro rule whose literal prefix matches the source text.
 integer function mini(s,u,w,kct)
     implicit none
     include "mortran3_indices.f95"
@@ -691,6 +693,7 @@ integer function mini(s,u,w,kct)
 end function mini
 !_______________________________________________________________________
 !________________________________________
+! Expand a macro rule or restore state when returning from a nested expansion.
 subroutine expand (f)
     implicit none
     include "mortran3_indices.f95"
@@ -909,6 +912,7 @@ end subroutine expand
 !TO EXPAND
 !_______________________________________________________________________
 !________________________________________
+! Execute a Mortran rule operator during macro expansion.
 subroutine kat
     implicit none
     include "mortran3_indices.f95"
@@ -1066,6 +1070,7 @@ subroutine kat
 end subroutine kat
 !_______________________________________________________________________
 !__________________________________________
+! Write packed comments from the scanned source range to the listing.
 subroutine cout
     implicit none
     include "mortran3_indices.f95"
@@ -1090,6 +1095,7 @@ subroutine cout
 end subroutine cout
 !_______________________________________________________________________
 !________________________________________
+! Process a macro definition and update the rule tables as required.
 subroutine define(s)
     implicit none
     include "mortran3_indices.f95"
@@ -1277,6 +1283,7 @@ subroutine define(s)
 end subroutine define
 !_______________________________________________________________________
 !__________________________________________
+! Fix relative offsets for conditional constructs in a macro replacement.
 subroutine doit(a,z)
     implicit none
     include "mortran3_indices.f95"
@@ -1331,6 +1338,7 @@ subroutine doit(a,z)
 end subroutine doit
 !_______________________________________________________________________
 !__________________________________________
+! Reclaim unused macro storage and compact the macro buffer.
 subroutine krunc(r)
     implicit none
     include "mortran3_indices.f95"
@@ -1388,6 +1396,7 @@ subroutine krunc(r)
 end subroutine krunc
 !_______________________________________________________________________
 !__________________________________________
+! Parse a signed integer from the buffer in the specified base.
 integer function nib(l,b)
     implicit none
     include "mortran3_indices.f95"
@@ -1420,6 +1429,7 @@ integer function nib(l,b)
 end function nib
 !_______________________________________________________________________
 !__________________________________________
+! Convert an integer to the specified base in the output buffer.
 integer function llong(loc,num,b,ind)
     implicit none
     include "mortran3_indices.f95"
@@ -1461,6 +1471,7 @@ integer function llong(loc,num,b,ind)
 end function llong
 !_______________________________________________________________________
 !________________________________________
+! Evaluate a Mortran expression and return its truth value.
 integer function lexp(a,z)
     implicit none
     include "mortran3_indices.f95"
@@ -1682,6 +1693,7 @@ integer function lexp(a,z)
 end function lexp
 !_______________________________________________________________________
 !________________________________________
+! Read the next source record and prepare it for translation.
 subroutine nxtcrd
     implicit none
     include "mortran3_indices.f95"
@@ -1830,6 +1842,7 @@ end subroutine nxtcrd
 !__________________________________________
 !_______________________________________________________________________
 !________________________________________
+! Apply settings from a Mortran control card.
 subroutine cccard(k)
     implicit none
     include "mortran3_indices.f95"
@@ -1890,6 +1903,7 @@ subroutine cccard(k)
 end subroutine cccard
 !_______________________________________________________________________
 !__________________________________________
+! Read a numeric value from the current control card, using a default if out of range.
 integer function n5(l,m,k)
     implicit none
     include "mortran3_indices.f95"
@@ -1912,6 +1926,7 @@ integer function n5(l,m,k)
 end function n5
 !_______________________________________________________________________
 !________________________________________
+! Write macro-processing trace messages to the listing.
 subroutine mactrc(w,r,s)
     implicit none
     include "mortran3_indices.f95"
@@ -1981,6 +1996,7 @@ subroutine mactrc(w,r,s)
 end subroutine mactrc
 !_______________________________________________________________________
 !__________________________________________
+! Format and write a text fragment to the Mortran listing.
 subroutine crit(a,z)
     implicit none
     include "mortran3_indices.f95"
@@ -2011,6 +2027,7 @@ subroutine crit(a,z)
 end subroutine crit
 !_______________________________________________________________________
 !________________________________________
+! Report diagnostics and terminate when the message level requires it.
 subroutine mesage (level,no,k1,k2)
     implicit none
     include "mortran3_indices.f95"
