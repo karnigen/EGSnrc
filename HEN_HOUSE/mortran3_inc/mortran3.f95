@@ -2992,8 +2992,14 @@ subroutine raw
     call dumdum(76, 90, 79, 78, 75, 38, 46, 74, 82, 83, 84)
     o(ox_bq)=77
     o(ox_dq)=80
+    ! Set up the captured-field ranges for a built-in definition: key, empty
+    ! type field, and replacement. The token sequence below fills those ranges.
     call dumdum(29001,29018,29016,29016,29016,29016,29009,0,3,0,0)
+    ! Encode the bootstrap rule (GP) GP (GP) -> GA O. Here 38='(', 108=GP,
+    ! 46=')', 107=GA, and 24='O'; the final zero terminates the replacement.
     call dumdum(29009,38,108,46,108,38,108,46,107,24,0)
+    ! Register syntax for (pattern) type (replacement); the GA O action routes
+    ! each matched definition through kat/define.
     call define(29009)
     p(46)=101
     p(38)=202
