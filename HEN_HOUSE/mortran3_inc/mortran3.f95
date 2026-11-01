@@ -3105,25 +3105,31 @@ subroutine raw
     ! Register syntax for (pattern) type (replacement); the GA O action routes
     ! each matched definition through kat/define.
     call define(29009)
-    p(46)=101
-    p(38)=202
-    p(87)=303
-    p(88)=404
-    p(89)=505
-    p(42)=706
-    p(43)=707
-    p(44)=808
-    p(45)=809
-    p( 36)=910
-    p( 32)=303
-    p( 12)=404
-    p( 29)=505
-    p( 11)=611
-    p( 14)=612
-    p( 16)=613
-    p( 18)=614
-    p( 23)=615
-    p( 30)=616
+    ! Initialize lexp's operator table (p aliases o(ox_pjt_base)). Each value
+    ! is 100*precedence + (reduction case + 1); lexp computes the case as
+    ! mod(p(x),100)-1. Higher hundreds bind more tightly.
+    p(46)=101   ! ')': precedence 1; closing-delimiter marker, not reduced itself.
+    p(38)=202   ! '(': precedence 2; reduction case 1 closes the group.
+    p(87)=303   ! '|': precedence 3; reduction case 2, logical OR.
+    p(88)=404   ! '&': precedence 4; reduction case 3, logical AND.
+    p(89)=505   ! '~': precedence 5; reduction case 4, logical NOT.
+    p(42)=706   ! '-': precedence 7; reduction case 5, subtraction.
+    p(43)=707   ! '+': precedence 7; reduction case 6, addition.
+    p(44)=808   ! '/': precedence 8; reduction case 7, division.
+    p(45)=809   ! '*': precedence 8; reduction case 8, multiplication.
+    p( 36)=910  ! '**': precedence 9; reduction case 9, exponentiation.
+    p( 32)=303  ! OR word/operator index: same precedence and action as '|'.
+    p( 12)=404  ! AND word/operator index: same precedence and action as '&'.
+    p( 29)=505  ! NOT word/operator index: same precedence and action as '~'.
+    p( 11)=611  ! '>=': precedence 6; reduction case 10.
+    p( 14)=612  ! '<=': precedence 6; reduction case 11.
+    p( 16)=613  ! '/=': precedence 6; reduction case 12.
+    p( 18)=614  ! '==': precedence 6; reduction case 13.
+    p( 23)=615  ! '>': precedence 6; reduction case 14.
+    p( 30)=616  ! '<': precedence 6; reduction case 15.
+    ! Potential legacy mismatch: lexp maps token 88 ('&') to index 13, but
+    ! this table sets p(88), not p(13); check that path before relying on '&'.
+    ! The bootstrap rule used type 4; subsequent definitions default to family 6.
     o(ox_dflt)=6
     return
 end subroutine raw
