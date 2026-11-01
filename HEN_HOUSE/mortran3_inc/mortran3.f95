@@ -2627,7 +2627,9 @@ end subroutine dumdum
 !__________________________________________
 ! Read source records and write translated or listing output.
 subroutine rw(n,i,j,k)
-    ! n: Read/write operation and output-conversion mode; zero reads input.
+    ! Read one source record or write a buffer range using the selected character map.
+    ! n: Zero reads; 23 writes raw character values; other values write through a map,
+    !    with 33 selecting the alternate map bank used by trace/listing output.
     ! i: Fortran I/O unit to read from or write to.
     ! j: First index of the buffer range.
     ! k: Last index of the buffer range (inclusive).
@@ -2661,11 +2663,15 @@ subroutine rw(n,i,j,k)
     save nr,m,kof,l,nrr,skip_input,is_format,is_quote
     save f_buffer
 
+    ! Number of buffer elements requested; the range endpoints are inclusive.
     nr=k+1-j
     if (n==0) then
         !write(44,*) 'nr = ',nr,k,j,i
+        ! Read source characters from the selected unit into the buffer.
         read(i,1,end=5130) (ch(m),m=1,nr)
         if( i/= 1 ) then
+            ! Strip C-style block comments from non-raw input units. The
+            ! skip flag persists across records so multi-line comments work.
             do m=1,nr-1
                 if( .not.skip_input ) then
                     ! the following does not work because of possibly
@@ -2700,11 +2706,15 @@ subroutine rw(n,i,j,k)
             end do
         endif
         !write(44,1) (CH(M),M=1,NR)
+        ! Keep raw character codes in the shared buffer; nxtcrd performs the
+        ! Mortran token-map conversion after this read.
         do m=1,nr
             o(j+m-1)=ichar(ch(m))
         end do
         return
     end if
+    ! Select the output character map: normal bank, alternate bank for mode 33,
+    ! or no mapping for mode 23.
     kof=ox_iset_base
     if (n==33) kof=100+kof
     if (n==23) kof=0
@@ -2714,10 +2724,12 @@ subroutine rw(n,i,j,k)
         ch(l)=char( hc(l)  )
     end do
     if( i==oflag ) then
+        ! Skip the first write to the designated listing unit.
         nn6 = nn6+1
         if( nn6==1 ) return
     end if
     if( i==7 ) then
+        ! Likewise suppress the initial record on the generated-source unit.
         nn7 = nn7+1
         if( nn7==1 ) return
     end if
@@ -2738,10 +2750,8 @@ subroutine rw(n,i,j,k)
     end do
     nrr = jj
 
-    ! Check for C-preprocessor statements
-    ! If the first 6 chars on the line are blank and if the first non-blank
-    ! char from coloumn 7 is a #, assume it is a C-preprocessor directive
-    ! and make the # to be the first char on the line.
+    ! Move a C-preprocessor directive's first nonblank character (#) to
+    ! column 1, since generated-code consumers expect it there.
     nfirst=1
     jj=1
     do while (jj<=nrr)
@@ -2756,6 +2766,7 @@ subroutine rw(n,i,j,k)
             ch(ii) = ' '
         end do
         nrr = nrr + 1 - jj
+        ! C-preprocessor include paths conventionally use double quotes.
         if( tmp_string=='#include' ) then
             do ii=1,nrr
                 if( ichar(ch(ii))==39 ) ch(ii) = char(34)
@@ -2764,6 +2775,9 @@ subroutine rw(n,i,j,k)
     endif
 
     if(i==7) then
+        ! Unit 7 receives fixed-form Fortran. FORMAT statements may exceed a
+        ! record, so buffer the statement until parentheses balance outside
+        ! quoted character strings, then emit it using continuation records.
         if( is_format ) then
             jj = 7
             if( .not.is_quote ) then
@@ -2810,6 +2824,7 @@ subroutine rw(n,i,j,k)
                 nfl = ii
             end if
             if( nformat==0 ) then
+                ! The buffered FORMAT statement is complete and can be emitted.
                 is_format = .false.
                 is_quote = .false.
                 jj = 72
@@ -2828,6 +2843,7 @@ subroutine rw(n,i,j,k)
         endif
 
         if( .not.is_format ) then
+            ! Detect FORMAT in the statement field after the six-column label.
             jj=7
             do while (jj<=nrr)
                 if( ch(jj)/= ' ') exit
@@ -2848,6 +2864,7 @@ subroutine rw(n,i,j,k)
         endif
 
         if( is_format ) then
+            ! Count parentheses in the statement field, ignoring quoted text.
             do jj=7,nrr
                 if( ichar(ch(jj))==39 ) then
                     if( is_quote ) then
@@ -2875,6 +2892,7 @@ subroutine rw(n,i,j,k)
         if( is_format ) return
     endif
 
+    ! Write the converted character range, omitting trailing blanks.
     write(i,1) (ch(m),m=1,nrr)
 1   format(132a1)
 
@@ -2882,12 +2900,14 @@ subroutine rw(n,i,j,k)
 !        NRC PATCH TO PUT DATE AND TIME AT EACH PAGE THROW
 !
     if( ch(1)=='1' .and. i==6 ) then
+        ! Add a timestamp after a listing page eject.
         write(i,'(T55)',advance='no')
         call egs_fdate(i)
         write(i,*)
     end if
     return
 5130 o(ox_eof)=1
+    ! Signal end-of-input to the translator's shared state.
     return
 end subroutine rw
 !_______________________________________________________________________
