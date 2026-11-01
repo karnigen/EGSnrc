@@ -1656,6 +1656,9 @@ end function llong
 !________________________________________
 ! Evaluate a Mortran expression and return its truth value.
 integer function lexp(a,z)
+    ! Evaluate an encoded evaluator expression and return its integer result;
+    ! comparisons and logical operations produce 0 or 1.
+    ! Quoted operands use a separate literal/specifier matching path.
     ! a: First index of the expression in the shared buffer.
     ! z: Last index of the expression in the shared buffer (inclusive).
     implicit none
@@ -1672,6 +1675,8 @@ integer function lexp(a,z)
     integer :: ispec
     integer :: b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
     save    b,c,nq,mxc,d,e,lone,mp,mq,mv,mu,mnn,t,x,k,jmp
+    ! If the expression starts with a quoted token, compare quoted values
+    ! directly instead of sending them through the numeric operator parser.
     if (o(a+1)==o(ox_lq)) then
         lexp=1
         b=a+1
@@ -1685,9 +1690,13 @@ integer function lexp(a,z)
             c=c+1
             if(c>mxc)call mesage(15, 35, 0,0)
         end do
+        ! d points to the operator after the left quoted value; e is the first
+        ! token of the right operand.
         d=c+1
         e=d+1
         if (o(e)==o(ox_lq)) then
+            ! Two quoted operands are compared token-for-token and must have
+            ! equal encoded lengths.
             do while(e<=z-1)
                 if(o(b)/= o(e))lexp=0
                 b=b+1
@@ -1695,6 +1704,8 @@ integer function lexp(a,z)
             end do
             if(b/= d) lexp=0
         else
+            ! Otherwise treat the right operand as a specifier and match it
+            ! against the contents of the left quoted value.
             lone=1
             mp=e
             mq=z
@@ -1702,9 +1713,12 @@ integer function lexp(a,z)
             mu=c
             if(ispec(mp,mq,mv,mu,lone)/= 3)lexp=0
         end if
+        ! The encoded not-equal form complements the comparison result.
         if(o(d)==89) lexp=1-lexp
         return
     end if
+    ! Numeric expressions use a shared value/operator stack. Start with a
+    ! false result, an empty numeric flag, and a left-parenthesis sentinel.
     lexp=0
     o(ox_nflg)=0
     n=ox_nsk_base
@@ -1715,6 +1729,7 @@ integer function lexp(a,z)
     do
         if(b>z)exit
         if (o(b)>=0 .and. o(b)<=9) then
+            ! Accumulate consecutive digit tokens into one integer operand.
             o(n)=0
             o(ox_nflg)=1
             do while(0<=o(b).and.o(b)<=9)
@@ -1724,11 +1739,14 @@ integer function lexp(a,z)
             cycle
         end if
         if (o(b)==o(ox_bla)) then
+            ! Blanks do not participate in expression evaluation.
             b=b+1
             cycle
         end if
         t=b
         if (o(t)>=10 .and. o(t)<=29) then
+            ! Some operators are encoded across multiple adjacent tokens; map
+            ! their packed spelling to the operator-table index in x.
             x=o(t)*o(t+1)
             t=t+2
             if (o(t)==29.or.o(t)==13) then
@@ -1738,49 +1756,63 @@ integer function lexp(a,z)
             x=x/20
             if (.not.((10<x).and.(x<33))) exit
         else
+            ! Single-token operators are mapped to the same table-index form;
+            ! several letter-coded forms have optional second-token variants.
             x=o(t)
             t=t+1
             select case (x)
             case (45)
+                ! Map "**" to internal exponent index 36; "*" stays index 45.
                 if (o(t)==45) then
                     t=t+1
                     x=36
                 end if
             case (89)
+                ! Map "~" to logical NOT index 29, or "~=" to inequality index 16.
                 x=29
                 if (o(t)==41) then
                     t=t+1
                     x=16
                 end if
             case (85)
+                ! Map "<" to index 30, or "<=" to less-or-equal index 14.
                 x=30
                 if (o(t)==41) then
                     t=t+1
                     x=14
                 end if
             case (41)
+                ! Map "=" to equality index 18, or "=>" to greater-or-equal 11.
                 x=18
                 if (o(t)==86) then
                     t=t+1
                     x=11
                 end if
             case (86)
+                ! Map ">" to index 23, or ">=" to greater-or-equal index 11.
                 x=23
                 if (o(t)==41) then
                     t=t+1
                     x=11
                 end if
             case (87)
+                ! Map "|" to logical OR index 32.
                 x=32
             case (88)
+                ! Map "&" to operator-table index 13.
                 x=13
             end select
         end if
-        ! Use the operator table to apply precedence and reduce operands on the shared stack.
+        ! p(x) encodes operator precedence in its hundreds and the reduction
+        ! operation in the remaining digits.
         if(p(x)==0)exit
+        ! Reject unsupported tokens and operators that cannot follow the
+        ! current operand state (notably a right parenthesis without an operand).
         if(x<10.or.x>o(ox_rpr) .or. (x==o(ox_rpr).and.o(ox_nflg)==0)) &
             exit
         if (p(x)/100>p(o(n-1))/100 .or. x==o(ox_lpr)) then
+            ! A higher-precedence operator, or a left parenthesis, is pushed
+            ! with a fresh operand slot; otherwise reduce the pending operator.
             o(ox_nflg)=0
             o(ox_nsk)=o(ox_nsk)+1
             o(o(ox_nsk))=x
@@ -1791,89 +1823,114 @@ integer function lexp(a,z)
             cycle
         end if
         if (n==mnn) then
+            ! The sentinel is now the only pending operator, so the current
+            ! operand is the complete expression value.
             lexp=o(n)
             return
         end if
         k=p(o(n-1))
         o(ox_nflg)=1
         jmp=k-((k/100)*100)-1
+        ! Reduce one pending operation. Arithmetic results remain integers;
+        ! logical and comparison results are normalized to 0 or 1.
         select case (jmp)
         case (1)
+            ! Close a parenthesized operand, retain its value, and resume after ')'.
             o(n-2)=o(n)
             b=t
         case (2)
+            ! Logical OR: true only when either operand is exactly 1.
             if (o(n-2)==1 .or. o(n)==1) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case (3)
+            ! Logical AND: true only when both operands are exactly 1.
             if (o(n-2)==1 .and. o(n)==1) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case (4)
+            ! Unary logical NOT, represented as 1 minus the operand.
             o(n-2)=1-o(n)
         case (5)
+            ! Subtract the right operand from the left operand.
             o(n-2)=o(n-2)-o(n)
         case (6)
+            ! Add the right operand to the left operand.
             o(n-2)=o(n-2)+o(n)
         case (7)
+            ! Divide the left operand by the right operand using integer division.
             if (o(n)==0) then
+                ! Division by zero is diagnosed before attempting the reduction.
                 call mesage(14, 10, 0,0)
                 exit
             end if
             o(n-2)=o(n-2)/o(n)
         case (8)
+            ! Multiply the two operands.
             o(n-2)=o(n-2)*o(n)
         case (9)
+            ! Raise the left operand to the right operand's power.
             o(n-2)=o(n-2)**o(n)
         case (10)
+            ! Greater-than-or-equal comparison.
             if (o(n-2)>=o(n)) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case (11)
+            ! Less-than-or-equal comparison.
             if (o(n-2)<=o(n)) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case (12)
+            ! Inequality comparison.
             if (o(n-2)/=o(n)) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case (13)
+            ! Equality comparison.
             if (o(n-2)==o(n)) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case (14)
+            ! Strict greater-than comparison.
             if (o(n-2)>o(n)) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case (15)
+            ! Strict less-than comparison.
             if (o(n-2)<o(n)) then
                 o(n-2)=1
             else
                 o(n-2)=0
             end if
         case default
+            ! Fallback integer-division operation; guard against a zero divisor.
             if (o(n)==0) then
                 call mesage(14, 10, 0,0)
                 exit
             end if
             o(n-2)=o(n-2)/o(n)
         end select
+        ! The right operand and operator have been consumed; continue with the
+        ! reduced value in the left operand slot.
         n=n-2
     end do
+    ! Reaching the end without reducing to one value means the expression was
+    ! malformed or contained an unsupported operator.
     call mesage(14, 23, a,z+1)
     return
 end function lexp
