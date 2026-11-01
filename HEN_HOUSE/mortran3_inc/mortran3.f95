@@ -2627,6 +2627,7 @@ subroutine inital(ind)
 end subroutine inital
 !_______________________________________________________________________
 !__________________________________________
+! Convert raw table data into character mappings and built-in rule definitions.
 subroutine raw
     implicit none
     include "mortran3_indices.f95"
@@ -2698,6 +2699,7 @@ subroutine raw
     return
 end subroutine raw
 
+! Parse command-line options and open Mortran input and output files.
 subroutine open_units
     use, intrinsic :: iso_fortran_env, only: int32
 
@@ -2985,6 +2987,7 @@ contains
     end subroutine open_error
 end subroutine open_units
 
+! Append a source file to the combined Mortran input.
 subroutine add_file(iu,the_file)
     use, intrinsic :: iso_fortran_env, only: int32
     implicit none
@@ -3026,6 +3029,7 @@ subroutine add_file(iu,the_file)
     return
 end subroutine add_file
 
+! Return the position of the last non-blank character, or zero if none.
 function lnblnk1(c)
     use, intrinsic :: iso_fortran_env, only: int32
     implicit none
