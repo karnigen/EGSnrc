@@ -2312,7 +2312,6 @@ end subroutine dumdum
 !_______________________________________________________________________
 !__________________________________________
 subroutine rw(n,i,j,k)
-    use, intrinsic :: iso_fortran_env, only: error_unit
     implicit none
     include "mortran3_indices.f95"
     integer  n,i,j,k
@@ -2330,10 +2329,9 @@ subroutine rw(n,i,j,k)
     integer      oflag
 !
     logical skip_input,is_format,is_quote,is_quote_last
-    integer nr,m,kof,l,nrr,nformat,itmp,nfl,read_status
+    integer nr,m,kof,l,nrr,nformat,itmp,nfl
     integer nn6,nn7,jj,nfirst,ii,m1
     character tmp_string*8, tmp1_string*6, f_buffer(8192)
-    character*256 read_message
     equivalence (ch,tmp_string)
     data nn6,nn7,nfl/0,0,0/, &
         skip_input/.false./, is_format/.false./, is_quote/.false./
@@ -2345,14 +2343,7 @@ subroutine rw(n,i,j,k)
     nr=k+1-j
     if (n==0) then
         !write(44,*) 'nr = ',nr,k,j,i
-        read(i,1,iostat=read_status,iomsg=read_message) (ch(m),m=1,nr)
-        if (is_iostat_end(read_status)) then
-            o(ox_eof)=1
-            return
-        else if (read_status/=0) then
-            write(error_unit,'(a,i0,2a)') 'rw: error reading unit ',i,': ',trim(read_message)
-            call exit(2)
-        end if
+        read(i,1,end=5130) (ch(m),m=1,nr)
         if( i/= 1 ) then
             do m=1,nr-1
                 if( .not.skip_input ) then
@@ -2575,6 +2566,8 @@ subroutine rw(n,i,j,k)
         write(i,*)
     end if
     return
+5130 o(ox_eof)=1
+    return
 end subroutine rw
 !_______________________________________________________________________
 !________________________________________
@@ -2730,7 +2723,6 @@ end subroutine raw
 
 subroutine open_units
 
-    use, intrinsic :: iso_fortran_env, only: error_unit
     implicit none
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
@@ -2744,7 +2736,6 @@ subroutine open_units
     common/junk/verbose
     logical verbose
     character*4096 arg,next_file
-    character*256 read_message
     logical  ignore_missing,is_there
 
     integer iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1,open_status
@@ -2911,13 +2902,8 @@ subroutine open_units
             open(11,file=arg(1:lnblnk1(arg)),status='old',iostat=open_status)
             if (open_status/=0) call open_error()
             do
-                read(11,'(a)',iostat=open_status,iomsg=read_message) next_file
-                if (is_iostat_end(open_status)) exit
-                if (open_status/=0) then
-                    write(error_unit,'(4a)') 'error reading configuration file ', &
-                        trim(arg),': ',trim(read_message)
-                    call exit(2)
-                end if
+                read(11,'(a)',iostat=open_status) next_file
+                if (open_status/=0) exit
                 if( lnblnk1(next_file)>0 ) then
                     inquire(file=next_file,exist=is_there)
                     if( is_there ) then
@@ -3022,14 +3008,12 @@ contains
 end
 
 subroutine add_file(iu,the_file)
-    use, intrinsic :: iso_fortran_env, only: error_unit
     implicit none
     integer*4  iu
     integer read_status,lineno,j
     integer*4 lnblnk1
     character*(*) the_file
     character*250 line
-    character*256 read_message
     open(99,file=the_file,status='old',iostat=read_status)
     if (read_status/=0) then
         write(6,'(a,a)') 'add_file: could not open file ', &
@@ -3039,13 +3023,8 @@ subroutine add_file(iu,the_file)
     end if
     lineno = 0
     do
-        read(99,'(a)',iostat=read_status,iomsg=read_message) line
-        if (is_iostat_end(read_status)) exit
-        if (read_status/=0) then
-            write(error_unit,'(4a)') 'add_file: error reading file ', &
-                trim(the_file),': ',trim(read_message)
-            call exit(2)
-        end if
+        read(99,'(a)',iostat=read_status) line
+        if (read_status/=0) exit
         lineno = lineno + 1
         if( lnblnk1(line)>80 ) then
             write(6,'(a,i5,a,a,a)') &
