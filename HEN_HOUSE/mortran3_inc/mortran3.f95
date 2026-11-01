@@ -1239,7 +1239,9 @@ end subroutine cout
 !________________________________________
 ! Process a macro definition and update the rule tables as required.
 subroutine define(s)
-    ! s: Stack index containing the macro definition's argument ranges.
+    ! Process captured definition fields and add, extend, or remove a rule in
+    ! the appropriate rule/specifier table.
+    ! s: Stack index holding the definition's key, optional type, and replacement ranges.
     implicit none
     include "mortran3_indices.f95"
     integer :: s
@@ -1252,12 +1254,16 @@ subroutine define(s)
     integer :: l(3),k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
     logical :: found
     save      l,k,a,t,n,z,b,e,m,p,lp,c,need,j,f,i,r
+    ! The key/pattern field must not be empty.
     if (o(s-2*(1)-1)==o(s-2*(1)-2)) then
         call mesage(14, 1, 0,0)
         return
     end if
+    ! Use the default rule type unless the definition supplied an explicit one.
     o(ox_typ)=o(ox_dflt)
     if ( o(s-2*(2)-1)/= o(s-2*(2)-2) )o(ox_typ)=o(o(s-2*(2)-1))
+    ! Compact and normalize each captured field in place. The key, type, and
+    ! replacement use slightly different quote/brace rules.
     do k = 1,3
         a=o(s-2*(k)-1)
         t=o(s-2*(k)-2)
@@ -1268,6 +1274,8 @@ subroutine define(s)
             o(n)=o(a)
             a=a+1
             if (o(n)==o(ox_bq)) then
+                ! Convert enabled alternate quotes to internal quote markers;
+                ! doubled delimiters are data, not the end of the quoted span.
                 if (k==3.or.o(ox_stng)>0) then
                     if (z==0) then
                         o(n)=o(ox_lq)
@@ -1280,18 +1288,23 @@ subroutine define(s)
                     end if
                 end if
             else if (o(n)==o(ox_bla)) then
+                ! Collapse repeated blanks outside quoted text.
                 if (z==0) then
                     do while (o(a)==o(ox_bla).and.a<t)
                         a=a+1
                     end do
                 end if
             else if (o(n)==o(ox_blb)) then
+                ! A doubled BLB marker is literal; otherwise convert it to
+                ! the internal GP marker in the pattern.
                 if (o(a)==o(ox_blb)) then
                     a=a+1
                 else
                     o(n)=o(ox_gp)
                 end if
             else if (o(n)==o(ox_bat)) then
+                ! A doubled BAT marker is literal; otherwise convert it to
+                ! the internal GA marker in the pattern.
                 if (o(a)==o(ox_bat)) then
                     a=a+1
                 else
@@ -1299,6 +1312,8 @@ subroutine define(s)
                 end if
             end if
             if (o(ox_blgr)==0 .and. k==3) then
+                ! In the replacement only, optionally protect braces from the
+                ! normal source grouping rules.
                 if(o(n)==o(ox_lcb))o(n)=o(ox_lgb)
                 if(o(n)==o(ox_rcb))o(n)=o(ox_rgb)
             end if
@@ -1307,6 +1322,8 @@ subroutine define(s)
         o(s-2*(k)-2)=n
         l(k)=o(s-2*(k)-2)-o(s-2*(k)-1)
     end do
+    ! Types 12..14 address existing specifier tables rather than creating a
+    ! regular rule immediately. Type 14 selects the alternate table family.
     if (o(ox_typ)>=12 .and. o(ox_typ)<=14) then
         b=o(s-2*(1)-1)
         e=o(s-2*(1)-2)
@@ -1316,6 +1333,8 @@ subroutine define(s)
             m=ox_ct4_base+o(b)
         end if
         found=.false.
+        ! Follow the selected bucket's chain and compare candidate keys by
+        ! normalized length and token contents.
         define_lookup: do
             if (o(m)==0) then
                 if (o(ox_typ)==12) then
@@ -1341,6 +1360,8 @@ subroutine define(s)
         end do define_lookup
         if (found) then
             if (o(ox_typ)/=12) then
+                ! Removal marks the matching specifier and its attached entries
+                ! as deleted, preserving linked records for table traversal.
                 if(o(m)/= 0)o((o(m))+1)=o(m+1)
                 o(o(m+1))=o(m)
                 c=o(m+2)
@@ -1352,6 +1373,8 @@ subroutine define(s)
                 if(o(ox_mdef)>0)call mactrc(13,0,s)
                 return
             end if
+            ! Type 12 appends a replacement to the existing specifier's entry
+            ! chain, allocating and linking one compact record.
             need=4+l(3)
             if(need>ox_mnxbf_base-1-o(ox_free)) call krunc(need)
             c=o(m+2)
@@ -1373,6 +1396,7 @@ subroutine define(s)
             return
         end if
     end if
+    ! Allocate a normal rule as a key record plus a replacement record.
     need=l(1)+l(3)+2*4
     if (need>ox_mnxbf_base-1-o(ox_free)) call krunc(2+need)
     a=o(s-2*(1)-1)
@@ -1385,6 +1409,8 @@ subroutine define(s)
         f=f+1
         a=a+1
     end do
+    ! Reject unsupported grouped keys, invalid leading tokens, and table types
+    ! outside the eight regular rule families.
     if (o(i)==o(ox_lcb) .and. o(ox_typ)>2) then
         call mesage(14, 21, o(s-2*(1)-1),o(s-2*(1)-2))
         return
@@ -1397,6 +1423,8 @@ subroutine define(s)
         call mesage(14, 12, o(s-2*(1)-1),o(s-2*(1)-2))
         return
     end if
+    ! Link the key record into the bucket selected by its type and first token;
+    ! initialize its replacement record immediately after the key.
     i=o(i)+ox_ct0_base + o(ox_typ)*120
     o(p)=o(i)
     if(o(p)/= 0)o((o(p))+1)=p
@@ -1413,12 +1441,15 @@ subroutine define(s)
     e=o(s-2*(3)-2)
     k=l(3)
     if (k/=0) then
+        ! Resolve relative offsets used by conditional constructs, then copy
+        ! the normalized replacement into its allocated record.
         call doit(e-k,e)
         do j = 1,k
             o(f-j)=o(e-j)
         end do
     end if
     if (o(ox_mdef)>0) call mactrc(15,p,r)
+    ! Publish the new free-space position and remaining-capacity counters.
     o(ox_free)= p +need
     o(ox_locs)=ox_mnxbf_base-1-o(ox_free)
     o(ox_left)=(100*o(ox_locs))/(ox_mnxbf_base-1-ox_mbf_base)
