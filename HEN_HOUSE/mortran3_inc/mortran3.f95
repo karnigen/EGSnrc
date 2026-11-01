@@ -2549,6 +2549,8 @@ subroutine rw(n,i,j,k)
 end subroutine rw
 !_______________________________________________________________________
 !________________________________________
+! Load raw or packed Mortran tables and initialize translator state.
+! With ind=2, write the generated table to unit 7 and terminate.
 subroutine inital(ind)
     implicit none
     include "mortran3_indices.f95"
