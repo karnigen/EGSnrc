@@ -2730,6 +2730,7 @@ end subroutine raw
 
 subroutine open_units
 
+    use, intrinsic :: iso_fortran_env, only: error_unit
     implicit none
     include "mortran3_indices.f95"
     dimension o(ox_capacity)
@@ -2743,6 +2744,7 @@ subroutine open_units
     common/junk/verbose
     logical verbose
     character*4096 arg,next_file
+    character*256 read_message
     logical  ignore_missing,is_there
 
     integer iargc,narg,nd,nfs,nfe,nc,no7,no8,i,j,lnblnk1,open_status
@@ -2909,8 +2911,13 @@ subroutine open_units
             open(11,file=arg(1:lnblnk1(arg)),status='old',iostat=open_status)
             if (open_status/=0) call open_error()
             do
-                read(11,'(a)',iostat=open_status) next_file
-                if (open_status/=0) exit
+                read(11,'(a)',iostat=open_status,iomsg=read_message) next_file
+                if (is_iostat_end(open_status)) exit
+                if (open_status/=0) then
+                    write(error_unit,'(4a)') 'error reading configuration file ', &
+                        trim(arg),': ',trim(read_message)
+                    call exit(2)
+                end if
                 if( lnblnk1(next_file)>0 ) then
                     inquire(file=next_file,exist=is_there)
                     if( is_there ) then
