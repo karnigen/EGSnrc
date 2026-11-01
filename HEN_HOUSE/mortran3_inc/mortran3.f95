@@ -3009,11 +3009,11 @@ end
 
 subroutine add_file(iu,the_file)
     implicit none
-    integer*4  iu
-    integer read_status,lineno,j
-    integer*4 lnblnk1
-    character*(*) the_file
-    character*250 line
+    integer*4 :: iu
+    integer :: read_status,lineno,j
+    integer*4 :: lnblnk1
+    character(len=*) :: the_file
+    character(len=250) :: line
     open(99,file=the_file,status='old',iostat=read_status)
     if (read_status/=0) then
         write(6,'(a,a)') 'add_file: could not open file ', &
@@ -3049,8 +3049,8 @@ end
 
 integer*4 function lnblnk1(c)
     implicit none
-    character c*(*)
-    integer*4 j
+    character(len=*) :: c
+    integer*4 :: j
     do j=len(c),1,-1
         if( c(j:j)/= ' ' ) then
             lnblnk1 = j
