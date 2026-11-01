@@ -2884,7 +2884,8 @@ subroutine open_units
         if( verbose ) then
             write(6,'(a,a)') '  raw/hex data file: ',arg(1:lnblnk1(arg))
         end if
-        open(1,file=arg(1:lnblnk1(arg)),status='old',err=101)
+        open(1,file=arg(1:lnblnk1(arg)),status='old',iostat=open_status)
+        if (open_status/=0) call open_error()
     else
         write(6,'(a)') '  raw/hex data file must be specified using'
         write(6,'(a,a,a)') '   ',arg(1:lnblnk1(arg)),' -d data_file '
@@ -2898,7 +2899,8 @@ subroutine open_units
             if( verbose ) then
                 write(6,'(a,a)') '  configuration file: ',arg(1:lnblnk1(arg))
             end if
-            open(11,file=arg(1:lnblnk1(arg)),status='old',err=101)
+            open(11,file=arg(1:lnblnk1(arg)),status='old',iostat=open_status)
+            if (open_status/=0) call open_error()
             do
                 read(11,'(a)',iostat=open_status) next_file
                 if (open_status/=0) exit
@@ -2926,7 +2928,8 @@ subroutine open_units
             write(12,'(/a)') '%%'
             close(12)
             arg = 'mortjob.mortran'
-            open(5,file=arg,status='old',err=101)
+            open(5,file=arg,status='old',iostat=open_status)
+            if (open_status/=0) call open_error()
         else
             if( nfs==nfe ) then ! a single command line file
                 call getarg(nfs,next_file)
@@ -2934,7 +2937,8 @@ subroutine open_units
                     write(6,'(a,a)') '  command line file: ', &
                         next_file(1:lnblnk1(next_file))
                 end if
-                open(5,file=next_file,status='old',err=101)
+                open(5,file=next_file,status='old',iostat=open_status)
+                if (open_status/=0) call open_error()
             else
                 if( verbose ) then
                     write(6,'(a,a)') '  command line files: '
@@ -2965,7 +2969,8 @@ subroutine open_units
                 close(12)
                 if( verbose ) write(6,'(a)') '  generated mortjob.mortran'
                 arg = 'mortjob.mortran'
-                open(5,file=arg,status='old',err=101)
+                open(5,file=arg,status='old',iostat=open_status)
+                if (open_status/=0) call open_error()
             end if
         end if
     end if
@@ -2982,7 +2987,8 @@ subroutine open_units
         call getarg(no8,arg)
         if( verbose )write(6,'(a,a)') '  mortlst output: ', &
             arg(1:lnblnk1(arg))
-        open(8,file=arg(1:lnblnk1(arg)),err=101)
+        open(8,file=arg(1:lnblnk1(arg)),iostat=open_status)
+        if (open_status/=0) call open_error()
     else
         if( verbose )write(6,'(a)') '  mortlst output: fort.8'
         open(8,file='fort.8',status='unknown')
@@ -2994,8 +3000,11 @@ subroutine open_units
     oflag = 8
     return
 
-101 write(6,'(a,a,a)') ' file ',arg(1:lnblnk1(arg)),' does not exist!'
-    call exit(3) !stop 3
+contains
+    subroutine open_error()
+        write(6,'(a,a,a)') ' file ',arg(1:lnblnk1(arg)),' does not exist!'
+        call exit(3) !stop 3
+    end subroutine open_error
 end
 
 subroutine add_file(iu,the_file)
